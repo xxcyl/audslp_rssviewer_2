@@ -115,11 +115,14 @@ function ArticlesContent() {
     refetchArticles()
   }
 
-  // 處理按讚功能（這裡是簡化版，實際應該使用 useLikes hook）
+  // 處理按讚功能
   const handleLike = async (articleId: number) => {
     console.log('按讚文章:', articleId)
-    // 這裡可以觸發重新載入或樂觀更新
-    await refetchArticles()
+    // 這裡會觸發重新載入來更新按讚狀態
+    // 當按讚 hook 完整實作後，這裡會自動更新
+    setTimeout(() => {
+      refetchArticles()
+    }, 500)
   }
 
   const handleRecommend = (articleId: number) => {
@@ -219,7 +222,6 @@ function ArticlesContent() {
         articles={articlesData?.articles || []}
         onLike={handleLike}
         onRecommend={handleRecommend}
-        likedArticles={likedArticles}
         isLoading={articlesLoading}
       />
 

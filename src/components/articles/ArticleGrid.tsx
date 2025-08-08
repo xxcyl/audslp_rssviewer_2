@@ -8,7 +8,6 @@ interface ArticleGridProps {
   articles: Article[]
   onLike?: (articleId: number) => void
   onRecommend?: (articleId: number) => void
-  likedArticles?: Set<number>
   isLoading?: boolean
   className?: string
 }
@@ -68,7 +67,6 @@ export function ArticleGrid({
   articles, 
   onLike, 
   onRecommend, 
-  likedArticles = new Set(),
   isLoading = false,
   className 
 }: ArticleGridProps) {
@@ -106,7 +104,6 @@ export function ArticleGrid({
           article={article}
           onLike={onLike}
           onRecommend={onRecommend}
-          isLiked={likedArticles.has(article.id)}
           className="h-full"
         />
       ))}

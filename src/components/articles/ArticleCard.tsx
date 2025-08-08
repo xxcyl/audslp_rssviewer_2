@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Heart, ExternalLink, FileText, Calendar, User, Hash, Clock } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { useLikes } from '@/hooks/useLikes'
 import type { Article } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
@@ -13,30 +14,49 @@ interface ArticleCardProps {
   onLike?: (articleId: number) => void
   onRecommend?: (articleId: number) => void
   className?: string
-  isLiked?: boolean
 }
 
 export function ArticleCard({ 
   article, 
   onLike, 
   onRecommend, 
-  className,
-  isLiked = false 
+  className
 }: ArticleCardProps) {
-  const [liked, setLiked] = useState(isLiked)
-  const [likeCount, setLikeCount] = useState(article.likes_count)
+  // 使用按讚 hook
+  const {
+    isLiked,
+    totalLikes,
+    toggleLike,
+    isLoading: likeLoading
+  } = useLikes(article.id)
+  
+  // 本地狀態用於樂觀更新
+  const [localLiked, setLocalLiked] = useState(isLiked)
+  const [localLikeCount, setLocalLikeCount] = useState(totalLikes)
+  
+  // 同步遠端狀態
+  useEffect(() => {
+    setLocalLiked(isLiked)
+    setLocalLikeCount(totalLikes)
+  }, [isLiked, totalLikes])
 
   const handleLike = async () => {
-    if (!onLike) return
-    
     try {
-      setLiked(!liked)
-      setLikeCount(prev => liked ? prev - 1 : prev + 1)
-      await onLike(article.id)
+      // 樂觀更新 UI
+      setLocalLiked(!localLiked)
+      setLocalLikeCount(prev => localLiked ? prev - 1 : prev + 1)
+      
+      // 呼叫 hook 中的按讚函數
+      toggleLike()
+      
+      // 通知父組件
+      if (onLike) {
+        onLike(article.id)
+      }
     } catch (error) {
-      // 恢復狀態如果失敗
-      setLiked(liked)
-      setLikeCount(article.likes_count)
+      // 如果失敗，恢復狀態
+      setLocalLiked(isLiked)
+      setLocalLikeCount(totalLikes)
       console.error('按讚失敗:', error)
     }
   }
@@ -193,17 +213,17 @@ export function ArticleCard({
               size="sm"
               className={cn(
                 "p-2 transition-colors",
-                liked ? "text-red-500 hover:text-red-600" : "text-gray-400 hover:text-red-500"
+                localLiked ? "text-red-500 hover:text-red-600" : "text-gray-400 hover:text-red-500"
               )}
               onClick={handleLike}
-              disabled={!onLike}
+              disabled={likeLoading}
             >
               <Heart 
-                className={cn("w-4 h-4", liked && "fill-current")} 
+                className={cn("w-4 h-4", localLiked && "fill-current")} 
               />
             </Button>
             <span className="text-sm text-gray-500 font-medium">
-              {likeCount}
+              {localLikeCount || 0}
             </span>
           </div>
         </div>

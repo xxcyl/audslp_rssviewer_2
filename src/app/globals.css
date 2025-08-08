@@ -3,6 +3,14 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* 文字截斷工具類 */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

@@ -73,25 +73,6 @@ export function ArticleCard({
           >
             {article.source || 'Unknown Source'}
           </Badge>
-          
-          {/* 向量和 DOI 狀態 */}
-          <div className="flex gap-1">
-            {hasEmbedding ? (
-              <Badge variant="outline" className="text-green-600 border-green-600">
-                ✅ 向量
-              </Badge>
-            ) : (
-              <Badge variant="outline" className="text-gray-400 border-gray-400">
-                ❌ 無向量
-              </Badge>
-            )}
-            
-            {hasDoi && (
-              <Badge variant="outline" className="text-blue-600 border-blue-600">
-                📋 DOI
-              </Badge>
-            )}
-          </div>
         </div>
 
         {/* 標題 */}
@@ -114,19 +95,28 @@ export function ArticleCard({
           <div className="space-y-3">
             {article.tldr && (
               <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-green-500">
-                <p className="text-sm font-medium text-gray-600 mb-1">📝 中文摘要</p>
-                <p className="text-sm text-gray-800 leading-relaxed">
-                  {article.tldr}
-                </p>
+                <div className="text-sm text-gray-800 leading-relaxed">
+                  {article.tldr.includes('|') ? (
+                    article.tldr.split('|').map((sentence, index, array) => (
+                      <span key={index}>
+                        <span className="font-medium text-gray-900">{sentence.trim()}</span>
+                        {index < array.length - 1 && (
+                          <span className="text-green-600 font-bold mx-1"> | </span>
+                        )}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="font-medium text-gray-900">{article.tldr}</span>
+                  )}
+                </div>
               </div>
             )}
             
             {article.english_tldr && (
               <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
-                <p className="text-sm font-medium text-gray-600 mb-1">🔤 English Summary</p>
-                <p className="text-sm text-gray-800 italic leading-relaxed">
+                <div className="text-sm text-gray-800 italic leading-relaxed">
                   {article.english_tldr}
-                </p>
+                </div>
               </div>
             )}
           </div>

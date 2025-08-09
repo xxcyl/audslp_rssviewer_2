@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, ExternalLink, FileText, Calendar, Hash, Loader2, Eye } from 'lucide-react'
+import { ExternalLink, FileText, Calendar, Hash, Loader2, Eye } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'

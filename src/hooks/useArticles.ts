@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
-import type { Article, FilterOptions, SupabaseQueryParams } from '@/lib/types'
+import type { Article, RecommendedArticle, FilterOptions, SupabaseQueryParams } from '@/lib/types'
 
 interface UseArticlesOptions {
   page: number
@@ -82,7 +82,7 @@ async function fetchSimilarArticles(
   articleId: number,
   threshold: number = 0.6,
   limit: number = 5
-): Promise<Article[]> {
+): Promise<RecommendedArticle[]> {
   try {
     const { data, error } = await supabase.rpc('get_similar_articles', {
       target_article_id: articleId,
@@ -94,7 +94,7 @@ async function fetchSimilarArticles(
       throw new Error(`相似文章載入失敗: ${error.message}`)
     }
 
-    return data || []
+    return (data || []) as RecommendedArticle[]
   } catch (error) {
     console.error('fetchSimilarArticles error:', error)
     throw error

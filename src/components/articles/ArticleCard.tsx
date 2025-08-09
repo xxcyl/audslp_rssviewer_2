@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Heart, ExternalLink, FileText, Calendar, Hash, ChevronDown, ChevronUp } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { useLikes } from '@/hooks/useLikes'
 import type { Article } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -81,16 +82,19 @@ export function ArticleCard({
   return (
     <Card className={cn(
       "flex flex-col h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1",
-      // 手機版卡片加大
-      "p-1 md:p-0", // 手機版增加內邊距
+      // 手機版卡片加大，增加內邊距
+      "p-2 md:p-3", // 增加內邊距
       className
     )}>
-      <CardHeader className="space-y-3 pb-3 px-4 md:px-6">
+      <CardHeader className="space-y-3 pb-3 px-2 md:px-4">
         {/* 來源標籤 */}
         <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-500 font-medium">
+          <Badge 
+            variant="secondary" 
+            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium text-xs px-2 py-1"
+          >
             {article.source || 'Unknown Source'}
-          </span>
+          </Badge>
         </div>
 
         {/* 標題 */}
@@ -107,7 +111,7 @@ export function ArticleCard({
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 space-y-3 px-4 md:px-6">
+      <CardContent className="flex-1 space-y-3 px-2 md:px-4">
         {/* 摘要 */}
         {(article.tldr || article.english_tldr) && (
           <div className="space-y-3">
@@ -134,34 +138,36 @@ export function ArticleCard({
             {/* 原文摘要 - 可展開/收合 */}
             {article.english_tldr && (
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-600 font-medium">原文摘要</span>
+                {!showEnglishSummary ? (
                   <Button
                     variant="ghost"
                     size="sm"
                     className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                    onClick={() => setShowEnglishSummary(!showEnglishSummary)}
+                    onClick={() => setShowEnglishSummary(true)}
                   >
-                    {showEnglishSummary ? (
-                      <>
+                    <span className="mr-1">展開原文摘要</span>
+                    <ChevronDown className="w-3 h-3" />
+                  </Button>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-gray-600 font-medium">原文摘要</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        onClick={() => setShowEnglishSummary(false)}
+                      >
                         <span className="mr-1">收合</span>
                         <ChevronUp className="w-3 h-3" />
-                      </>
-                    ) : (
-                      <>
-                        <span className="mr-1">展開</span>
-                        <ChevronDown className="w-3 h-3" />
-                      </>
-                    )}
-                  </Button>
-                </div>
-                
-                {showEnglishSummary && (
-                  <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500 animate-in slide-in-from-top-2 duration-200">
-                    <div className="text-xs md:text-sm text-gray-800 italic leading-relaxed">
-                      {article.english_tldr}
+                      </Button>
                     </div>
-                  </div>
+                    <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500 animate-in slide-in-from-top-2 duration-200">
+                      <div className="text-xs md:text-sm text-gray-800 italic leading-relaxed">
+                        {article.english_tldr}
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
             )}
@@ -182,7 +188,7 @@ export function ArticleCard({
         </div>
       </CardContent>
 
-      <CardFooter className="pt-3 border-t bg-gray-50/50 px-4 md:px-6">
+      <CardFooter className="pt-3 border-t bg-gray-50/50 px-2 md:px-4">
         <div className="flex items-center justify-between w-full gap-2">
           {/* 操作按鈕 */}
           <div className="flex gap-1 md:gap-2 flex-1">

@@ -21,24 +21,22 @@ const queryClient = new QueryClient({
   },
 })
 
-// 統計卡片組件
-function StatsCard({ icon: Icon, title, value, description, color }: {
+// 緊湊統計卡片組件
+function CompactStatsCard({ icon: Icon, title, value, color }: {
   icon: React.ComponentType<{ className?: string }>
   title: string
   value: string | number
-  description: string
   color: string
 }) {
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-      <div className="flex items-center">
-        <div className={`p-3 rounded-lg ${color}`}>
-          <Icon className="w-6 h-6 text-white" />
+    <div className="bg-white rounded-lg p-3 md:p-4 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+      <div className="flex items-center gap-3">
+        <div className={`p-2 rounded-lg ${color} shrink-0`}>
+          <Icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
         </div>
-        <div className="ml-4">
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
-          <p className="text-xs text-gray-500">{description}</p>
+        <div className="min-w-0 flex-1">
+          <p className="text-xs md:text-sm font-medium text-gray-600 truncate">{title}</p>
+          <p className="text-lg md:text-xl font-bold text-gray-900">{value}</p>
         </div>
       </div>
     </div>
@@ -46,17 +44,16 @@ function StatsCard({ icon: Icon, title, value, description, color }: {
 }
 
 // 載入狀態組件
-function LoadingStats() {
+function CompactLoadingStats() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
       {Array.from({ length: 4 }, (_, i) => (
-        <div key={i} className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 animate-pulse">
-          <div className="flex items-center">
-            <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
-            <div className="ml-4 flex-1">
-              <div className="h-4 bg-gray-200 rounded w-16 mb-2"></div>
-              <div className="h-6 bg-gray-200 rounded w-12 mb-1"></div>
-              <div className="h-3 bg-gray-200 rounded w-20"></div>
+        <div key={i} className="bg-white rounded-lg p-3 md:p-4 shadow-sm border border-gray-200 animate-pulse">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-200 rounded-lg shrink-0"></div>
+            <div className="flex-1 min-w-0">
+              <div className="h-3 bg-gray-200 rounded w-12 mb-2"></div>
+              <div className="h-5 bg-gray-200 rounded w-8"></div>
             </div>
           </div>
         </div>
@@ -174,35 +171,31 @@ function ArticlesContent() {
     <div className="space-y-6">
       {/* 統計資訊 */}
       {articlesLoading ? (
-        <LoadingStats />
+        <CompactLoadingStats />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatsCard
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
+          <CompactStatsCard
             icon={BookOpen}
             title="總文章數"
             value={articlesData?.totalCount?.toLocaleString() || 0}
-            description="資料庫中的文章總數"
             color="bg-blue-500"
           />
-          <StatsCard
+          <CompactStatsCard
             icon={Users}
             title="期刊來源"
             value={articlesData?.sources?.length || 0}
-            description="不同的期刊來源"
             color="bg-green-500"
           />
-          <StatsCard
+          <CompactStatsCard
             icon={Heart}
             title="本頁按讚"
             value={articlesData?.articles?.reduce((sum, article) => sum + (article.likes_count || 0), 0) || 0}
-            description="當前頁面文章按讚總數"
             color="bg-red-500"
           />
-          <StatsCard
+          <CompactStatsCard
             icon={TrendingUp}
-            title="當前頁面"
-            value={`${currentPage}/${totalPages}`}
-            description={`每頁顯示 ${pageSize} 篇文章`}
+            title={`第 ${currentPage}/${totalPages} 頁`}
+            value={`${pageSize} 篇`}
             color="bg-purple-500"
           />
         </div>
@@ -257,22 +250,22 @@ export default function HomePage() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-gray-50">
         {/* 頁面標題 */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-6 md:py-8">
+          <div className="container mx-auto px-4 md:px-6 text-center">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">
               📚 聽語期刊速報
             </h1>
-            <p className="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">
+            <p className="text-sm md:text-base lg:text-lg opacity-90 max-w-2xl mx-auto">
               專業的聽力學與語言治療期刊推播網站
             </p>
-            <p className="text-lg opacity-80 mt-2">
+            <p className="text-xs md:text-sm opacity-75 mt-1 hidden md:block">
               瀏覽最新的學術研究，發現相關文章，追蹤研究趨勢
             </p>
           </div>
         </div>
 
         {/* 主要內容 */}
-        <div className="container mx-auto px-6 py-8">
+        <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
           <ArticlesContent />
         </div>
 

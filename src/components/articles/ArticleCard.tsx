@@ -222,7 +222,7 @@ export function ArticleCard({
                 className={cn("w-4 h-4", localLiked && "fill-current")} 
               />
             </Button>
-            <span className="text-sm text-gray-500 font-medium">
+            <span className=            <span className="text-xs md:text-sm text-gray-500 font-medium min-w-[20px] text-center">
               {localLikeCount || 0}
             </span>
           </div>

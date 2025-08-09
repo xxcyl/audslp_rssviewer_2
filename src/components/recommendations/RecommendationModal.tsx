@@ -6,8 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useSimilarArticles, useArticle } from '@/hooks/useArticles'
-import type { Article } from '@/lib/types'
-import { cn } from '@/lib/utils'
+import type { Article, RecommendedArticle } from '@/lib/types'
 
 interface RecommendationModalProps {
   isOpen: boolean
@@ -18,11 +17,9 @@ interface RecommendationModalProps {
 
 function RecommendationItem({ 
   article, 
-  similarity, 
   onArticleClick 
 }: { 
-  article: Article
-  similarity: number
+  article: RecommendedArticle
   onArticleClick?: (article: Article) => void
 }) {
   const formatDate = (dateString: string | null) => {
@@ -48,7 +45,7 @@ function RecommendationItem({
               variant="secondary" 
               className="bg-blue-100 text-blue-700 text-xs whitespace-nowrap shrink-0"
             >
-              {(similarity * 100).toFixed(0)}% 相似
+              {(article.similarity * 100).toFixed(0)}% 相似
             </Badge>
           </div>
 
@@ -123,8 +120,8 @@ function RecommendationItem({
 export function RecommendationModal({ 
   isOpen, 
   onClose, 
-  sourceArticle,
-  onArticleClick 
+  sourceArticle
+  // onArticleClick - 備用參數，目前未使用
 }: RecommendationModalProps) {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null)
   
@@ -353,7 +350,6 @@ export function RecommendationModal({
                       <RecommendationItem
                         key={article.id}
                         article={article}
-                        similarity={article.similarity}
                         onArticleClick={handleArticleClick}
                       />
                     ))}

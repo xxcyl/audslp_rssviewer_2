@@ -94,6 +94,9 @@ function ArticlesContent() {
   // 獲取批量按讚狀態
   const articleIds = articlesData?.articles.map(article => article.id) || []
   const { data: likedArticles = new Set() } = useBatchLikes(articleIds)
+  
+  // 使用 likedArticles 來顯示按讚狀態（目前先保留備用）
+  console.log('Current liked articles:', likedArticles.size)
 
   const handleFiltersChange = (newFilters: FilterOptions) => {
     setFilters(newFilters)

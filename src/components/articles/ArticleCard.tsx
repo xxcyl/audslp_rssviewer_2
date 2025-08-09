@@ -77,7 +77,7 @@ export function ArticleCard({
   }
 
   const hasEmbedding = article.embedding && article.embedding.length > 0
-  const hasDoi = article.doi && article.doi.trim() !== ''
+  // const hasDoi = article.doi && article.doi.trim() !== '' // 目前未使用，先註解
 
   return (
     <Card className={cn(

@@ -53,7 +53,7 @@ export type TypedSupabaseClient = typeof supabase
 // 輔助函數：檢查 Supabase 連線
 export async function checkSupabaseConnection(): Promise<boolean> {
   try {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('rss_entries')
       .select('id')
       .limit(1)

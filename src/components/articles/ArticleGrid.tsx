@@ -74,7 +74,7 @@ export function ArticleGrid({
   if (isLoading) {
     return (
       <div className={cn(
-        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6",
+        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
         className
       )}>
         {/* 顯示 6 個載入中的骨架屏 */}
@@ -95,8 +95,8 @@ export function ArticleGrid({
 
   return (
     <div className={cn(
-      "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6",
-      className
+    "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6",
+    className
     )}>
       {articles.map((article) => (
         <ArticleCard

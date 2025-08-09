@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { Heart, ExternalLink, FileText, Calendar, Hash, ChevronDown, ChevronUp } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { useLikes } from '@/hooks/useLikes'
 import type { Article } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -86,15 +85,12 @@ export function ArticleCard({
       "p-1 md:p-0", // 手機版增加內邊距
       className
     )}>
-      <CardHeader className="space-y-3 pb-3">
+      <CardHeader className="space-y-3 pb-3 px-4 md:px-6">
         {/* 來源標籤 */}
         <div className="flex items-center justify-between">
-          <Badge 
-            variant="secondary" 
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium text-xs px-2 py-1"
-          >
+          <span className="text-xs text-gray-500 font-medium">
             {article.source || 'Unknown Source'}
-          </Badge>
+          </span>
         </div>
 
         {/* 標題 */}
@@ -135,22 +131,30 @@ export function ArticleCard({
               </div>
             )}
             
-            {/* 英文摘要 - 可展開/收合 */}
+            {/* 原文摘要 - 可展開/收合 */}
             {article.english_tldr && (
               <div className="space-y-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-auto p-1 text-xs text-blue-600 hover:text-blue-700"
-                  onClick={() => setShowEnglishSummary(!showEnglishSummary)}
-                >
-                  <span className="mr-1">🔤 English Summary</span>
-                  {showEnglishSummary ? (
-                    <ChevronUp className="w-3 h-3" />
-                  ) : (
-                    <ChevronDown className="w-3 h-3" />
-                  )}
-                </Button>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-600 font-medium">原文摘要</span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                    onClick={() => setShowEnglishSummary(!showEnglishSummary)}
+                  >
+                    {showEnglishSummary ? (
+                      <>
+                        <span className="mr-1">收合</span>
+                        <ChevronUp className="w-3 h-3" />
+                      </>
+                    ) : (
+                      <>
+                        <span className="mr-1">展開</span>
+                        <ChevronDown className="w-3 h-3" />
+                      </>
+                    )}
+                  </Button>
+                </div>
                 
                 {showEnglishSummary && (
                   <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500 animate-in slide-in-from-top-2 duration-200">

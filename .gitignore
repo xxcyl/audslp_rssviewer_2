@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Development documentation and tracking files
+DEVELOPMENT_GUIDE.md
+PROGRESS_TRACKING.md
+SETUP_COMMANDS.md
+.env.template
+README_DEV.md
+
+# Keep only the main README for production

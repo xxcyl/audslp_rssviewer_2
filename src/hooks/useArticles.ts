@@ -32,8 +32,8 @@ async function fetchArticles({
     if (searchQuery && searchQuery.trim().length > 0) {
       const trimmedQuery = searchQuery.trim()
       
-      // 使用搜尋 RPC 函數
-      const { data: searchResults, error: searchError } = await supabase.rpc('search_articles', {
+      // 使用改進的搜尋 RPC 函數
+      const { data: searchResults, error: searchError } = await supabase.rpc('search_articles_v2', {
         search_query: trimmedQuery,
         source_filter: source || null,
         sort_by: sortBy,
@@ -46,7 +46,7 @@ async function fetchArticles({
       }
 
       // 獲取搜尋結果總數
-      const { data: countResult, error: countError } = await supabase.rpc('count_search_results', {
+      const { data: countResult, error: countError } = await supabase.rpc('count_search_results_v2', {
         search_query: trimmedQuery,
         source_filter: source || null
       })

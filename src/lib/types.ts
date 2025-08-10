@@ -1,19 +1,19 @@
 // 學術文獻資料庫的 TypeScript 類型定義
 
 export interface Article {
-  id: number // 可能是 bigint，但 JavaScript 中處理為 number
-  title: string | null
-  title_translated: string | null
-  tldr: string | null
-  english_tldr: string | null
-  source: string | null
-  link: string | null
-  published: string | null
-  created_at: string
-  pmid: string | null
-  doi: string | null
-  embedding: number[] | null
-  likes_count: number
+  id: number // JavaScript 中 bigint 處理為 number
+  title: string // 資料庫中是 text，不能為 null
+  title_translated: string | null // 可為 null
+  tldr: string | null // 可為 null
+  english_tldr: string | null // 可為 null
+  source: string // 資料庫中是 varchar(255)，不能為 null
+  link: string // 資料庫中是 text，不能為 null
+  published: string | null // timestamp with time zone，可為 null
+  created_at: string | null // timestamp with time zone，可為 null
+  pmid: string | null // varchar(50)，可為 null
+  doi: string | null // varchar(255)，可為 null
+  embedding: number[] | null // VECTOR 類型，可為 null
+  likes_count: number // integer，但前端處理時保證不為 null
 }
 
 export interface ArticleLike {

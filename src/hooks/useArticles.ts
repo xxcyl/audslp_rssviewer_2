@@ -57,18 +57,18 @@ async function fetchArticles({
 
       articles = (searchResults || []).map((result: Record<string, unknown>) => ({
         id: result.id as number,
-        title: result.title as string | null,
+        title: result.title as string, // 不能為 null
         title_translated: result.title_translated as string | null,
         tldr: result.tldr as string | null,
         english_tldr: result.english_tldr as string | null,
-        source: result.source as string | null,
-        link: result.link as string | null,
+        source: result.source as string, // 不能為 null
+        link: result.link as string, // 不能為 null
         published: result.published as string | null,
-        created_at: result.created_at as string,
+        created_at: result.created_at as string | null,
         pmid: result.pmid as string | null,
         doi: result.doi as string | null,
         embedding: result.embedding as number[] | null,
-        likes_count: (result.likes_count as number) || 0
+        likes_count: (result.likes_count as number) || 0 // 保證不為 null
       }))
 
       totalCount = countResult || 0

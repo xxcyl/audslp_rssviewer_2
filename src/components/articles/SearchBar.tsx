@@ -176,7 +176,7 @@ export function SearchStats({
   return (
     <div className={cn("text-sm text-gray-600", className)}>
       找到 <span className="font-medium">{totalResults.toLocaleString()}</span> 篇
-      關於 "<span className="font-medium text-blue-600">{query}</span>" 的文章
+      關於 &ldquo;<span className="font-medium text-blue-600">{query}</span>&rdquo; 的文章
       {totalResults > 0 && (
         <span className="ml-2">
           (顯示第 {startItem}-{endItem} 篇)

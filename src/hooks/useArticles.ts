@@ -55,20 +55,20 @@ async function fetchArticles({
         console.warn('獲取搜尋結果數量失敗:', countError)
       }
 
-      articles = (searchResults || []).map((result: any) => ({
-        id: result.id,
-        title: result.title,
-        title_translated: result.title_translated,
-        tldr: result.tldr,
-        english_tldr: result.english_tldr,
-        source: result.source,
-        link: result.link,
-        published: result.published,
-        created_at: result.created_at,
-        pmid: result.pmid,
-        doi: result.doi,
-        embedding: result.embedding,
-        likes_count: result.likes_count || 0
+      articles = (searchResults || []).map((result: Record<string, unknown>) => ({
+        id: result.id as number,
+        title: result.title as string | null,
+        title_translated: result.title_translated as string | null,
+        tldr: result.tldr as string | null,
+        english_tldr: result.english_tldr as string | null,
+        source: result.source as string | null,
+        link: result.link as string | null,
+        published: result.published as string | null,
+        created_at: result.created_at as string,
+        pmid: result.pmid as string | null,
+        doi: result.doi as string | null,
+        embedding: result.embedding as number[] | null,
+        likes_count: (result.likes_count as number) || 0
       }))
 
       totalCount = countResult || 0

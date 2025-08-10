@@ -1,7 +1,7 @@
 // 學術文獻資料庫的 TypeScript 類型定義
 
 export interface Article {
-  id: number
+  id: number // 可能是 bigint，但 JavaScript 中處理為 number
   title: string | null
   title_translated: string | null
   tldr: string | null

@@ -30,17 +30,6 @@ export function SearchBar({
     setLocalValue(value)
   }, [value])
 
-  // 防抖處理
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (localValue !== value) {
-        onChange(localValue)
-      }
-    }, 300) // 300ms 防抖
-
-    return () => clearTimeout(timer)
-  }, [localValue, onChange, value])
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalValue(e.target.value)
   }
@@ -51,10 +40,16 @@ export function SearchBar({
     onClear?.()
   }
 
+  const handleSearch = () => {
+    if (localValue !== value) {
+      onChange(localValue)
+    }
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault()
-      onChange(localValue)
+      handleSearch()
     }
     if (e.key === 'Escape') {
       handleClear()
@@ -95,10 +90,24 @@ export function SearchBar({
         )}
       </div>
       
-      {/* 搜尋狀態指示 */}
-      {value && value !== localValue && (
-        <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+      {/* 搜尋按鈕 (當有輸入但未搜尋時顯示) */}
+      {localValue && localValue !== value && (
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleSearch}
+          disabled={disabled}
+          className="ml-2 px-3 h-10 text-sm"
+        >
+          搜尋
+        </Button>
+      )}
+      
+      {/* 提示文字 */}
+      {localValue && localValue !== value && (
+        <div className="absolute left-3 -bottom-6 text-xs text-gray-500">
+          按 Enter 或點擊搜尋按鈕開始搜尋
         </div>
       )}
     </div>

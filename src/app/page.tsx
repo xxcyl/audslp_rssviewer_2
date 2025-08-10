@@ -9,7 +9,7 @@ import { RecommendationModal } from '@/components/recommendations/Recommendation
 import { useArticles } from '@/hooks/useArticles'
 import { useBatchLikes } from '@/hooks/useLikes'
 import type { FilterOptions, Article } from '@/lib/types'
-import { BookOpen, Heart, TrendingUp, Users } from 'lucide-react'
+import { BookOpen, Heart, TrendingUp, Users, Search } from 'lucide-react'
 
 // 建立 QueryClient
 const queryClient = new QueryClient({
@@ -166,19 +166,20 @@ function ArticlesContent() {
   }
 
   const totalPages = Math.ceil((articlesData?.totalCount || 0) / pageSize)
+  const isSearching = !!filters.searchQuery
 
   return (
     <div className="space-y-6">
-      {/* 統計資訊 */}
+      {/* 統計資訊 - 搜尋時顯示不同的統計 */}
       {articlesLoading ? (
         <CompactLoadingStats />
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
           <CompactStatsCard
-            icon={BookOpen}
-            title="總文章數"
+            icon={isSearching ? Search : BookOpen}
+            title={isSearching ? "搜尋結果" : "總文章數"}
             value={articlesData?.totalCount?.toLocaleString() || 0}
-            color="bg-blue-500"
+            color={isSearching ? "bg-orange-500" : "bg-blue-500"}
           />
           <CompactStatsCard
             icon={Users}
@@ -201,7 +202,7 @@ function ArticlesContent() {
         </div>
       )}
 
-      {/* 篩選工具列 */}
+      {/* 搜尋和篩選工具列 */}
       <FilterToolbar
         sources={articlesData?.sources || []}
         currentFilters={filters}
@@ -213,12 +214,33 @@ function ArticlesContent() {
         isLoading={articlesLoading}
       />
 
+      {/* 無搜尋結果提示 */}
+      {isSearching && !articlesLoading && articlesData?.articles.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-gray-400 text-6xl mb-4">🔍</div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">找不到相關文章</h3>
+          <p className="text-gray-600 mb-4">
+            沒有找到包含 "<span className="font-medium text-blue-600">{filters.searchQuery}</span>" 的文章
+          </p>
+          <div className="text-sm text-gray-500 space-y-1">
+            <p>建議您：</p>
+            <ul className="list-disc list-inside space-y-1 mt-2">
+              <li>檢查拼字是否正確</li>
+              <li>嘗試使用不同的關鍵字</li>
+              <li>使用更廣泛的搜尋詞</li>
+              <li>清除來源篩選條件</li>
+            </ul>
+          </div>
+        </div>
+      )}
+
       {/* 文章網格 */}
       <ArticleGrid
         articles={articlesData?.articles || []}
         onLike={handleLike}
         onRecommend={handleRecommend}
         isLoading={articlesLoading}
+        searchTerm={filters.searchQuery} // 新增：傳遞搜尋詞用於高亮
       />
 
       {/* 分頁 */}
@@ -274,7 +296,7 @@ export default function HomePage() {
           <div className="container mx-auto px-6 text-center text-gray-600">
             <p>&copy; 2025 聽語期刊速報. 專為聽力學與語言治療專業人員設計</p>
             <p className="text-sm mt-2">
-              建置於 Next.js 14, Supabase, Tailwind CSS
+              建置於 Next.js 15, Supabase, Tailwind CSS
             </p>
           </div>
         </footer>

@@ -4,6 +4,7 @@ import { RefreshCw, Filter } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
+import { SearchBar, SearchStats } from '@/components/articles/SearchBar'
 import type { FilterOptions } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
@@ -39,6 +40,20 @@ export function FilterToolbar({
   className
 }: FilterToolbarProps) {
   
+  const handleSearchChange = (searchQuery: string) => {
+    onFiltersChange({
+      ...currentFilters,
+      searchQuery: searchQuery || undefined
+    })
+  }
+
+  const handleSearchClear = () => {
+    onFiltersChange({
+      ...currentFilters,
+      searchQuery: undefined
+    })
+  }
+
   const handleSourceChange = (source: string) => {
     onFiltersChange({
       ...currentFilters,
@@ -57,69 +72,177 @@ export function FilterToolbar({
   const startItem = (currentPage - 1) * pageSize + 1
   const endItem = Math.min(currentPage * pageSize, totalCount)
 
+  const isSearching = !!currentFilters.searchQuery
+  const hasActiveFilters = !!currentFilters.source || !!currentFilters.searchQuery
+
   return (
     <div className={cn(
-      "bg-white border-b border-gray-200 px-6 py-4 shadow-sm",
+      "bg-white border-b border-gray-200 shadow-sm",
       className
     )}>
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        
-        {/* 左側：篩選控制 */}
-        <div className="flex flex-col sm:flex-row gap-4">
+      {/* 主要工具列 */}
+      <div className="px-4 md:px-6 py-4">
+        <div className="flex flex-col gap-4">
           
-          {/* 來源篩選 */}
-          <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-600">
-              來源篩選
-            </label>
-            <Select
-              value={currentFilters.source || 'all'}
-              onValueChange={handleSourceChange}
+          {/* 搜尋列 */}
+          <div className="w-full">
+            <SearchBar
+              value={currentFilters.searchQuery || ''}
+              onChange={handleSearchChange}
+              onClear={handleSearchClear}
+              placeholder="搜尋文章標題和摘要..."
               disabled={isLoading}
-            >
-              <SelectTrigger className="w-[180px]">
-                <Filter className="w-4 h-4 mr-2 text-gray-500" />
-                <SelectValue placeholder="選擇來源" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">所有來源</SelectItem>
-                {sources.map((source) => (
-                  <SelectItem key={source} value={source}>
-                    {source}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              className="max-w-2xl"
+            />
           </div>
 
-          {/* 排序方式 */}
-          <div className="flex flex-col gap-1">
-            <label className="text-xs font-medium text-gray-600">
-              排序方式
-            </label>
-            <Select
-              value={currentFilters.sortBy}
-              onValueChange={handleSortChange}
-              disabled={isLoading}
-            >
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="選擇排序" />
-              </SelectTrigger>
-              <SelectContent>
-                {SORT_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          {/* 篩選控制和統計資訊 */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            
+            {/* 左側：篩選控制 */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              
+              {/* 來源篩選 */}
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-medium text-gray-600">
+                  來源篩選
+                </label>
+                <Select
+                  value={currentFilters.source || 'all'}
+                  onValueChange={handleSourceChange}
+                  disabled={isLoading}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <Filter className="w-4 h-4 mr-2 text-gray-500" />
+                    <SelectValue placeholder="選擇來源" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">所有來源</SelectItem>
+                    {sources.map((source) => (
+                      <SelectItem key={source} value={source}>
+                        {source}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 排序方式 */}
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-medium text-gray-600">
+                  排序方式
+                </label>
+                <Select
+                  value={currentFilters.sortBy}
+                  onValueChange={handleSortChange}
+                  disabled={isLoading}
+                >
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="選擇排序" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SORT_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* 右側：統計資訊和操作按鈕 */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              
+              {/* 重新載入按鈕 */}
+              {onRefresh && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={onRefresh}
+                  disabled={isLoading}
+                  className="flex items-center gap-2"
+                >
+                  <RefreshCw className={cn("w-4 h-4", isLoading && "animate-spin")} />
+                  重新載入
+                </Button>
+              )}
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* 右側：統計資訊和操作按鈕 */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+      {/* 搜尋統計和活動篩選條件 */}
+      {(isSearching || hasActiveFilters) && (
+        <div className="px-4 md:px-6 py-3 bg-gray-50 border-t border-gray-100">
           
-          {/* 統計資訊 */}
+          {/* 搜尋統計 */}
+          {isSearching && (
+            <SearchStats
+              query={currentFilters.searchQuery!}
+              totalResults={totalCount}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              className="mb-3"
+            />
+          )}
+
+          {/* 活動篩選條件顯示 */}
+          {hasActiveFilters && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-sm text-gray-600">篩選條件：</span>
+              
+              {/* 來源篩選 Badge */}
+              {currentFilters.source && (
+                <Badge 
+                  variant="outline" 
+                  className="bg-blue-50 text-blue-700 border-blue-300"
+                >
+                  來源：{currentFilters.source}
+                  <button 
+                    className="ml-2 text-blue-500 hover:text-blue-700"
+                    onClick={() => handleSourceChange('all')}
+                  >
+                    ✕
+                  </button>
+                </Badge>
+              )}
+
+              {/* 搜尋關鍵字 Badge */}
+              {currentFilters.searchQuery && (
+                <Badge 
+                  variant="outline" 
+                  className="bg-green-50 text-green-700 border-green-300"
+                >
+                  搜尋：{currentFilters.searchQuery}
+                  <button 
+                    className="ml-2 text-green-500 hover:text-green-700"
+                    onClick={handleSearchClear}
+                  >
+                    ✕
+                  </button>
+                </Badge>
+              )}
+
+              {/* 清除所有篩選 */}
+              {hasActiveFilters && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onFiltersChange({ sortBy: currentFilters.sortBy })}
+                  className="text-gray-500 hover:text-gray-700 text-xs"
+                >
+                  清除所有篩選
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 統計資訊列 (當沒有搜尋時顯示) */}
+      {!isSearching && (
+        <div className="px-4 md:px-6 py-2 bg-gray-50 border-t border-gray-100">
           <div className="flex flex-wrap gap-2">
             <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200">
               總計 {totalCount.toLocaleString()} 篇
@@ -134,41 +257,6 @@ export function FilterToolbar({
                 顯示 {startItem.toLocaleString()}-{endItem.toLocaleString()}
               </Badge>
             )}
-          </div>
-
-          {/* 重新載入按鈕 */}
-          {onRefresh && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onRefresh}
-              disabled={isLoading}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className={cn("w-4 h-4", isLoading && "animate-spin")} />
-              重新載入
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {/* 活動篩選條件顯示 */}
-      {currentFilters.source && (
-        <div className="mt-3 pt-3 border-t border-gray-100">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">篩選條件：</span>
-            <Badge 
-              variant="outline" 
-              className="bg-blue-50 text-blue-700 border-blue-300"
-            >
-              來源：{currentFilters.source}
-              <button 
-                className="ml-2 text-blue-500 hover:text-blue-700"
-                onClick={() => handleSourceChange('all')}
-              >
-                ✕
-              </button>
-            </Badge>
           </div>
         </div>
       )}

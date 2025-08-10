@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useLikes } from '@/hooks/useLikes'
+import { SearchHighlight } from './SearchBar'
 import type { Article } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
@@ -13,13 +14,15 @@ interface ArticleCardProps {
   article: Article
   onLike?: (articleId: number) => void
   onRecommend?: (articleId: number) => void
+  searchTerm?: string // 新增：搜尋詞用於高亮
   className?: string
 }
 
 export function ArticleCard({ 
   article, 
   onLike, 
-  onRecommend, 
+  onRecommend,
+  searchTerm, // 新增參數
   className
 }: ArticleCardProps) {
   // 使用按讚 hook
@@ -100,12 +103,18 @@ export function ArticleCard({
         {/* 標題 */}
         <div className="space-y-2">
           <h3 className="font-semibold text-base md:text-lg leading-tight text-gray-900">
-            {article.title_translated || article.title || '無標題'}
+            <SearchHighlight 
+              text={article.title_translated || article.title || '無標題'}
+              searchTerm={searchTerm || ''}
+            />
           </h3>
           
           {article.title && article.title_translated && (
             <p className="text-xs md:text-sm text-gray-600 italic leading-relaxed">
-              {article.title}
+              <SearchHighlight 
+                text={article.title}
+                searchTerm={searchTerm || ''}
+              />
             </p>
           )}
         </div>
@@ -122,14 +131,24 @@ export function ArticleCard({
                   {article.tldr.includes('|') ? (
                     article.tldr.split('|').map((sentence, index, array) => (
                       <span key={index}>
-                        <span className="font-medium text-gray-900">{sentence.trim()}</span>
+                        <span className="font-medium text-gray-900">
+                          <SearchHighlight 
+                            text={sentence.trim()}
+                            searchTerm={searchTerm || ''}
+                          />
+                        </span>
                         {index < array.length - 1 && (
                           <span className="text-green-600 font-bold mx-1"> | </span>
                         )}
                       </span>
                     ))
                   ) : (
-                    <span className="font-medium text-gray-900">{article.tldr}</span>
+                    <span className="font-medium text-gray-900">
+                      <SearchHighlight 
+                        text={article.tldr}
+                        searchTerm={searchTerm || ''}
+                      />
+                    </span>
                   )}
                 </div>
               </div>
@@ -164,7 +183,10 @@ export function ArticleCard({
                     </div>
                     <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500 animate-in slide-in-from-top-2 duration-200">
                       <div className="text-xs md:text-sm text-gray-800 italic leading-relaxed">
-                        {article.english_tldr}
+                        <SearchHighlight 
+                          text={article.english_tldr}
+                          searchTerm={searchTerm || ''}
+                        />
                       </div>
                     </div>
                   </>

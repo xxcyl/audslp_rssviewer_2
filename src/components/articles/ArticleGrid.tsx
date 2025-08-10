@@ -9,6 +9,7 @@ interface ArticleGridProps {
   onLike?: (articleId: number) => void
   onRecommend?: (articleId: number) => void
   isLoading?: boolean
+  searchTerm?: string // 新增：搜尋詞用於高亮
   className?: string
 }
 
@@ -68,6 +69,7 @@ export function ArticleGrid({
   onLike, 
   onRecommend, 
   isLoading = false,
+  searchTerm,
   className 
 }: ArticleGridProps) {
   
@@ -104,6 +106,7 @@ export function ArticleGrid({
           article={article}
           onLike={onLike}
           onRecommend={onRecommend}
+          searchTerm={searchTerm} // 傳遞搜尋詞給 ArticleCard
           className="h-full"
         />
       ))}

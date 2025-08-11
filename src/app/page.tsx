@@ -23,7 +23,7 @@ const queryClient = new QueryClient({
 // 主要內容組件
 function ArticlesContent() {
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(24)
+  const [pageSize, setPageSize] = useState(12)
   const [filters, setFilters] = useState<FilterOptions>({
     sortBy: 'published.desc'
   })
@@ -136,7 +136,6 @@ function ArticlesContent() {
         totalCount={articlesData?.totalCount || 0}
         currentPage={currentPage}
         pageSize={pageSize}
-        onPageSizeChange={handlePageSizeChange}
         onRefresh={handleRefresh}
         isLoading={articlesLoading}
       />

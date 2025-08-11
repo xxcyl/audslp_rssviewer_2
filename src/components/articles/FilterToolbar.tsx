@@ -132,25 +132,33 @@ export function FilterToolbar({
   }
 
   return (
-    <div className={cn("bg-white border-b border-gray-200", className)}>
+    <div className={cn("bg-white border border-gray-200 rounded-lg shadow-sm", className)}>
       
       {/* 主工具列 - 左右分佈式設計 */}
-      <div className="px-4 md:px-6 py-3">
+      <div className="px-4 md:px-6 py-4">
         <div className="flex items-center justify-between gap-4">
           
           {/* 左側：來源篩選 + 搜尋框 */}
           <div className="flex items-center gap-3 flex-1">
-            {/* 來源篩選 - 純圖示，無下拉箭頭 */}
+            {/* 來源篩選 - 純圖示，自定義樣式 */}
             <Select
               value={currentFilters.source || 'all'}
               onValueChange={handleSourceChange}
               disabled={isLoading}
             >
-              <SelectTrigger className={cn(
-                "w-[40px] h-9 p-0 border-gray-300 [&>svg]:hidden", // 隱藏預設的下拉箭頭
-                currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
-              )}>
-                <Filter className="w-4 h-4 mx-auto" />
+              <SelectTrigger 
+                className={cn(
+                  "w-[40px] h-10 p-0 border-gray-300 relative overflow-hidden",
+                  currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
+                )}
+              >
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Filter className="w-4 h-4" />
+                </div>
+                {/* 隱藏預設內容 */}
+                <div className="sr-only">
+                  <SelectValue />
+                </div>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">所有來源</SelectItem>
@@ -174,7 +182,7 @@ export function FilterToolbar({
                   placeholder="搜尋關鍵字"
                   disabled={isLoading}
                   className={cn(
-                    "pl-10 pr-10 h-9 border-gray-300",
+                    "pl-10 pr-10 h-10 border-gray-300",
                     "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
                     hasUnsubmittedSearch && "border-blue-300"
                   )}
@@ -188,7 +196,7 @@ export function FilterToolbar({
                     size="sm"
                     onClick={handleSearchClear}
                     disabled={isLoading}
-                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0 hover:bg-gray-100"
+                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-100"
                   >
                     <X className="w-3 h-3 text-gray-400" />
                   </Button>
@@ -200,14 +208,20 @@ export function FilterToolbar({
           {/* 右側：排序 + 文章數 + 重新載入 */}
           <div className="flex items-center gap-3">
             
-            {/* 排序方式 - 純圖示，無下拉箭頭 */}
+            {/* 排序方式 - 純圖示，自定義樣式 */}
             <Select
               value={currentFilters.sortBy}
               onValueChange={handleSortChange}
               disabled={isLoading}
             >
-              <SelectTrigger className="w-[40px] h-9 p-0 border-gray-300 [&>svg]:hidden">
-                <ArrowUpDown className="w-4 h-4 mx-auto" />
+              <SelectTrigger className="w-[40px] h-10 p-0 border-gray-300 relative overflow-hidden">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <ArrowUpDown className="w-4 h-4" />
+                </div>
+                {/* 隱藏預設內容 */}
+                <div className="sr-only">
+                  <SelectValue />
+                </div>
               </SelectTrigger>
               <SelectContent>
                 {SORT_OPTIONS.map((option) => (
@@ -218,15 +232,15 @@ export function FilterToolbar({
               </SelectContent>
             </Select>
 
-            {/* 每頁顯示數量 - 純數字，無下拉箭頭 */}
+            {/* 每頁顯示數量 - 純數字，自定義樣式 */}
             {onPageSizeChange && (
               <Select
                 value={pageSize.toString()}
                 onValueChange={handlePageSizeChange}
                 disabled={isLoading}
               >
-                <SelectTrigger className="w-[45px] h-9 p-0 border-gray-300 text-sm [&>svg]:hidden">
-                  <div className="w-full text-center">
+                <SelectTrigger className="w-[45px] h-10 p-0 border-gray-300 text-sm relative overflow-hidden">
+                  <div className="absolute inset-0 flex items-center justify-center">
                     <SelectValue />
                   </div>
                 </SelectTrigger>
@@ -247,7 +261,7 @@ export function FilterToolbar({
                 size="sm"
                 onClick={onRefresh}
                 disabled={isLoading}
-                className="h-9 w-9 p-0"
+                className="h-10 w-10 p-0 border border-gray-300 hover:bg-gray-50"
                 title="重新載入"
               >
                 <RefreshCw className={cn("w-4 h-4", isLoading && "animate-spin")} />
@@ -258,22 +272,27 @@ export function FilterToolbar({
 
         {/* 搜尋提示 */}
         {hasUnsubmittedSearch && (
-          <div className="mt-2 text-xs text-blue-600">
+          <div className="mt-3 text-xs text-blue-600 pl-[52px]">
             按 Enter 開始搜尋
           </div>
         )}
       </div>
 
-      {/* 統計資訊列 - 靠右對齊 */}
-      <div className="px-4 md:px-6 py-2 bg-gray-50/50 border-t border-gray-100">
-        <div className="text-sm text-gray-600 text-right">
-          {getStatsText()}
+      {/* 統計資訊列 - 靠右對齊，增加視覺分隔 */}
+      <div className="px-4 md:px-6 py-3 bg-gray-50 border-t border-gray-200 rounded-b-lg">
+        <div className="flex items-center justify-between">
+          <div className="text-xs text-gray-500">
+            {hasActiveFilters ? '已套用篩選條件' : '顯示所有文章'}
+          </div>
+          <div className="text-sm text-gray-600 font-medium">
+            {getStatsText()}
+          </div>
         </div>
       </div>
 
       {/* 搜尋結果統計 - 僅在搜尋時顯示 */}
       {isSearching && (
-        <div className="px-4 md:px-6 py-2 bg-blue-50/30 border-t border-blue-100">
+        <div className="px-4 md:px-6 py-3 bg-blue-50 border-t border-blue-200">
           <div className="text-sm text-gray-700">
             找到 <span className="font-medium text-blue-700">{totalCount.toLocaleString()}</span> 篇
             關於 &ldquo;<SearchHighlight 

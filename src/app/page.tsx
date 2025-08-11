@@ -210,6 +210,7 @@ function ArticlesContent() {
         totalCount={articlesData?.totalCount || 0}
         currentPage={currentPage}
         pageSize={pageSize}
+        onPageSizeChange={handlePageSizeChange}
         onRefresh={handleRefresh}
         isLoading={articlesLoading}
       />
@@ -248,10 +249,7 @@ function ArticlesContent() {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          pageSize={pageSize}
-          totalItems={articlesData?.totalCount || 0}
           onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
         />
       )}
       

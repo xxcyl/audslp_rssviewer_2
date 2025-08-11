@@ -174,6 +174,7 @@ function ArticlesContent() {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
+          totalItems={articlesData?.totalCount || 0}
           onPageChange={handlePageChange}
         />
       )}

@@ -98,58 +98,39 @@ export function FilterToolbar({
   }
 
   const isSearching = !!currentFilters.searchQuery
-  const hasActiveFilters = !!currentFilters.source || !!currentFilters.searchQuery
   const hasUnsubmittedSearch = searchValue !== (currentFilters.searchQuery || '')
-  const totalPages = Math.ceil(totalCount / pageSize)
-
-  // 生成統計文字
-  const getStatsText = () => {
-    let text = `${totalCount.toLocaleString()} 篇`
-    
-    if (hasActiveFilters) {
-      text += ' • 已篩選'
-    }
-    
-    if (totalPages > 1) {
-      text += ` • 第 ${currentPage}/${totalPages} 頁`
-    }
-    
-    return text
-  }
 
   return (
     <div className={cn("bg-white border border-gray-200 rounded-lg shadow-sm", className)}>
       
-      {/* 主工具列 - 置中簡潔設計 */}
+      {/* 主工具列 - 置中設計，恢復文字標籤 */}
       <div className="px-6 py-4">
-        <div className="flex items-center justify-center gap-3 max-w-2xl mx-auto">
+        <div className="flex items-center justify-center gap-4 max-w-3xl mx-auto">
           
-          {/* 來源篩選 - 純圖示 */}
-          <div className="relative">
-            <Select
-              value={currentFilters.source || 'all'}
-              onValueChange={handleSourceChange}
-              disabled={isLoading}
+          {/* 來源篩選 - 恢復文字 */}
+          <Select
+            value={currentFilters.source || 'all'}
+            onValueChange={handleSourceChange}
+            disabled={isLoading}
+          >
+            <SelectTrigger 
+              className={cn(
+                "w-[140px] h-10 text-sm border-gray-300",
+                currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
+              )}
             >
-              <SelectTrigger 
-                className={cn(
-                  "w-[40px] h-10 p-0 border-gray-300",
-                  "data-[state=open]:ring-0 data-[state=open]:ring-offset-0",
-                  currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
-                )}
-              >
-                <Filter className="w-4 h-4 mx-auto" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">所有來源</SelectItem>
-                {sources.map((source) => (
-                  <SelectItem key={source} value={source}>
-                    {source}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              <Filter className="w-4 h-4 mr-2" />
+              <SelectValue placeholder="所有來源" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">所有來源</SelectItem>
+              {sources.map((source) => (
+                <SelectItem key={source} value={source}>
+                  {source}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           {/* 搜尋框 */}
           <div className="flex-1 max-w-md">
@@ -185,30 +166,26 @@ export function FilterToolbar({
             </div>
           </div>
 
-          {/* 排序方式 - 純圖示 */}
-          <div className="relative">
-            <Select
-              value={currentFilters.sortBy}
-              onValueChange={handleSortChange}
-              disabled={isLoading}
+          {/* 排序方式 - 恢復文字 */}
+          <Select
+            value={currentFilters.sortBy}
+            onValueChange={handleSortChange}
+            disabled={isLoading}
+          >
+            <SelectTrigger 
+              className="w-[140px] h-10 text-sm border-gray-300"
             >
-              <SelectTrigger 
-                className={cn(
-                  "w-[40px] h-10 p-0 border-gray-300",
-                  "data-[state=open]:ring-0 data-[state=open]:ring-offset-0"
-                )}
-              >
-                <ArrowUpDown className="w-4 h-4 mx-auto" />
-              </SelectTrigger>
-              <SelectContent>
-                {SORT_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+              <ArrowUpDown className="w-4 h-4 mr-2" />
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SORT_OPTIONS.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* 搜尋提示 */}
@@ -219,16 +196,9 @@ export function FilterToolbar({
         )}
       </div>
 
-      {/* 統計資訊列 - 靠右對齊 */}
-      <div className="px-6 py-3 bg-gray-50 border-t border-gray-200 rounded-b-lg">
-        <div className="text-sm text-gray-600 text-right">
-          {getStatsText()}
-        </div>
-      </div>
-
       {/* 搜尋結果統計 - 僅在搜尋時顯示 */}
       {isSearching && (
-        <div className="px-6 py-3 bg-blue-50 border-t border-blue-200">
+        <div className="px-6 py-3 bg-blue-50 border-t border-blue-200 rounded-b-lg">
           <div className="text-sm text-gray-700 text-center">
             找到 <span className="font-medium text-blue-700">{totalCount.toLocaleString()}</span> 篇
             關於 &ldquo;<SearchHighlight 
@@ -236,11 +206,6 @@ export function FilterToolbar({
               searchTerm={currentFilters.searchQuery!}
               className="font-medium text-blue-700"
             />&rdquo; 的文章
-            {totalCount > 0 && (
-              <span className="ml-2 text-gray-600">
-                (第 {currentPage} 頁)
-              </span>
-            )}
             
             {/* 清除搜尋按鈕 */}
             <Button

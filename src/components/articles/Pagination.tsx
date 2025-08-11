@@ -2,33 +2,19 @@
 
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 
 interface PaginationProps {
   currentPage: number
   totalPages: number
-  pageSize: number
-  totalItems: number
   onPageChange: (page: number) => void
-  onPageSizeChange?: (pageSize: number) => void
   className?: string
 }
-
-const PAGE_SIZE_OPTIONS = [
-  { value: 12, label: '12' },
-  { value: 24, label: '24' },
-  { value: 48, label: '48' },
-  { value: 96, label: '96' },
-] as const
 
 export function Pagination({
   currentPage,
   totalPages,
-  pageSize,
-  totalItems,
   onPageChange,
-  onPageSizeChange,
   className
 }: PaginationProps) {
   
@@ -66,134 +52,100 @@ export function Pagination({
     return pages
   }
 
-  const handlePageSizeChange = (value: string) => {
-    if (onPageSizeChange) {
-      const newPageSize = parseInt(value, 10)
-      onPageSizeChange(newPageSize)
-    }
-  }
-
   return (
     <div className={cn(
-      "flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 bg-white border-t border-gray-200",
+      "flex items-center justify-center gap-1 px-6 py-4 bg-white border-t border-gray-200",
       className
     )}>
       
-      {/* 左側：每頁顯示數量 */}
-      {onPageSizeChange && (
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <span>每頁</span>
-          <Select
-            value={pageSize.toString()}
-            onValueChange={handlePageSizeChange}
-          >
-            <SelectTrigger className="w-[70px] h-8 text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {PAGE_SIZE_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value.toString()}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <span>篇</span>
-        </div>
-      )}
+      {/* 第一頁 */}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => onPageChange(1)}
+        disabled={currentPage === 1}
+        className="h-8 w-8 p-0"
+        title="第一頁"
+      >
+        <ChevronsLeft className="h-4 w-4" />
+      </Button>
 
-      {/* 中間：分頁按鈕 */}
-      <div className="flex items-center gap-1">
-        
-        {/* 第一頁 */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(1)}
-          disabled={currentPage === 1}
-          className="h-8 w-8 p-0"
-          title="第一頁"
-        >
-          <ChevronsLeft className="h-4 w-4" />
-        </Button>
+      {/* 上一頁 */}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="h-8 w-8 p-0"
+        title="上一頁"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </Button>
 
-        {/* 上一頁 */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="h-8 w-8 p-0"
-          title="上一頁"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-
-        {/* 頁碼 */}
-        <div className="flex items-center gap-1 mx-2">
-          {getPageRange().map((page, index) => {
-            if (page === '...') {
-              return (
-                <span key={`ellipsis-${index}`} className="px-2 text-gray-400 text-sm">
-                  ...
-                </span>
-              )
-            }
-            
-            const pageNum = page as number
-            const isCurrentPage = pageNum === currentPage
-            
+      {/* 頁碼 */}
+      <div className="flex items-center gap-1 mx-2">
+        {getPageRange().map((page, index) => {
+          if (page === '...') {
             return (
-              <Button
-                key={pageNum}
-                variant={isCurrentPage ? "default" : "outline"}
-                size="sm"
-                onClick={() => onPageChange(pageNum)}
-                className={cn(
-                  "h-8 w-8 p-0 text-sm",
-                  isCurrentPage && "bg-blue-600 text-white hover:bg-blue-700"
-                )}
-              >
-                {pageNum}
-              </Button>
+              <span key={`ellipsis-${index}`} className="px-2 text-gray-400 text-sm">
+                ...
+              </span>
             )
-          })}
-        </div>
-
-        {/* 下一頁 */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="h-8 w-8 p-0"
-          title="下一頁"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-
-        {/* 最後一頁 */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onPageChange(totalPages)}
-          disabled={currentPage === totalPages}
-          className="h-8 w-8 p-0"
-          title="最後一頁"
-        >
-          <ChevronsRight className="h-4 w-4" />
-        </Button>
+          }
+          
+          const pageNum = page as number
+          const isCurrentPage = pageNum === currentPage
+          
+          return (
+            <Button
+              key={pageNum}
+              variant={isCurrentPage ? "default" : "outline"}
+              size="sm"
+              onClick={() => onPageChange(pageNum)}
+              className={cn(
+                "h-8 w-8 p-0 text-sm",
+                isCurrentPage && "bg-blue-600 text-white hover:bg-blue-700"
+              )}
+            >
+              {pageNum}
+            </Button>
+          )
+        })}
       </div>
 
-      {/* 右側：快速跳頁 */}
-      <div className="flex items-center gap-2 text-sm text-gray-600">
+      {/* 下一頁 */}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="h-8 w-8 p-0"
+        title="下一頁"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </Button>
+
+      {/* 最後一頁 */}
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => onPageChange(totalPages)}
+        disabled={currentPage === totalPages}
+        className="h-8 w-8 p-0"
+        title="最後一頁"
+      >
+        <ChevronsRight className="h-4 w-4" />
+      </Button>
+
+      {/* 快速跳頁 */}
+      <div className="flex items-center gap-2 ml-4 text-sm text-gray-600">
         <span>跳至</span>
         <input
           type="number"
           min={1}
           max={totalPages}
           defaultValue={currentPage}
-          className="w-14 h-8 text-center border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-14 h-8 text-center border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               const value = parseInt(e.currentTarget.value, 10)

@@ -103,11 +103,12 @@ export function FilterToolbar({
   return (
     <div className={cn("bg-white border border-gray-200 rounded-lg shadow-sm", className)}>
       
-      {/* 主工具列 - 置中設計，恢復文字標籤 */}
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-center gap-4 max-w-3xl mx-auto">
+      {/* 主工具列 - 響應式設計優化 */}
+      <div className="px-4 sm:px-6 py-4">
+        {/* 桌面版：置中設計 */}
+        <div className="hidden md:flex items-center justify-center gap-4 max-w-3xl mx-auto">
           
-          {/* 來源篩選 - 恢復文字 */}
+          {/* 來源篩選 */}
           <Select
             value={currentFilters.source || 'all'}
             onValueChange={handleSourceChange}
@@ -166,7 +167,7 @@ export function FilterToolbar({
             </div>
           </div>
 
-          {/* 排序方式 - 恢復文字 */}
+          {/* 排序方式 */}
           <Select
             value={currentFilters.sortBy}
             onValueChange={handleSortChange}
@@ -188,6 +189,98 @@ export function FilterToolbar({
           </Select>
         </div>
 
+        {/* 手機版：垂直堆疊設計 */}
+        <div className="md:hidden space-y-4">
+          
+          {/* 第一行：搜尋框 */}
+          <div className="w-full">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                type="text"
+                value={searchValue}
+                onChange={handleSearchChange}
+                onKeyDown={handleSearchKeyDown}
+                placeholder="搜尋關鍵字"
+                disabled={isLoading}
+                className={cn(
+                  "pl-10 pr-10 h-12 border-gray-300 text-center",
+                  "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
+                  hasUnsubmittedSearch && "border-blue-300"
+                )}
+              />
+              
+              {/* 清除按鈕 */}
+              {searchValue && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleSearchClear}
+                  disabled={isLoading}
+                  className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 p-0 hover:bg-gray-100"
+                >
+                  <X className="w-4 h-4 text-gray-400" />
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* 第二行：篩選控制項 */}
+          <div className="flex gap-3">
+            
+            {/* 來源篩選 */}
+            <div className="flex-1">
+              <Select
+                value={currentFilters.source || 'all'}
+                onValueChange={handleSourceChange}
+                disabled={isLoading}
+              >
+                <SelectTrigger 
+                  className={cn(
+                    "w-full h-11 text-sm border-gray-300",
+                    currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
+                  )}
+                >
+                  <Filter className="w-4 h-4 mr-2" />
+                  <SelectValue placeholder="所有來源" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">所有來源</SelectItem>
+                  {sources.map((source) => (
+                    <SelectItem key={source} value={source}>
+                      {source}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* 排序方式 */}
+            <div className="flex-1">
+              <Select
+                value={currentFilters.sortBy}
+                onValueChange={handleSortChange}
+                disabled={isLoading}
+              >
+                <SelectTrigger 
+                  className="w-full h-11 text-sm border-gray-300"
+                >
+                  <ArrowUpDown className="w-4 h-4 mr-2" />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {SORT_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+
         {/* 搜尋提示 */}
         {hasUnsubmittedSearch && (
           <div className="mt-3 text-xs text-blue-600 text-center">
@@ -198,7 +291,7 @@ export function FilterToolbar({
 
       {/* 搜尋結果統計 - 僅在搜尋時顯示 */}
       {isSearching && (
-        <div className="px-6 py-3 bg-blue-50 border-t border-blue-200 rounded-b-lg">
+        <div className="px-4 sm:px-6 py-3 bg-blue-50 border-t border-blue-200 rounded-b-lg">
           <div className="text-sm text-gray-700 text-center">
             找到 <span className="font-medium text-blue-700">{totalCount.toLocaleString()}</span> 篇
             關於 &ldquo;<SearchHighlight 

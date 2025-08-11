@@ -1,6 +1,6 @@
 'use client'
 
-import { RefreshCw, Filter, Search, X, ChevronDown, ArrowUpDown } from 'lucide-react'
+import { RefreshCw, Filter, Search, X, ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
@@ -134,120 +134,126 @@ export function FilterToolbar({
   return (
     <div className={cn("bg-white border-b border-gray-200", className)}>
       
-      {/* 主工具列 - 超緊湊一行式設計 */}
+      {/* 主工具列 - 左右分佈式設計 */}
       <div className="px-4 md:px-6 py-3">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between gap-4">
           
-          {/* 來源篩選 - 純圖示 */}
-          <Select
-            value={currentFilters.source || 'all'}
-            onValueChange={handleSourceChange}
-            disabled={isLoading}
-          >
-            <SelectTrigger className={cn(
-              "w-[44px] h-9 px-2 border-gray-300",
-              currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
-            )}>
-              <Filter className="w-4 h-4" />
-              <ChevronDown className="w-3 h-3 ml-1" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">所有來源</SelectItem>
-              {sources.map((source) => (
-                <SelectItem key={source} value={source}>
-                  {source}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          {/* 左側：來源篩選 + 搜尋框 */}
+          <div className="flex items-center gap-3 flex-1">
+            {/* 來源篩選 - 純圖示，無下拉箭頭 */}
+            <Select
+              value={currentFilters.source || 'all'}
+              onValueChange={handleSourceChange}
+              disabled={isLoading}
+            >
+              <SelectTrigger className={cn(
+                "w-[40px] h-9 p-0 border-gray-300 [&>svg]:hidden", // 隱藏預設的下拉箭頭
+                currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
+              )}>
+                <Filter className="w-4 h-4 mx-auto" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">所有來源</SelectItem>
+                {sources.map((source) => (
+                  <SelectItem key={source} value={source}>
+                    {source}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-          {/* 搜尋框 */}
-          <div className="flex-1 max-w-md">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                type="text"
-                value={searchValue}
-                onChange={handleSearchChange}
-                onKeyDown={handleSearchKeyDown}
-                placeholder="搜尋關鍵字"
-                disabled={isLoading}
-                className={cn(
-                  "pl-10 pr-10 h-9 border-gray-300",
-                  "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
-                  hasUnsubmittedSearch && "border-blue-300"
-                )}
-              />
-              
-              {/* 清除按鈕 */}
-              {searchValue && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSearchClear}
+            {/* 搜尋框 */}
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  type="text"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleSearchKeyDown}
+                  placeholder="搜尋關鍵字"
                   disabled={isLoading}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0 hover:bg-gray-100"
-                >
-                  <X className="w-3 h-3 text-gray-400" />
-                </Button>
-              )}
+                  className={cn(
+                    "pl-10 pr-10 h-9 border-gray-300",
+                    "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
+                    hasUnsubmittedSearch && "border-blue-300"
+                  )}
+                />
+                
+                {/* 清除按鈕 */}
+                {searchValue && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSearchClear}
+                    disabled={isLoading}
+                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 w-7 p-0 hover:bg-gray-100"
+                  >
+                    <X className="w-3 h-3 text-gray-400" />
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* 排序方式 - 純圖示 */}
-          <Select
-            value={currentFilters.sortBy}
-            onValueChange={handleSortChange}
-            disabled={isLoading}
-          >
-            <SelectTrigger className="w-[44px] h-9 px-2 border-gray-300">
-              <ArrowUpDown className="w-4 h-4" />
-              <ChevronDown className="w-3 h-3 ml-1" />
-            </SelectTrigger>
-            <SelectContent>
-              {SORT_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* 每頁顯示數量 - 純數字 */}
-          {onPageSizeChange && (
+          {/* 右側：排序 + 文章數 + 重新載入 */}
+          <div className="flex items-center gap-3">
+            
+            {/* 排序方式 - 純圖示，無下拉箭頭 */}
             <Select
-              value={pageSize.toString()}
-              onValueChange={handlePageSizeChange}
+              value={currentFilters.sortBy}
+              onValueChange={handleSortChange}
               disabled={isLoading}
             >
-              <SelectTrigger className="w-[50px] h-9 px-2 border-gray-300 text-sm">
-                <SelectValue />
-                <ChevronDown className="w-3 h-3 ml-1" />
+              <SelectTrigger className="w-[40px] h-9 p-0 border-gray-300 [&>svg]:hidden">
+                <ArrowUpDown className="w-4 h-4 mx-auto" />
               </SelectTrigger>
               <SelectContent>
-                {PAGE_SIZE_OPTIONS.map((option) => (
-                  <SelectItem key={option.value} value={option.value.toString()}>
+                {SORT_OPTIONS.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-          )}
 
-          {/* 重新載入按鈕 */}
-          {onRefresh && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onRefresh}
-              disabled={isLoading}
-              className="h-9 w-9 p-0"
-              title="重新載入"
-            >
-              <RefreshCw className={cn("w-4 h-4", isLoading && "animate-spin")} />
-            </Button>
-          )}
+            {/* 每頁顯示數量 - 純數字，無下拉箭頭 */}
+            {onPageSizeChange && (
+              <Select
+                value={pageSize.toString()}
+                onValueChange={handlePageSizeChange}
+                disabled={isLoading}
+              >
+                <SelectTrigger className="w-[45px] h-9 p-0 border-gray-300 text-sm [&>svg]:hidden">
+                  <div className="w-full text-center">
+                    <SelectValue />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  {PAGE_SIZE_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value.toString()}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+
+            {/* 重新載入按鈕 */}
+            {onRefresh && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onRefresh}
+                disabled={isLoading}
+                className="h-9 w-9 p-0"
+                title="重新載入"
+              >
+                <RefreshCw className={cn("w-4 h-4", isLoading && "animate-spin")} />
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* 搜尋提示 */}
@@ -258,9 +264,9 @@ export function FilterToolbar({
         )}
       </div>
 
-      {/* 統計資訊列 - 獨立一行 */}
+      {/* 統計資訊列 - 靠右對齊 */}
       <div className="px-4 md:px-6 py-2 bg-gray-50/50 border-t border-gray-100">
-        <div className="text-sm text-gray-600">
+        <div className="text-sm text-gray-600 text-right">
           {getStatsText()}
         </div>
       </div>

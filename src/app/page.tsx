@@ -9,7 +9,6 @@ import { RecommendationModal } from '@/components/recommendations/Recommendation
 import { useArticles } from '@/hooks/useArticles'
 import { useBatchLikes } from '@/hooks/useLikes'
 import type { FilterOptions, Article } from '@/lib/types'
-import { BookOpen, Heart, TrendingUp, Users, Search } from 'lucide-react'
 
 // 建立 QueryClient
 const queryClient = new QueryClient({
@@ -20,47 +19,6 @@ const queryClient = new QueryClient({
     },
   },
 })
-
-// 緊湊統計卡片組件
-function CompactStatsCard({ icon: Icon, title, value, color }: {
-  icon: React.ComponentType<{ className?: string }>
-  title: string
-  value: string | number
-  color: string
-}) {
-  return (
-    <div className="bg-white rounded-lg p-3 md:p-4 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-      <div className="flex items-center gap-3">
-        <div className={`p-2 rounded-lg ${color} shrink-0`}>
-          <Icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <p className="text-xs md:text-sm font-medium text-gray-600 truncate">{title}</p>
-          <p className="text-lg md:text-xl font-bold text-gray-900">{value}</p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// 載入狀態組件
-function CompactLoadingStats() {
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-      {Array.from({ length: 4 }, (_, i) => (
-        <div key={i} className="bg-white rounded-lg p-3 md:p-4 shadow-sm border border-gray-200 animate-pulse">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-200 rounded-lg shrink-0"></div>
-            <div className="flex-1 min-w-0">
-              <div className="h-3 bg-gray-200 rounded w-12 mb-2"></div>
-              <div className="h-5 bg-gray-200 rounded w-8"></div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 // 主要內容組件
 function ArticlesContent() {
@@ -170,38 +128,6 @@ function ArticlesContent() {
 
   return (
     <div className="space-y-6">
-      {/* 統計資訊 - 搜尋時顯示不同的統計 */}
-      {articlesLoading ? (
-        <CompactLoadingStats />
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-          <CompactStatsCard
-            icon={isSearching ? Search : BookOpen}
-            title={isSearching ? "搜尋結果" : "總文章數"}
-            value={articlesData?.totalCount?.toLocaleString() || 0}
-            color={isSearching ? "bg-orange-500" : "bg-blue-500"}
-          />
-          <CompactStatsCard
-            icon={Users}
-            title="期刊來源"
-            value={articlesData?.sources?.length || 0}
-            color="bg-green-500"
-          />
-          <CompactStatsCard
-            icon={Heart}
-            title="本頁按讚"
-            value={articlesData?.articles?.reduce((sum, article) => sum + (article.likes_count || 0), 0) || 0}
-            color="bg-red-500"
-          />
-          <CompactStatsCard
-            icon={TrendingUp}
-            title={`第 ${currentPage}/${totalPages} 頁`}
-            value={`${pageSize} 篇`}
-            color="bg-purple-500"
-          />
-        </div>
-      )}
-
       {/* 搜尋和篩選工具列 */}
       <FilterToolbar
         sources={articlesData?.sources || []}

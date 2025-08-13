@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { FilterToolbar } from '@/components/articles/FilterToolbar'
 import { ArticleGrid } from '@/components/articles/ArticleGrid'
@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
 })
 
 // 主要內容組件
-function ArticlesContent() {
+function ArticlesContent({ headerSearchQuery }: { headerSearchQuery?: string }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(12)
   const [filters, setFilters] = useState<FilterOptions>({
@@ -52,6 +52,14 @@ function ArticlesContent() {
   
   // 使用 likedArticles 來顯示按讚狀態（目前先保留備用）
   console.log('Current liked articles:', likedArticles.size)
+
+  // 同步 header 搜尋框與 filters
+  useEffect(() => {
+    if (headerSearchQuery !== undefined && headerSearchQuery !== filters.searchQuery) {
+      setFilters(prev => ({ ...prev, searchQuery: headerSearchQuery }))
+      setCurrentPage(1) // 重置到第一頁
+    }
+  }, [headerSearchQuery, filters.searchQuery])
 
   const handleFiltersChange = (newFilters: FilterOptions) => {
     setFilters(newFilters)
@@ -128,7 +136,7 @@ function ArticlesContent() {
 
   return (
     <div className="space-y-6">
-      {/* 搜尋和篩選工具列 */}
+      {/* 搜尋和篩選工具列 - 簡化版 */}
       <FilterToolbar
         sources={articlesData?.sources || []}
         currentFilters={filters}
@@ -138,6 +146,7 @@ function ArticlesContent() {
         pageSize={pageSize}
         onRefresh={handleRefresh}
         isLoading={articlesLoading}
+        hideSearchBox={true}
       />
 
       {/* 無搜尋結果提示 */}
@@ -192,6 +201,9 @@ function ArticlesContent() {
 
 // 主頁面組件（包含 QueryClient Provider）
 export default function HomePage() {
+  // 全局狀態管理
+  const [globalSearchQuery, setGlobalSearchQuery] = useState('')
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-gray-50">
@@ -209,22 +221,34 @@ export default function HomePage() {
                 </span>
               </div>
               
-              {/* 右側設定按鈕 */}
-              <button 
-                className="p-2 text-purple-200 hover:text-white hover:bg-purple-700 rounded-lg transition-colors"
-                title="設定"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-                </svg>
-              </button>
+              {/* 右側搜尋框 */}
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={globalSearchQuery}
+                    onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                    placeholder="搜尋關鍵字"
+                    className="w-48 md:w-64 px-4 py-2 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        // 觸發搜尋
+                        e.preventDefault()
+                      }
+                    }}
+                  />
+                  <svg className="absolute right-3 top-2.5 h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
             </div>
           </div>
         </header>
 
         {/* 主要內容 */}
         <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
-          <ArticlesContent />
+          <ArticlesContent headerSearchQuery={globalSearchQuery} />
         </div>
 
         {/* 頁腳 */}

@@ -139,6 +139,11 @@ export function ArticleCard({
       </CardHeader>
 
       <CardContent className="flex-1 space-y-3 px-2 md:px-4">
+        {/* 發布日期 */}
+        <div className="text-sm text-muted-foreground">
+          📅 {formatDate(article.published)}
+        </div>
+
         {/* 摘要區域 - 直接顯示，無需展開按鈕 */}
         {(article.tldr || article.english_tldr) && (
           <div className="space-y-3">
@@ -188,49 +193,42 @@ export function ArticleCard({
       </CardContent>
 
       <CardFooter className="pt-3 border-t bg-gray-50/50 px-2 md:px-4">
-        <div className="space-y-2 w-full">
-          {/* 第一行：發布日期 */}
-          <div className="text-sm text-muted-foreground">
-            📅 {formatDate(article.published)}
-          </div>
-
-          {/* 第二行：功能按鈕 */}
-          <div className="flex gap-2">
-            {article.link && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="h-7 px-3 text-xs"
-                onClick={() => window.open(article.link!, '_blank')}
-              >
-                <ExternalLink className="w-3 h-3 mr-1" />
-                PubMed
-              </Button>
-            )}
-            
-            {article.doi && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="h-7 px-3 text-xs"
-                onClick={() => window.open(`https://doi.org/${article.doi}`, '_blank')}
-              >
-                <FileText className="w-3 h-3 mr-1" />
-                DOI
-              </Button>
-            )}
-            
-            {hasEmbedding && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="h-7 px-3 text-xs"
-                onClick={handleRecommend}
-              >
-                🔍 相關
-              </Button>
-            )}
-          </div>
+        {/* 功能按鈕 */}
+        <div className="flex gap-2">
+          {article.link && (
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="h-7 px-3 text-xs"
+              onClick={() => window.open(article.link!, '_blank')}
+            >
+              <ExternalLink className="w-3 h-3 mr-1" />
+              PubMed
+            </Button>
+          )}
+          
+          {article.doi && (
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="h-7 px-3 text-xs"
+              onClick={() => window.open(`https://doi.org/${article.doi}`, '_blank')}
+            >
+              <FileText className="w-3 h-3 mr-1" />
+              DOI
+            </Button>
+          )}
+          
+          {hasEmbedding && (
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="h-7 px-3 text-xs"
+              onClick={handleRecommend}
+            >
+              🔍 相關
+            </Button>
+          )}
         </div>
       </CardFooter>
     </Card>

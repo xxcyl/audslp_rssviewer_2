@@ -52,8 +52,8 @@ function RecommendationItem({
   const similarityInfo = getSimilarityBadge(article.similarity)
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-5 hover:shadow-md transition-all duration-200 hover:border-purple-300">
-      <div className="space-y-4">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-200 hover:border-purple-300">
+      <div className="space-y-3">
         {/* 標題和相似度 */}
         <div className="flex items-start gap-3">
           <h4 
@@ -69,66 +69,14 @@ function RecommendationItem({
           </div>
         </div>
 
-        {/* 來源期刊 */}
-        {article.source && (
-          <div className="text-xs">
-            <span className="bg-purple-50 text-purple-700 px-2 py-1 rounded-md border border-purple-200">
-              📚 {article.source}
-            </span>
-          </div>
-        )}
-
         {/* 摘要 */}
         {article.tldr && (
           <div className="bg-blue-50 border-l-4 border-blue-300 p-3 rounded-r-lg">
             <p className="text-sm text-gray-700 leading-relaxed">
-              {article.tldr.length > 150 ? article.tldr.substring(0, 150) + '...' : article.tldr}
+              {article.tldr.length > 120 ? article.tldr.substring(0, 120) + '...' : article.tldr}
             </p>
           </div>
         )}
-
-        {/* 操作按鈕 */}
-        <div className="flex gap-2 pt-2">
-          <Button
-            variant="default"
-            size="sm"
-            className="h-8 px-3 text-xs bg-purple-600 hover:bg-purple-700"
-            onClick={() => onArticleClick?.(article)}
-          >
-            <Eye className="w-3 h-3 mr-1" />
-            查看詳情
-          </Button>
-          
-          {article.link && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 px-3 text-xs text-green-600 hover:text-green-700 hover:bg-green-50 border-green-300"
-              onClick={(e) => {
-                e.stopPropagation()
-                window.open(article.link!, '_blank')
-              }}
-            >
-              <ExternalLink className="w-3 h-3 mr-1" />
-              PubMed
-            </Button>
-          )}
-          
-          {article.doi && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-8 px-3 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-300"
-              onClick={(e) => {
-                e.stopPropagation()
-                window.open(`https://doi.org/${article.doi}`, '_blank')
-              }}
-            >
-              <FileText className="w-3 h-3 mr-1" />
-              DOI
-            </Button>
-          )}
-        </div>
       </div>
     </div>
   )
@@ -191,11 +139,6 @@ export function RecommendationModal({
             ) : (
               <>
                 🔍 相關文章推薦
-                {similarArticles && similarArticles.length > 0 && (
-                  <Badge variant="secondary" className="bg-purple-100 text-purple-800">
-                    {similarArticles.length} 篇
-                  </Badge>
-                )}
               </>
             )}
           </DialogTitle>
@@ -310,18 +253,6 @@ export function RecommendationModal({
           ) : (
             // 推薦列表視圖
             <>
-              {/* 來源文章資訊 */}
-              {sourceArticle && (
-                <div className="bg-purple-50 border-l-4 border-purple-400 rounded-r-lg p-4 mb-6">
-                  <h3 className="font-semibold text-purple-900 mb-2">
-                    📄 來源文章
-                  </h3>
-                  <p className="text-sm text-purple-800 leading-relaxed">
-                    {sourceArticle.title_translated || sourceArticle.title || '無標題'}
-                  </p>
-                </div>
-              )}
-
               {/* 載入中狀態 */}
               {isLoading && (
                 <div className="flex flex-col items-center justify-center py-16">
@@ -346,30 +277,14 @@ export function RecommendationModal({
 
               {/* 推薦文章列表 */}
               {similarArticles && similarArticles.length > 0 && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      找到 {similarArticles.length} 篇相關文章
-                    </h3>
-                    <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                      依相似度排序
-                    </span>
-                  </div>
-
-                  <div className="space-y-4">
-                    {similarArticles.map((article, index) => (
-                      <div key={article.id} className="relative">
-                        {/* 排名標示 */}
-                        <div className="absolute -left-3 -top-3 w-6 h-6 bg-purple-600 text-white text-xs font-bold rounded-full flex items-center justify-center z-10">
-                          {index + 1}
-                        </div>
-                        <RecommendationItem
-                          article={article}
-                          onArticleClick={handleArticleClick}
-                        />
-                      </div>
-                    ))}
-                  </div>
+                <div className="space-y-3">
+                  {similarArticles.map((article) => (
+                    <RecommendationItem
+                      key={article.id}
+                      article={article}
+                      onArticleClick={handleArticleClick}
+                    />
+                  ))}
                 </div>
               )}
 

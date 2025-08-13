@@ -56,15 +56,18 @@ function RecommendationItem({
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-200 hover:border-purple-300">
       <div className="space-y-3">
-        {/* 相似度標籤 + 標題 */}
-        <div className="flex items-start gap-3">
-          <div className={`px-3 py-1 rounded-full text-xs font-medium border ${similarityInfo.className} flex items-center gap-1 shrink-0`}>
+        {/* 相似度標籤 */}
+        <div className="flex justify-start">
+          <div className={`px-3 py-1 rounded-full text-xs font-medium border ${similarityInfo.className} flex items-center gap-1`}>
             <Star className="w-3 h-3" />
             {(article.similarity * 100).toFixed(0)}% {similarityInfo.text}
           </div>
-          
+        </div>
+        
+        {/* 標題 */}
+        <div>
           <h4 
-            className="font-semibold text-gray-900 leading-tight cursor-pointer hover:text-purple-700 transition-colors flex-1"
+            className="font-semibold text-gray-900 leading-tight cursor-pointer hover:text-purple-700 transition-colors"
             onClick={() => onArticleClick?.(article)}
           >
             {article.title_translated || article.title || '無標題'}

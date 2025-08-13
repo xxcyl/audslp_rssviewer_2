@@ -144,7 +144,7 @@ function MainLayout() {
                     value={globalSearchQuery}
                     onChange={(e) => setGlobalSearchQuery(e.target.value)}
                     placeholder="搜尋關鍵字"
-                    className="w-48 md:w-64 px-4 py-2 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
+                    className="w-48 md:w-64 px-4 py-2 pr-10 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
                         e.preventDefault()
@@ -152,9 +152,31 @@ function MainLayout() {
                       }
                     }}
                   />
-                  <svg className="absolute right-3 top-2.5 h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+                  
+                  {/* 搜尋圖示或清除按鈕 */}
+                  {globalSearchQuery ? (
+                    <button
+                      onClick={() => {
+                        setGlobalSearchQuery('')
+                        // 清除搜尋條件
+                        const newFilters = {
+                          ...filters,
+                          searchQuery: undefined
+                        }
+                        setFilters(newFilters)
+                        setCurrentPage(1)
+                      }}
+                      className="absolute right-3 top-2.5 h-5 w-5 text-purple-300 hover:text-white transition-colors"
+                    >
+                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  ) : (
+                    <svg className="absolute right-3 top-2.5 h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  )}
                 </div>
               </div>
             </div>
@@ -207,7 +229,7 @@ function MainLayout() {
                   value={globalSearchQuery}
                   onChange={(e) => setGlobalSearchQuery(e.target.value)}
                   placeholder="搜尋關鍵字"
-                  className="w-48 md:w-64 px-4 py-2 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
+                  className="w-48 md:w-64 px-4 py-2 pr-10 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault()
@@ -215,9 +237,31 @@ function MainLayout() {
                     }
                   }}
                 />
-                <svg className="absolute right-3 top-2.5 h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
+                
+                {/* 搜尋圖示或清除按鈕 */}
+                {globalSearchQuery ? (
+                  <button
+                    onClick={() => {
+                      setGlobalSearchQuery('')
+                      // 清除搜尋條件
+                      const newFilters = {
+                        ...filters,
+                        searchQuery: undefined
+                      }
+                      setFilters(newFilters)
+                      setCurrentPage(1)
+                    }}
+                    className="absolute right-3 top-2.5 h-5 w-5 text-purple-300 hover:text-white transition-colors"
+                  >
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                ) : (
+                  <svg className="absolute right-3 top-2.5 h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                )}
               </div>
             </div>
           </div>
@@ -291,11 +335,29 @@ function MainLayout() {
 
       {/* 頁腳 */}
       <footer className="bg-white border-t border-gray-200 py-8 mt-12">
-        <div className="container mx-auto px-6 text-center text-gray-600">
-          <p>&copy; 2025 聽語期刊速報. 專為聽力學與語言治療專業人員設計</p>
-          <p className="text-sm mt-2">
-            建置於 Next.js 15, Supabase, Tailwind CSS
-          </p>
+        <div className="container mx-auto px-6">
+          {/* AI 警告聲明 */}
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <div className="flex items-start gap-3">
+              <div className="text-yellow-600 text-xl mt-0.5">⚠️</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-yellow-800 mb-2">重要聲明</h4>
+                <p className="text-sm text-yellow-700 leading-relaxed">
+                  本站所顯示的 AI 處理生成的中文摘要和翻譯內容可能存在錯誤或不準確之處。
+                  為確保資訊的準確性，我們強烈建議您參考 PubMed 原文內容。
+                  本站僅作為學術研究的參考工具，不應作為醫療決策的依據。
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          {/* 版權資訊 */}
+          <div className="text-center text-gray-600">
+            <p>&copy; 2025 聽語期刊速報. 專為聽力學與語言治療專業人員設計</p>
+            <p className="text-sm mt-2">
+              建置於 Next.js 15, Supabase, Tailwind CSS
+            </p>
+          </div>
         </div>
       </footer>
     </div>

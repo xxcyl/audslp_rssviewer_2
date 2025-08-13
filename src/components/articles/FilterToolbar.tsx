@@ -1,6 +1,6 @@
 'use client'
 
-import { RefreshCw, Filter, Search, X, ArrowUpDown, ChevronDown } from 'lucide-react'
+import { Filter, Search, X, ArrowUpDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
@@ -14,11 +14,12 @@ interface FilterToolbarProps {
   currentFilters: FilterOptions
   onFiltersChange: (filters: FilterOptions) => void
   totalCount: number
-  currentPage: number
-  pageSize: number
+  currentPage?: number
+  pageSize?: number
   onPageSizeChange?: (pageSize: number) => void
   onRefresh?: () => void
   isLoading?: boolean
+  hideSearchBox?: boolean // 新增：是否隱藏搜尋框
   className?: string
 }
 
@@ -35,10 +36,7 @@ export function FilterToolbar({
   currentFilters,
   onFiltersChange,
   totalCount,
-  currentPage,
-  pageSize,
-  onPageSizeChange,
-  onRefresh,
+  hideSearchBox = false,
   isLoading = false,
   className
 }: FilterToolbarProps) {
@@ -133,39 +131,41 @@ export function FilterToolbar({
             </SelectContent>
           </Select>
 
-          {/* 搜尋框 */}
-          <div className="flex-1 max-w-md">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                type="text"
-                value={searchValue}
-                onChange={handleSearchChange}
-                onKeyDown={handleSearchKeyDown}
-                placeholder="搜尋關鍵字"
-                disabled={isLoading}
-                className={cn(
-                  "pl-10 pr-10 h-10 border-gray-300 text-center",
-                  "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
-                  hasUnsubmittedSearch && "border-blue-300"
-                )}
-              />
-              
-              {/* 清除按鈕 */}
-              {searchValue && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSearchClear}
+          {/* 搜尋框 - 條件顯示 */}
+          {!hideSearchBox && (
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  type="text"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleSearchKeyDown}
+                  placeholder="搜尋關鍵字"
                   disabled={isLoading}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-100"
-                >
-                  <X className="w-3 h-3 text-gray-400" />
-                </Button>
-              )}
+                  className={cn(
+                    "pl-10 pr-10 h-10 border-gray-300 text-center",
+                    "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
+                    hasUnsubmittedSearch && "border-blue-300"
+                  )}
+                />
+                
+                {/* 清除按鈕 */}
+                {searchValue && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSearchClear}
+                    disabled={isLoading}
+                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-100"
+                  >
+                    <X className="w-3 h-3 text-gray-400" />
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* 排序方式 */}
           <Select
@@ -192,39 +192,41 @@ export function FilterToolbar({
         {/* 手機版：垂直堆疊設計 */}
         <div className="md:hidden space-y-4">
           
-          {/* 第一行：搜尋框 */}
-          <div className="w-full">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                type="text"
-                value={searchValue}
-                onChange={handleSearchChange}
-                onKeyDown={handleSearchKeyDown}
-                placeholder="搜尋關鍵字"
-                disabled={isLoading}
-                className={cn(
-                  "pl-10 pr-10 h-12 border-gray-300 text-center",
-                  "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
-                  hasUnsubmittedSearch && "border-blue-300"
-                )}
-              />
-              
-              {/* 清除按鈕 */}
-              {searchValue && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleSearchClear}
+          {/* 第一行：搜尋框 - 條件顯示 */}
+          {!hideSearchBox && (
+            <div className="w-full">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  type="text"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleSearchKeyDown}
+                  placeholder="搜尋關鍵字"
                   disabled={isLoading}
-                  className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 p-0 hover:bg-gray-100"
-                >
-                  <X className="w-4 h-4 text-gray-400" />
-                </Button>
-              )}
+                  className={cn(
+                    "pl-10 pr-10 h-12 border-gray-300 text-center",
+                    "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
+                    hasUnsubmittedSearch && "border-blue-300"
+                  )}
+                />
+                
+                {/* 清除按鈕 */}
+                {searchValue && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleSearchClear}
+                    disabled={isLoading}
+                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 p-0 hover:bg-gray-100"
+                  >
+                    <X className="w-4 h-4 text-gray-400" />
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* 第二行：篩選控制項 */}
           <div className="flex gap-3">
@@ -281,16 +283,16 @@ export function FilterToolbar({
           </div>
         </div>
 
-        {/* 搜尋提示 */}
-        {hasUnsubmittedSearch && (
+        {/* 搜尋提示 - 條件顯示 */}
+        {!hideSearchBox && hasUnsubmittedSearch && (
           <div className="mt-3 text-xs text-blue-600 text-center">
             按 Enter 開始搜尋
           </div>
         )}
       </div>
 
-      {/* 搜尋結果統計 - 僅在搜尋時顯示 */}
-      {isSearching && (
+      {/* 搜尋結果統計 - 僅在搜尋時顯示且不隱藏搜尋框時 */}
+      {!hideSearchBox && isSearching && (
         <div className="px-4 sm:px-6 py-3 bg-blue-50 border-t border-blue-200 rounded-b-lg">
           <div className="text-sm text-gray-700 text-center">
             找到 <span className="font-medium text-blue-700">{totalCount.toLocaleString()}</span> 篇

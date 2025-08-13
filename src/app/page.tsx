@@ -72,11 +72,6 @@ function ArticlesContent({ headerSearchQuery }: { headerSearchQuery?: string }) 
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const handlePageSizeChange = (newPageSize: number) => {
-    setPageSize(newPageSize)
-    setCurrentPage(1) // 重置到第一頁
-  }
-
   const handleRefresh = () => {
     refetchArticles()
   }

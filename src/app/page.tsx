@@ -336,19 +336,12 @@ function MainLayout() {
       {/* 頁腳 */}
       <footer className="bg-white border-t border-gray-200 py-8 mt-12">
         <div className="container mx-auto px-6">
-          {/* AI 警告聲明 */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-            <div className="flex items-start gap-3">
-              <div className="text-yellow-600 text-xl mt-0.5">⚠️</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-yellow-800 mb-2">重要聲明</h4>
-                <p className="text-sm text-yellow-700 leading-relaxed">
-                  本站所顯示的 AI 處理生成的中文摘要和翻譯內容可能存在錯誤或不準確之處。
-                  為確保資訊的準確性，我們強烈建議您參考 PubMed 原文內容。
-                  本站僅作為學術研究的參考工具，不應作為醫療決策的依據。
-                </p>
-              </div>
-            </div>
+          {/* AI 警告聲明 - 簡化版 */}
+          <div className="bg-amber-50 border-l-4 border-amber-400 p-3 mb-6">
+            <p className="text-sm text-amber-800">
+              <span className="font-medium">⚠️ 提醒：</span>
+              AI 生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
+            </p>
           </div>
           
           {/* 版權資訊 */}

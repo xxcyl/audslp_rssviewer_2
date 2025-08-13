@@ -10,29 +10,6 @@ import { SearchHighlight } from './SearchBar'
 import type { Article } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
-// 期刊来源颜色配置
-const getSourceColor = (source: string) => {
-  const colors = [
-    'bg-blue-100 text-blue-800',      // 藍色系
-    'bg-green-100 text-green-800',    // 綠色系
-    'bg-purple-100 text-purple-800',  // 紫色系
-    'bg-amber-100 text-amber-800',    // 琥珀色系
-    'bg-rose-100 text-rose-800',      // 玫瑰色系
-    'bg-teal-100 text-teal-800',      // 鴨綠色系
-    'bg-indigo-100 text-indigo-800',  // 藍紫色系
-    'bg-emerald-100 text-emerald-800',// 翠綠色系
-    'bg-cyan-100 text-cyan-800',      // 青色系
-    'bg-violet-100 text-violet-800',  // 紫羅蘭色系
-  ]
-  
-  // 使用字符串的hash值来决定颜色，保證同一来源始终使用同一颜色
-  let hash = 0
-  for (let i = 0; i < source.length; i++) {
-    hash = source.charCodeAt(i) + ((hash << 5) - hash)
-  }
-  return colors[Math.abs(hash) % colors.length]
-}
-
 interface ArticleCardProps {
   article: Article
   onLike?: (articleId: number) => void
@@ -117,7 +94,7 @@ export function ArticleCard({
         <div className="flex items-center justify-between">
           <Badge 
             variant="secondary" 
-            className={cn("font-medium text-xs px-2 py-1", getSourceColor(article.source || 'Unknown'))}
+            className="bg-purple-100 text-purple-800 font-medium text-xs px-2 py-1"
           >
             {article.source || 'Unknown Source'}
           </Badge>

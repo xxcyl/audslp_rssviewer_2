@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { ExternalLink, FileText, Loader2, Eye, Star, ArrowLeft } from 'lucide-react'
+import { ExternalLink, FileText, Loader2, Eye, Star, ArrowLeft, Heart } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useSimilarArticles, useArticle } from '@/hooks/useArticles'
+import { useLikes } from '@/hooks/useLikes'
 import type { Article, RecommendedArticle } from '@/lib/types'
+import { cn } from '@/lib/utils'
 
 interface RecommendationModalProps {
   isOpen: boolean
@@ -77,6 +79,139 @@ function RecommendationItem({
             </p>
           </div>
         )}
+      </div>
+    </div>
+  )
+}
+
+// 文章詳情卡片組件
+function ArticleDetailCard({ 
+  article, 
+  onLike 
+}: { 
+  article: Article
+  onLike?: () => void
+}) {
+  // 使用按讚 hook
+  const {
+    isLiked,
+    totalLikes,
+    toggleLike,
+    isLoading: likeLoading
+  } = useLikes(article.id)
+
+  const handleLike = async () => {
+    try {
+      toggleLike()
+      if (onLike) {
+        onLike()
+      }
+    } catch (error) {
+      console.error('按讚失敗:', error)
+    }
+  }
+
+  return (
+    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+      {/* 頂部：來源期刊標籤 + 按讚按鈕 */}
+      <div className="flex items-center justify-between mb-4">
+        <span className="bg-purple-100 text-purple-800 font-medium text-sm px-3 py-1 rounded-full">
+          {article.source || 'Unknown Source'}
+        </span>
+        
+        {/* 按讚按鈕 - 移到右上角 */}
+        <button
+          className={cn(
+            "h-8 px-2 transition-colors min-w-[44px] rounded-md flex items-center gap-1",
+            isLiked ? "text-red-500 hover:text-red-600" : "text-gray-400 hover:text-red-500"
+          )}
+          onClick={handleLike}
+          disabled={likeLoading}
+        >
+          <Heart 
+            className={cn("w-4 h-4", isLiked && "fill-current")} 
+          />
+          <span className="text-xs font-medium">
+            {totalLikes || 0}
+          </span>
+        </button>
+      </div>
+
+      {/* 標題區域 */}
+      <div className="space-y-3 mb-6">
+        <h2 className="font-semibold text-xl leading-tight text-gray-900">
+          {article.title_translated || article.title || '無標題'}
+        </h2>
+        
+        {article.title && article.title_translated && (
+          <p className="text-sm text-gray-600 italic leading-relaxed">
+            {article.title}
+          </p>
+        )}
+      </div>
+
+      {/* 發布日期 */}
+      <div className="text-sm text-gray-500 mb-4">
+        📅 {article.published ? new Date(article.published).toLocaleDateString('zh-TW') : '未知日期'}
+      </div>
+
+      {/* 摘要區域 */}
+      {(article.tldr || article.english_tldr) && (
+        <div className="space-y-4 mb-6">
+          {/* 中文摘要 */}
+          {article.tldr && (
+            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-300">
+              <div className="text-sm text-gray-800 leading-relaxed">
+                {article.tldr.includes('|') ? (
+                  article.tldr.split('|').map((sentence, index, array) => (
+                    <span key={index}>
+                      <span className="font-medium text-gray-900">{sentence.trim()}</span>
+                      {index < array.length - 1 && (
+                        <span className="text-gray-500 font-bold mx-1"> | </span>
+                      )}
+                    </span>
+                  ))
+                ) : (
+                  <span className="font-medium text-gray-900">{article.tldr}</span>
+                )}
+              </div>
+            </div>
+          )}
+          
+          {/* 英文摘要 */}
+          {article.english_tldr && (
+            <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-400">
+              <div className="text-sm text-gray-700 italic leading-relaxed">
+                {article.english_tldr}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 底部操作按鈕 - 類似首頁卡片 */}
+      <div className="pt-4 border-t bg-gray-50/50 -mx-6 -mb-6 px-6 pb-6 rounded-b-lg">
+        <div className="flex gap-2">
+          {article.link && (
+            <button 
+              onClick={() => window.open(article.link!, '_blank')}
+              className="h-8 px-3 text-xs border border-gray-300 rounded hover:bg-gray-50 transition-colors flex items-center gap-1"
+            >
+              <ExternalLink className="w-3 h-3" />
+              PubMed
+            </button>
+          )}
+          
+          {article.doi && (
+            <button 
+              onClick={() => window.open(`https://doi.org/${article.doi}`, '_blank')}
+              className="h-8 px-3 text-xs border border-gray-300 rounded hover:bg-gray-50 transition-colors flex items-center gap-1"
+            >
+              <FileText className="w-3 h-3" />
+              DOI
+            </button>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -154,88 +289,17 @@ export function RecommendationModal({
                   <p className="text-gray-600">正在載入文章詳情...</p>
                 </div>
               ) : articleDetail ? (
-                <div className="space-y-6">
-                  {/* 文章標題 */}
-                  <div className="space-y-3">
-                    <h2 className="text-2xl font-bold text-gray-900 leading-tight">
-                      {articleDetail.title_translated || articleDetail.title || '無標題'}
-                    </h2>
-                    {articleDetail.title && articleDetail.title_translated && (
-                      <p className="text-lg text-gray-600 italic leading-relaxed">
-                        {articleDetail.title}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* 來源期刊 */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-gray-700">來源期刊：</span>
-                    <Badge className="bg-purple-100 text-purple-800">
-                      📚 {articleDetail.source}
-                    </Badge>
-                  </div>
-
-                  {/* 摘要 */}
-                  {(articleDetail.tldr || articleDetail.english_tldr) && (
-                    <div className="space-y-4">
-                      {articleDetail.tldr && (
-                        <div>
-                          <h3 className="font-semibold text-gray-900 mb-3">📝 中文摘要</h3>
-                          <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
-                            <div className="text-gray-800 leading-relaxed">
-                              {articleDetail.tldr.includes('|') ? (
-                                articleDetail.tldr.split('|').map((sentence, index, array) => (
-                                  <span key={index}>
-                                    <span className="font-medium">{sentence.trim()}</span>
-                                    {index < array.length - 1 && (
-                                      <span className="text-blue-600 font-bold mx-2"> | </span>
-                                    )}
-                                  </span>
-                                ))
-                              ) : (
-                                <span className="font-medium">{articleDetail.tldr}</span>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {articleDetail.english_tldr && (
-                        <div>
-                          <h3 className="font-semibold text-gray-900 mb-3">🔤 English Summary</h3>
-                          <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-400">
-                            <div className="text-gray-800 italic leading-relaxed">
-                              {articleDetail.english_tldr}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* 操作按鈕 */}
-                  <div className="flex gap-3 pt-6 border-t">
-                    {articleDetail.link && (
-                      <Button
-                        onClick={() => window.open(articleDetail.link!, '_blank')}
-                        className="bg-green-600 hover:bg-green-700"
-                        size="lg"
-                      >
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        查看 PubMed 原文
-                      </Button>
-                    )}
-                    {articleDetail.doi && (
-                      <Button
-                        variant="outline"
-                        onClick={() => window.open(`https://doi.org/${articleDetail.doi}`, '_blank')}
-                        size="lg"
-                      >
-                        <FileText className="w-4 h-4 mr-2" />
-                        DOI 連結
-                      </Button>
-                    )}
-                  </div>
+                <div className="max-w-3xl mx-auto">
+                  {/* 文章卡片 - 類似首頁設計 */}
+                  <ArticleDetailCard 
+                    article={articleDetail} 
+                    onLike={() => {
+                      // 重新載入文章詳情以更新按讚數
+                      setTimeout(() => {
+                        // 這裡可以觸發重新查詢，但簡單起見先保持現狀
+                      }, 500)
+                    }}
+                  />
                 </div>
               ) : (
                 <div className="text-center py-16">

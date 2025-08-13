@@ -158,15 +158,17 @@ export function ArticleCard({
             {article.english_tldr && (
               <div className="space-y-2">
                 {!showEnglishSummary ? (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                    onClick={() => setShowEnglishSummary(true)}
-                  >
-                    <span className="mr-1">展開原文摘要</span>
-                    <ChevronDown className="w-3 h-3" />
-                  </Button>
+                  <div className="flex justify-end">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                      onClick={() => setShowEnglishSummary(true)}
+                    >
+                      <span className="mr-1">展開原文摘要</span>
+                      <ChevronDown className="w-3 h-3" />
+                    </Button>
+                  </div>
                 ) : (
                   <>
                     <div className="flex items-center justify-between">
@@ -196,17 +198,10 @@ export function ArticleCard({
           </div>
         )}
 
-        {/* 元數據 - 更緊湊 */}
-        <div className="grid grid-cols-2 gap-2 text-xs text-gray-500">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-3 h-3 shrink-0" />
-            <span className="truncate">{formatDate(article.published)}</span>
-          </div>
-          
-          <div className="flex items-center gap-1">
-            <Hash className="w-3 h-3 shrink-0" />
-            <span className="truncate">PMID: {article.pmid || 'N/A'}</span>
-          </div>
+        {/* 發布日期 */}
+        <div className="flex items-center gap-1 text-xs text-gray-500">
+          <Calendar className="w-3 h-3 shrink-0" />
+          <span className="truncate">{formatDate(article.published)}</span>
         </div>
       </CardContent>
 
@@ -222,7 +217,7 @@ export function ArticleCard({
                 onClick={() => window.open(article.link!, '_blank')}
               >
                 <ExternalLink className="w-3 h-3 mr-1" />
-                <span className="hidden md:inline">原文</span>
+                <span className="hidden md:inline">PubMed</span>
               </Button>
             )}
             

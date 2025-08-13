@@ -94,7 +94,7 @@ export function ArticleCard({
         <div className="flex items-center justify-between">
           <Badge 
             variant="secondary" 
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium text-xs px-2 py-1"
+            className="bg-gray-100 text-gray-800 font-medium text-xs px-2 py-1"
           >
             {article.source || 'Unknown Source'}
           </Badge>
@@ -132,7 +132,7 @@ export function ArticleCard({
           <div className="space-y-3">
             {/* 中文摘要 */}
             {article.tldr && (
-              <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-green-500">
+              <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-gray-300">
                 <div className="text-xs md:text-sm text-gray-800 leading-relaxed">
                   {article.tldr.includes('|') ? (
                     article.tldr.split('|').map((sentence, index, array) => (
@@ -144,7 +144,7 @@ export function ArticleCard({
                           />
                         </span>
                         {index < array.length - 1 && (
-                          <span className="text-green-600 font-bold mx-1"> | </span>
+                          <span className="text-gray-500 font-bold mx-1"> | </span>
                         )}
                       </span>
                     ))
@@ -168,7 +168,7 @@ export function ArticleCard({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                      className="h-6 px-2 text-xs text-gray-600 hover:text-gray-700 hover:bg-gray-50"
                       onClick={() => setShowEnglishSummary(true)}
                     >
                       <span className="mr-1">展開原文摘要</span>
@@ -182,14 +182,14 @@ export function ArticleCard({
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        className="h-6 px-2 text-xs text-gray-600 hover:text-gray-700 hover:bg-gray-50"
                         onClick={() => setShowEnglishSummary(false)}
                       >
                         <span className="mr-1">收合</span>
                         <ChevronUp className="w-3 h-3" />
                       </Button>
                     </div>
-                    <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500 animate-in slide-in-from-top-2 duration-200">
+                    <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-gray-400 animate-in slide-in-from-top-2 duration-200">
                       <div className="text-xs md:text-sm text-gray-800 italic leading-relaxed">
                         <SearchHighlight 
                           text={article.english_tldr}
@@ -237,7 +237,7 @@ export function ArticleCard({
               <Button 
                 variant="outline" 
                 size="sm"
-                className="text-xs text-green-600 hover:text-green-700 px-2 py-1 h-7"
+                className="text-xs text-gray-600 hover:text-gray-700 px-2 py-1 h-7"
                 onClick={handleRecommend}
               >
                 🔍 <span className="hidden md:inline ml-1">相關</span>

@@ -196,16 +196,13 @@ export default function HomePage() {
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-gray-50">
         {/* 頁面標題 */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-6 md:py-8">
+        <div className="bg-white border-b-2 border-gray-200 py-6 md:py-8">
           <div className="container mx-auto px-4 md:px-6 text-center">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-gray-900">
               📚 聽語期刊速報
             </h1>
-            <p className="text-sm md:text-base lg:text-lg opacity-90 max-w-2xl mx-auto">
+            <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto">
               專業的聽力學與語言治療期刊推播網站
-            </p>
-            <p className="text-xs md:text-sm opacity-75 mt-1 hidden md:block">
-              瀏覽最新的學術研究，發現相關文章，追蹤研究趨勢
             </p>
           </div>
         </div>

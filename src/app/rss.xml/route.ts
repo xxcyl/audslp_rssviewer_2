@@ -60,7 +60,7 @@ export async function GET() {
         const guid = `${baseUrl}/article/${article.id}`
         
         // 清理 HTML 和特殊字符
-        const cleanTitle = title.replace(/[<>&"']/g, (match) => {
+        const cleanTitle = title.replace(/[<>&"']/g, (match: string) => {
           const entities: Record<string, string> = {
             '<': '&lt;',
             '>': '&gt;',
@@ -71,7 +71,7 @@ export async function GET() {
           return entities[match] || match
         })
         
-        const cleanDescription = description.replace(/[<>&"']/g, (match) => {
+        const cleanDescription = description.replace(/[<>&"']/g, (match: string) => {
           const entities: Record<string, string> = {
             '<': '&lt;',
             '>': '&gt;',

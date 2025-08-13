@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { FilterToolbar } from '@/components/articles/FilterToolbar'
 import { ArticleGrid } from '@/components/articles/ArticleGrid'
@@ -36,7 +36,8 @@ function MainLayout() {
   // 全局狀態管理
   const [globalSearchQuery, setGlobalSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(12)
+  // const [pageSize, setPageSize] = useState(12) // 未使用，暫時註解
+  const pageSize = 12
   const [filters, setFilters] = useState<FilterOptions>({
     sortBy: 'published.desc'
   })

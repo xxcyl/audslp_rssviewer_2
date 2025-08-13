@@ -68,6 +68,7 @@ export function ShareButtons({
         console.log('連結已複製')
       } catch (error) {
         // Fallback for older browsers
+        console.log('Clipboard API 不可用，使用備用方法')
         const textArea = document.createElement('textarea')
         textArea.value = url
         document.body.appendChild(textArea)

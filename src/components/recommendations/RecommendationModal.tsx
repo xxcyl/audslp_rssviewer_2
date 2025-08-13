@@ -1,10 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { ExternalLink, FileText, Loader2, Eye, Star, ArrowLeft, Heart } from 'lucide-react'
+import { ExternalLink, FileText, Loader2, Star, ArrowLeft, Heart } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+// import { Badge } from '@/components/ui/badge' // 未使用，暫時註解
 import { useSimilarArticles, useArticle } from '@/hooks/useArticles'
 import { useLikes } from '@/hooks/useLikes'
 import type { Article, RecommendedArticle } from '@/lib/types'

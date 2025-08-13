@@ -195,17 +195,32 @@ export default function HomePage() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="min-h-screen bg-gray-50">
-        {/* 頁面標題 */}
-        <div className="bg-purple-800 py-6 md:py-8">
-          <div className="container mx-auto px-4 md:px-6 text-center">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-2 text-white">
-              📚 聽語期刊速報
-            </h1>
-            <p className="text-sm md:text-base lg:text-lg text-purple-100 max-w-2xl mx-auto">
-              專業的聽力學與語言治療期刊推播網站
-            </p>
+        {/* 現代化頂部導航欄 */}
+        <header className="bg-purple-800 py-4">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="flex items-center justify-between">
+              {/* 左側 Logo/標題 */}
+              <div className="flex items-center space-x-3">
+                <h1 className="text-xl md:text-2xl font-bold text-white">
+                  📚 聽語期刊速報
+                </h1>
+                <span className="hidden md:inline-block text-purple-200 text-sm">
+                  專業期刊推播
+                </span>
+              </div>
+              
+              {/* 右側設定按鈕 */}
+              <button 
+                className="p-2 text-purple-200 hover:text-white hover:bg-purple-700 rounded-lg transition-colors"
+                title="設定"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+                </svg>
+              </button>
+            </div>
           </div>
-        </div>
+        </header>
 
         {/* 主要內容 */}
         <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">

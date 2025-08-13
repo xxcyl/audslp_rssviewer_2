@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Heart, ExternalLink, FileText, Calendar, ChevronDown, ChevronUp } from 'lucide-react'
+import { Heart, ExternalLink, FileText, ChevronDown, ChevronUp } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -90,7 +90,7 @@ export function ArticleCard({
       className
     )}>
       <CardHeader className="space-y-3 pb-3 px-2 md:px-4">
-        {/* 來源標籤 */}
+        {/* 來源標籤 + 按讚按鈕 */}
         <div className="flex items-center justify-between">
           <Badge 
             variant="secondary" 
@@ -98,6 +98,25 @@ export function ArticleCard({
           >
             {article.source || 'Unknown Source'}
           </Badge>
+          
+          {/* 按讚按鈕 - 移到右上角 */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "h-7 px-2 transition-colors min-w-[40px]",
+              localLiked ? "text-red-500 hover:text-red-600" : "text-gray-400 hover:text-red-500"
+            )}
+            onClick={handleLike}
+            disabled={likeLoading}
+          >
+            <Heart 
+              className={cn("w-4 h-4 mr-1", localLiked && "fill-current")} 
+            />
+            <span className="text-xs font-medium">
+              {localLikeCount || 0}
+            </span>
+          </Button>
         </div>
 
         {/* 標題 */}
@@ -121,12 +140,6 @@ export function ArticleCard({
       </CardHeader>
 
       <CardContent className="flex-1 space-y-3 px-2 md:px-4">
-        {/* 發布日期 */}
-        <div className="flex items-center gap-1 text-xs text-gray-500">
-          <Calendar className="w-3 h-3 shrink-0" />
-          <span className="truncate">{formatDate(article.published)}</span>
-        </div>
-
         {/* 摘要 */}
         {(article.tldr || article.english_tldr) && (
           <div className="space-y-3">
@@ -206,64 +219,74 @@ export function ArticleCard({
       </CardContent>
 
       <CardFooter className="pt-3 border-t bg-gray-50/50 px-2 md:px-4">
-        <div className="flex items-center justify-between w-full gap-2">
-          {/* 操作按鈕 */}
-          <div className="flex gap-1 md:gap-2 flex-1">
-            {article.link && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="text-xs px-2 py-1 h-7"
-                onClick={() => window.open(article.link!, '_blank')}
-              >
-                <ExternalLink className="w-3 h-3 mr-1" />
-                <span className="hidden md:inline">PubMed</span>
-              </Button>
-            )}
+        {/* 一體化資訊列：發布日期 + 功能按鈕 + 按讚按鈕 */}
+        <div className="flex items-center justify-between w-full">
+          {/* 左側：發布日期 + 功能按鈕 */}
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">
+              📅 {formatDate(article.published)}
+            </span>
             
-            {article.doi && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="text-xs px-2 py-1 h-7"
-                onClick={() => window.open(`https://doi.org/${article.doi}`, '_blank')}
-              >
-                <FileText className="w-3 h-3 mr-1" />
-                <span className="hidden md:inline">DOI</span>
-              </Button>
-            )}
-            
-            {hasEmbedding && (
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="text-xs text-gray-600 hover:text-gray-700 px-2 py-1 h-7"
-                onClick={handleRecommend}
-              >
-                🔍 <span className="hidden md:inline ml-1">相關</span>
-              </Button>
-            )}
+            <div className="flex gap-2">
+              {article.link && (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="h-7 px-3 text-xs"
+                  onClick={() => window.open(article.link!, '_blank')}
+                >
+                  <ExternalLink className="w-3 h-3 mr-1" />
+                  PubMed
+                </Button>
+              )}
+              
+              {article.doi && (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="h-7 px-3 text-xs"
+                  onClick={() => window.open(`https://doi.org/${article.doi}`, '_blank')}
+                >
+                  <FileText className="w-3 h-3 mr-1" />
+                  DOI
+                </Button>
+              )}
+              
+              {hasEmbedding && (
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="h-7 px-3 text-xs"
+                  onClick={handleRecommend}
+                >
+                  🔍 相關
+                </Button>
+              )}
+            </div>
           </div>
 
-          {/* 按讚按鈕 - 增大觸控區域 */}
-          <div className="flex items-center gap-1 shrink-0">
-            <Button
-              variant="ghost"
-              size="sm"
-              className={cn(
-                "p-2 md:p-2 transition-colors min-w-[40px] h-8", // 增大最小寬度和高度
-                localLiked ? "text-red-500 hover:text-red-600" : "text-gray-400 hover:text-red-500"
-              )}
-              onClick={handleLike}
-              disabled={likeLoading}
-            >
-              <Heart 
-                className={cn("w-4 h-4", localLiked && "fill-current")} 
-              />
-            </Button>
-            <span className="text-xs md:text-sm text-gray-500 font-medium min-w-[20px] text-center">
-              {localLikeCount || 0}
-            </span>
+          {/* 右側：展開按鈕 */}
+          <div className="flex items-center">
+            {article.english_tldr && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowEnglishSummary(!showEnglishSummary)}
+                className="h-6 px-2 text-xs text-gray-600 hover:text-gray-700 hover:bg-gray-50"
+              >
+                {showEnglishSummary ? (
+                  <>
+                    <span className="mr-1">收合</span>
+                    <ChevronUp className="w-3 h-3" />
+                  </>
+                ) : (
+                  <>
+                    <span className="mr-1">展開</span>
+                    <ChevronDown className="w-3 h-3" />
+                  </>
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </CardFooter>

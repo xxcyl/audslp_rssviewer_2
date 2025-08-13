@@ -121,6 +121,12 @@ export function ArticleCard({
       </CardHeader>
 
       <CardContent className="flex-1 space-y-3 px-2 md:px-4">
+        {/* 發布日期 */}
+        <div className="flex items-center gap-1 text-xs text-gray-500">
+          <Calendar className="w-3 h-3 shrink-0" />
+          <span className="truncate">{formatDate(article.published)}</span>
+        </div>
+
         {/* 摘要 */}
         {(article.tldr || article.english_tldr) && (
           <div className="space-y-3">
@@ -197,12 +203,6 @@ export function ArticleCard({
             )}
           </div>
         )}
-
-        {/* 發布日期 */}
-        <div className="flex items-center gap-1 text-xs text-gray-500">
-          <Calendar className="w-3 h-3 shrink-0" />
-          <span className="truncate">{formatDate(article.published)}</span>
-        </div>
       </CardContent>
 
       <CardFooter className="pt-3 border-t bg-gray-50/50 px-2 md:px-4">

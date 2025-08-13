@@ -60,24 +60,24 @@ export async function GET() {
         const guid = `${baseUrl}/article/${article.id}`
         
         // 清理 HTML 和特殊字符
-        const cleanTitle = title.replace(/[<>&\"\']/g, (match) => {
+        const cleanTitle = title.replace(/[<>&"']/g, (match) => {
           const entities: Record<string, string> = {
             '<': '&lt;',
             '>': '&gt;',
             '&': '&amp;',
-            '\"': '&quot;',
-            \"'\": '&apos;'
+            '"': '&quot;',
+            "'": '&apos;'
           }
           return entities[match] || match
         })
         
-        const cleanDescription = description.replace(/[<>&\"\']/g, (match) => {
+        const cleanDescription = description.replace(/[<>&"']/g, (match) => {
           const entities: Record<string, string> = {
             '<': '&lt;',
             '>': '&gt;',
             '&': '&amp;',
-            '\"': '&quot;',
-            \"'\": '&apos;'
+            '"': '&quot;',
+            "'": '&apos;'
           }
           return entities[match] || match
         })

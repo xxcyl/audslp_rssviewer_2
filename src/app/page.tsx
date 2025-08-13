@@ -20,8 +20,19 @@ const queryClient = new QueryClient({
   },
 })
 
-// 主要內容組件
-function ArticlesContent({ headerSearchQuery }: { headerSearchQuery?: string }) {
+// 主頁面組件（包含 QueryClient Provider）
+export default function HomePage() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <MainLayout />
+    </QueryClientProvider>
+  )
+}
+
+// 主要布局組件
+function MainLayout() {
+  // 全局狀態管理
+  const [globalSearchQuery, setGlobalSearchQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(12)
   const [filters, setFilters] = useState<FilterOptions>({
@@ -53,14 +64,7 @@ function ArticlesContent({ headerSearchQuery }: { headerSearchQuery?: string }) 
   // 使用 likedArticles 來顯示按讚狀態（目前先保留備用）
   console.log('Current liked articles:', likedArticles.size)
 
-  // 同步 header 搜尋框與 filters
-  useEffect(() => {
-    if (headerSearchQuery !== undefined && headerSearchQuery !== filters.searchQuery) {
-      setFilters(prev => ({ ...prev, searchQuery: headerSearchQuery }))
-      setCurrentPage(1) // 重置到第一頁
-    }
-  }, [headerSearchQuery, filters.searchQuery])
-
+  // 處理篩選功能
   const handleFiltersChange = (newFilters: FilterOptions) => {
     setFilters(newFilters)
     setCurrentPage(1) // 重置到第一頁
@@ -108,105 +112,22 @@ function ArticlesContent({ headerSearchQuery }: { headerSearchQuery?: string }) 
     // 這裡可以導航到文章詳情頁面或開啟新的 modal
   }
 
-  if (articlesError) {
-    return (
-      <div className="min-h-[400px] flex flex-col items-center justify-center">
-        <div className="text-red-500 text-6xl mb-4">⚠️</div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">載入文章時發生錯誤</h3>
-        <p className="text-gray-600 mb-4 text-center max-w-md">
-          {articlesError.message || '無法連接到資料庫，請檢查網路連線或稍後再試'}
-        </p>
-        <button
-          onClick={handleRefresh}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-        >
-          重新載入
-        </button>
-      </div>
-    )
+  // 處理標題欄搜尋 - 只在按下 Enter 時觸發
+  const handleHeaderSearch = () => {
+    const newFilters = {
+      ...filters,
+      searchQuery: globalSearchQuery || undefined
+    }
+    setFilters(newFilters)
+    setCurrentPage(1)
   }
 
-  const totalPages = Math.ceil((articlesData?.totalCount || 0) / pageSize)
-  const isSearching = !!filters.searchQuery
-
-  return (
-    <div className="space-y-6">
-      {/* 搜尋和篩選工具列 - 簡化版 */}
-      <FilterToolbar
-        sources={articlesData?.sources || []}
-        currentFilters={filters}
-        onFiltersChange={handleFiltersChange}
-        totalCount={articlesData?.totalCount || 0}
-        currentPage={currentPage}
-        pageSize={pageSize}
-        onRefresh={handleRefresh}
-        isLoading={articlesLoading}
-        hideSearchBox={true}
-      />
-
-      {/* 無搜尋結果提示 */}
-      {isSearching && !articlesLoading && articlesData?.articles.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-gray-400 text-6xl mb-4">🔍</div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">找不到相關文章</h3>
-          <p className="text-gray-600 mb-4">
-            沒有找到包含 &ldquo;<span className="font-medium text-blue-600">{filters.searchQuery}</span>&rdquo; 的文章
-          </p>
-          <div className="text-sm text-gray-500 space-y-1">
-            <p>建議您：</p>
-            <ul className="list-disc list-inside space-y-1 mt-2">
-              <li>檢查拼字是否正確</li>
-              <li>嘗試使用不同的關鍵字</li>
-              <li>使用更廣泛的搜尋詞</li>
-              <li>清除來源篩選條件</li>
-            </ul>
-          </div>
-        </div>
-      )}
-
-      {/* 文章網格 */}
-      <ArticleGrid
-        articles={articlesData?.articles || []}
-        onLike={handleLike}
-        onRecommend={handleRecommend}
-        isLoading={articlesLoading}
-        searchTerm={filters.searchQuery} // 新增：傳遞搜尋詞用於高亮
-      />
-
-      {/* 分頁 */}
-      {!articlesLoading && totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={articlesData?.totalCount || 0}
-          onPageChange={handlePageChange}
-        />
-      )}
-      
-      {/* 推薦文章 Modal */}
-      <RecommendationModal
-        isOpen={recommendationModal.isOpen}
-        onClose={handleCloseRecommendation}
-        sourceArticle={recommendationModal.sourceArticle}
-        onArticleClick={handleRecommendedArticleClick}
-      />
-    </div>
-  )
-}
-
-// 主頁面組件（包含 QueryClient Provider）
-export default function HomePage() {
-  // 全局狀態管理
-  const [globalSearchQuery, setGlobalSearchQuery] = useState('')
-
-  return (
-    <QueryClientProvider client={queryClient}>
+  if (articlesError) {
+    return (
       <div className="min-h-screen bg-gray-50">
-        {/* 現代化頂部導航欄 */}
         <header className="bg-purple-800 py-4">
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex items-center justify-between">
-              {/* 左側 Logo/標題 */}
               <div className="flex items-center space-x-3">
                 <h1 className="text-xl md:text-2xl font-bold text-white">
                   📚 聽語期刊速報
@@ -216,7 +137,6 @@ export default function HomePage() {
                 </span>
               </div>
               
-              {/* 右側搜尋框 */}
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   <input
@@ -227,8 +147,8 @@ export default function HomePage() {
                     className="w-48 md:w-64 px-4 py-2 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
-                        // 觸發搜尋
                         e.preventDefault()
+                        handleHeaderSearch()
                       }
                     }}
                   />
@@ -240,22 +160,144 @@ export default function HomePage() {
             </div>
           </div>
         </header>
-
-        {/* 主要內容 */}
+        
         <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
-          <ArticlesContent headerSearchQuery={globalSearchQuery} />
-        </div>
-
-        {/* 頁腳 */}
-        <footer className="bg-white border-t border-gray-200 py-8 mt-12">
-          <div className="container mx-auto px-6 text-center text-gray-600">
-            <p>&copy; 2025 聽語期刊速報. 專為聽力學與語言治療專業人員設計</p>
-            <p className="text-sm mt-2">
-              建置於 Next.js 15, Supabase, Tailwind CSS
+          <div className="min-h-[400px] flex flex-col items-center justify-center">
+            <div className="text-red-500 text-6xl mb-4">⚠️</div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">載入文章時發生錯誤</h3>
+            <p className="text-gray-600 mb-4 text-center max-w-md">
+              {articlesError.message || '無法連接到資料庫，請檢查網路連線或稍後再試'}
             </p>
+            <button
+              onClick={handleRefresh}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+            >
+              重新載入
+            </button>
           </div>
-        </footer>
+        </div>
       </div>
-    </QueryClientProvider>
+    )
+  }
+
+  const totalPages = Math.ceil((articlesData?.totalCount || 0) / pageSize)
+  const isSearching = !!filters.searchQuery
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* 現代化頂部導航欄 */}
+      <header className="bg-purple-800 py-4">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="flex items-center justify-between">
+            {/* 左側 Logo/標題 */}
+            <div className="flex items-center space-x-3">
+              <h1 className="text-xl md:text-2xl font-bold text-white">
+                📚 聽語期刊速報
+              </h1>
+              <span className="hidden md:inline-block text-purple-200 text-sm">
+                專業期刊推播
+              </span>
+            </div>
+            
+            {/* 右側搜尋框 */}
+            <div className="flex items-center space-x-3">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={globalSearchQuery}
+                  onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                  placeholder="搜尋關鍵字"
+                  className="w-48 md:w-64 px-4 py-2 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleHeaderSearch()
+                    }
+                  }}
+                />
+                <svg className="absolute right-3 top-2.5 h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* 主要內容 */}
+      <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
+        <div className="space-y-6">
+          {/* 搜尋和篩選工具列 - 簡化版 */}
+          <FilterToolbar
+            sources={articlesData?.sources || []}
+            currentFilters={filters}
+            onFiltersChange={handleFiltersChange}
+            totalCount={articlesData?.totalCount || 0}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            onRefresh={handleRefresh}
+            isLoading={articlesLoading}
+            hideSearchBox={true}
+          />
+
+          {/* 無搜尋結果提示 */}
+          {isSearching && !articlesLoading && articlesData?.articles.length === 0 && (
+            <div className="text-center py-12">
+              <div className="text-gray-400 text-6xl mb-4">🔍</div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">找不到相關文章</h3>
+              <p className="text-gray-600 mb-4">
+                沒有找到包含 &ldquo;<span className="font-medium text-blue-600">{filters.searchQuery}</span>&rdquo; 的文章
+              </p>
+              <div className="text-sm text-gray-500 space-y-1">
+                <p>建議您：</p>
+                <ul className="list-disc list-inside space-y-1 mt-2">
+                  <li>檢查拼字是否正確</li>
+                  <li>嘗試使用不同的關鍵字</li>
+                  <li>使用更廣泛的搜尋詞</li>
+                  <li>清除來源篩選條件</li>
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {/* 文章網格 */}
+          <ArticleGrid
+            articles={articlesData?.articles || []}
+            onLike={handleLike}
+            onRecommend={handleRecommend}
+            isLoading={articlesLoading}
+            searchTerm={filters.searchQuery} // 新增：傳遞搜尋詞用於高亮
+          />
+
+          {/* 分頁 */}
+          {!articlesLoading && totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={articlesData?.totalCount || 0}
+              onPageChange={handlePageChange}
+            />
+          )}
+          
+          {/* 推薦文章 Modal */}
+          <RecommendationModal
+            isOpen={recommendationModal.isOpen}
+            onClose={handleCloseRecommendation}
+            sourceArticle={recommendationModal.sourceArticle}
+            onArticleClick={handleRecommendedArticleClick}
+          />
+        </div>
+      </div>
+
+      {/* 頁腳 */}
+      <footer className="bg-white border-t border-gray-200 py-8 mt-12">
+        <div className="container mx-auto px-6 text-center text-gray-600">
+          <p>&copy; 2025 聽語期刊速報. 專為聽力學與語言治療專業人員設計</p>
+          <p className="text-sm mt-2">
+            建置於 Next.js 15, Supabase, Tailwind CSS
+          </p>
+        </div>
+      </footer>
+    </div>
   )
 }

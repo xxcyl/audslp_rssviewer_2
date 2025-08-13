@@ -8,7 +8,7 @@ import {
   DropdownMenuItem, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu'
-import { toast } from '@/hooks/use-toast'
+// import { toast } from '@/hooks/use-toast'
 
 interface ShareButtonsProps {
   title: string
@@ -47,10 +47,11 @@ export function ShareButtons({
     if (platform === 'native' && navigator.share) {
       try {
         await navigator.share(shareData)
-        toast({
-          title: '分享成功',
-          description: '已成功分享內容'
-        })
+        // toast({
+        //   title: '分享成功',
+        //   description: '已成功分享內容'
+        // })
+        console.log('分享成功')
       } catch (error) {
         console.log('分享取消或失敗:', error)
       }
@@ -60,10 +61,11 @@ export function ShareButtons({
     if (platform === 'copy') {
       try {
         await navigator.clipboard.writeText(url)
-        toast({
-          title: '連結已複製',
-          description: '連結已複製到剪貼板'
-        })
+        // toast({
+        //   title: '連結已複製',
+        //   description: '連結已複製到剪貼板'
+        // })
+        console.log('連結已複製')
       } catch (error) {
         // Fallback for older browsers
         const textArea = document.createElement('textarea')
@@ -72,10 +74,11 @@ export function ShareButtons({
         textArea.select()
         document.execCommand('copy')
         document.body.removeChild(textArea)
-        toast({
-          title: '連結已複製',
-          description: '連結已複製到剪貼板'
-        })
+        // toast({
+        //   title: '連結已複製',
+        //   description: '連結已複製到剪貼板'
+        // })
+        console.log('連結已複製')
       }
       return
     }

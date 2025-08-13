@@ -6,6 +6,8 @@ import { FilterToolbar } from '@/components/articles/FilterToolbar'
 import { ArticleGrid } from '@/components/articles/ArticleGrid'
 import { Pagination } from '@/components/articles/Pagination'
 import { RecommendationModal } from '@/components/recommendations/RecommendationModal'
+import { HomePageJsonLd } from '@/components/seo/JsonLd'
+import { SiteShareButtons } from '@/components/social/ShareButtons'
 import { useArticles } from '@/hooks/useArticles'
 import { useBatchLikes } from '@/hooks/useLikes'
 import type { FilterOptions, Article } from '@/lib/types'
@@ -207,6 +209,9 @@ function MainLayout() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* SEO 結構化資料 */}
+      <HomePageJsonLd />
+      
       {/* 現代化頂部導航欄 */}
       <header className="bg-purple-800 py-4">
         <div className="container mx-auto px-4 md:px-6">
@@ -344,8 +349,16 @@ function MainLayout() {
             </p>
           </div>
           
+          {/* 分享功能 */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
+            <div className="text-sm text-gray-600">
+              喜歡這個網站嗎？分享給其他專業人員吧！
+            </div>
+            <SiteShareButtons className="shrink-0" />
+          </div>
+          
           {/* 版權資訊 */}
-          <div className="text-center text-gray-600">
+          <div className="text-center text-gray-600 border-t pt-6">
             <p>&copy; 2025 聽語期刊速報. 專為聽力學與語言治療專業人員設計</p>
             <p className="text-sm mt-2">
               建置於 Next.js 15, Supabase, Tailwind CSS

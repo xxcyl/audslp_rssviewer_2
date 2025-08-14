@@ -22,7 +22,7 @@ export async function GET() {
       
       <!-- 特色標籤 -->
       <rect x="200" y="350" width="200" height="50" rx="25" fill="rgba(255,255,255,0.2)"/>
-      <text x="300" y="380" font-family="Arial, sans-serif" font-size="20" fill="white" text-anchor="middle">AI 智能推薦</text>
+      <text x="300" y="380" font-family="Arial, sans-serif" font-size="20" fill="white" text-anchor="middle">AI 智慧推薦</text>
       
       <rect x="450" y="350" width="200" height="50" rx="25" fill="rgba(255,255,255,0.2)"/>
       <text x="550" y="380" font-family="Arial, sans-serif" font-size="20" fill="white" text-anchor="middle">跨期刊搜尋</text>

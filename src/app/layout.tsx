@@ -10,12 +10,12 @@ export const metadata: Metadata = {
     default: "聽語期刊速報 | 聽力學與語言治療期刊推播網站",
     template: "%s | 聽語期刊速報"
   },
-  description: "專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智能推薦、跨期刊文章搜尋和研究趨勢追蹤。涵蓋聽力學、語言治療、溝通障礙等專業領域。",
+  description: "專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智慧推薦、跨期刊文章搜尋和研究趨勢追蹤。涵蓋聽力學、語言治療、溝通障礙等專業領域。",
   keywords: [
     "聽力學", "語言治療", "期刊", "學術研究", "RSS", "醫學研究",
     "聽力師", "語言治療師", "溝通障礙", "聽力損失", "語言發展",
     "復健醫學", "聽覺處理", "言語病理學", "聽語專業", "期刊推播",
-    "AI推薦", "學術文獻", "PubMed", "研究追蹤"
+    "AI智慧推薦", "學術文獻", "PubMed", "研究追蹤"
   ],
   authors: [{ name: "聽語期刊速報", url: "https://audslp.vercel.app" }],
   creator: "聽語期刊速報",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     url: "https://audslp.vercel.app",
     siteName: "聽語期刊速報",
     title: "聽語期刊速報 | 聽力學與語言治療期刊推播網站",
-    description: "專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智能推薦、跨期刊文章搜尋和研究趨勢追蹤。",
+    description: "專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智慧推薦、跨期刊文章搜尋和研究趨勢追蹤。",
     images: [{
       url: "/og-image.png",
       width: 1200,
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@audslp",
     title: "聽語期刊速報 | 聽力學與語言治療期刊推播網站",
-    description: "專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智能推薦、跨期刊文章搜尋。",
+    description: "專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智慧推薦、跨期刊文章搜尋。",
     images: ["/og-image.png"]
   },
   robots: {

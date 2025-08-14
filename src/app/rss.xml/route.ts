@@ -25,7 +25,7 @@ export async function GET() {
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>聽語期刊速報 | 聽力學與語言治療期刊推播</title>
-    <description>專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智能推薦、跨期刊文章搜尋和研究趨勢追蹤。涵蓋聽力學、語言治療、溝通障礙等專業領域。</description>
+    <description>專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智慧推薦、跨期刊文章搜尋和研究趨勢追蹤。涵蓋聽力學、語言治療、溝通障礙等專業領域。</description>
     <link>${baseUrl}</link>
     <atom:link href="${baseUrl}/rss.xml" rel="self" type="application/rss+xml"/>
     <language>zh-TW</language>

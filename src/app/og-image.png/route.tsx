@@ -113,7 +113,7 @@ export async function GET() {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
               }}
             >
-              AI 智能推薦
+              AI 智慧推薦
             </div>
             <div
               style={{

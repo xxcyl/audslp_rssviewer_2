@@ -24,11 +24,10 @@ interface FilterToolbarProps {
 }
 
 const SORT_OPTIONS = [
+  { value: 'created_at.desc', label: '最新收錄' },
   { value: 'published.desc', label: '最新發布' },
   { value: 'published.asc', label: '最舊發布' },
-  { value: 'created_at.desc', label: '最新收錄' },
   { value: 'likes_count.desc', label: '最多按讚' },
-  { value: 'title', label: '標題排序' },
 ] as const
 
 export function FilterToolbar({

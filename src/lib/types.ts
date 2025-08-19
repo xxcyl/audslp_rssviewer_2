@@ -45,7 +45,7 @@ export interface PaginationState {
 // 篩選相關類型
 export interface FilterOptions {
   source?: string
-  sortBy: 'published.desc' | 'published.asc' | 'created_at.desc' | 'title' | 'likes_count.desc'
+  sortBy: 'published.desc' | 'published.asc' | 'created_at.desc' | 'likes_count.desc'
   searchQuery?: string
 }
 

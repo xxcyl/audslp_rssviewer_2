@@ -39,7 +39,7 @@ function MainLayout() {
   // const [pageSize, setPageSize] = useState(12) // 未使用，暫時註解
   const pageSize = 12
   const [filters, setFilters] = useState<FilterOptions>({
-    sortBy: 'published.desc'
+    sortBy: 'created_at.desc'
   })
   
   // 推薦功能狀態

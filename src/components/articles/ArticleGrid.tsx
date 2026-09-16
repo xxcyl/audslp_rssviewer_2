@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils'
 interface ArticleGridProps {
   articles: Article[]
   onLike?: (articleId: number) => void
-  onRecommend?: (article: Article) => void
   isLoading?: boolean
   searchTerm?: string // 新增：搜尋詞用於高亮
   className?: string
@@ -54,7 +53,6 @@ function EmptyState() {
 export function ArticleGrid({
   articles,
   onLike,
-  onRecommend,
   isLoading = false,
   searchTerm,
   className
@@ -86,7 +84,6 @@ export function ArticleGrid({
           key={article.id}
           article={article}
           onLike={onLike}
-          onRecommend={onRecommend}
           searchTerm={searchTerm} // 傳遞搜尋詞給 ArticleCard
         />
       ))}

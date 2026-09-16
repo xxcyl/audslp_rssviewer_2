@@ -204,30 +204,6 @@ export function useSimilarArticles(
   })
 }
 
-// 單篇文章詳情 hook
-export function useArticle(articleId: number | null, enabled: boolean = true) {
-  return useQuery({
-    queryKey: ['article', articleId],
-    queryFn: async () => {
-      if (!articleId) return null
-      
-      const { data, error } = await supabase
-        .from('rss_entries')
-        .select('*')
-        .eq('id', articleId)
-        .single()
-
-      if (error) {
-        throw new Error(`文章載入失敗: ${error.message}`)
-      }
-
-      return data as Article
-    },
-    enabled: enabled && !!articleId,
-    staleTime: 10 * 60 * 1000,
-  })
-}
-
 // 隨機推薦文章 hook（置頂「隨機精選」區塊用）
 export function useRandomArticle() {
   const [seed, setSeed] = useState(0)

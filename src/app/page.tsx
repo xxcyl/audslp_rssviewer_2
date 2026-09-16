@@ -7,12 +7,11 @@ import { FilterToolbar } from '@/components/articles/FilterToolbar'
 import { ArticleGrid } from '@/components/articles/ArticleGrid'
 import { RandomPick } from '@/components/articles/RandomPick'
 import { Pagination } from '@/components/articles/Pagination'
-import { RecommendationModal } from '@/components/recommendations/RecommendationModal'
 import { HomePageJsonLd } from '@/components/seo/JsonLd'
 import { SiteShareButtons } from '@/components/social/ShareButtons'
 import { useArticles } from '@/hooks/useArticles'
 import { useBatchLikes } from '@/hooks/useLikes'
-import type { FilterOptions, Article } from '@/lib/types'
+import type { FilterOptions } from '@/lib/types'
 
 // 建立 QueryClient
 const queryClient = new QueryClient({
@@ -42,12 +41,6 @@ function MainLayout() {
   const pageSize = 12
   const [filters, setFilters] = useState<FilterOptions>({
     sortBy: 'created_at.desc'
-  })
-  
-  // 推薦功能狀態
-  const [recommendationModal, setRecommendationModal] = useState({
-    isOpen: false,
-    sourceArticle: null as Article | null
   })
 
   // 獲取文章資料
@@ -93,25 +86,6 @@ function MainLayout() {
     setTimeout(() => {
       refetchArticles()
     }, 500)
-  }
-
-  const handleRecommend = (article: Article) => {
-    setRecommendationModal({
-      isOpen: true,
-      sourceArticle: article
-    })
-  }
-  
-  const handleCloseRecommendation = () => {
-    setRecommendationModal({
-      isOpen: false,
-      sourceArticle: null
-    })
-  }
-  
-  const handleRecommendedArticleClick = (article: Article) => {
-    console.log('查看推薦文章:', article.title_translated || article.title)
-    // 這裡可以導航到文章詳情頁面或開啟新的 modal
   }
 
   // 處理標題欄搜尋 - 只在按下 Enter 時觸發
@@ -274,7 +248,7 @@ function MainLayout() {
 
           {/* 隨機精選：僅在第一頁且非搜尋狀態顯示 */}
           {currentPage === 1 && !isSearching && (
-            <RandomPick onRecommend={handleRecommend} />
+            <RandomPick />
           )}
 
           {/* 無搜尋結果提示 */}
@@ -301,7 +275,6 @@ function MainLayout() {
           <ArticleGrid
             articles={articlesData?.articles || []}
             onLike={handleLike}
-            onRecommend={handleRecommend}
             isLoading={articlesLoading}
             searchTerm={filters.searchQuery} // 新增：傳遞搜尋詞用於高亮
           />
@@ -315,14 +288,6 @@ function MainLayout() {
               onPageChange={handlePageChange}
             />
           )}
-          
-          {/* 推薦文章 Modal */}
-          <RecommendationModal
-            isOpen={recommendationModal.isOpen}
-            onClose={handleCloseRecommendation}
-            sourceArticle={recommendationModal.sourceArticle}
-            onArticleClick={handleRecommendedArticleClick}
-          />
         </div>
       </div>
 

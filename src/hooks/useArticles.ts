@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import type { Article, RecommendedArticle, FilterOptions, SupabaseQueryParams } from '@/lib/types'
@@ -225,6 +226,44 @@ export function useArticle(articleId: number | null, enabled: boolean = true) {
     enabled: enabled && !!articleId,
     staleTime: 10 * 60 * 1000,
   })
+}
+
+// 隨機推薦文章 hook（置頂「隨機精選」區塊用）
+export function useRandomArticle() {
+  const [seed, setSeed] = useState(0)
+
+  const query = useQuery({
+    queryKey: ['random-article', seed],
+    queryFn: async () => {
+      const { count, error: countError } = await supabase
+        .from('rss_entries')
+        .select('*', { count: 'exact', head: true })
+
+      if (countError) {
+        throw new Error(`隨機文章載入失敗: ${countError.message}`)
+      }
+      if (!count) return null
+
+      const offset = Math.floor(Math.random() * count)
+      const { data, error } = await supabase
+        .from('rss_entries')
+        .select('*')
+        .range(offset, offset)
+        .single()
+
+      if (error) {
+        throw new Error(`隨機文章載入失敗: ${error.message}`)
+      }
+
+      return data as Article
+    },
+    staleTime: 10 * 60 * 1000,
+  })
+
+  return {
+    ...query,
+    reroll: () => setSeed((s) => s + 1),
+  }
 }
 
 // 統計資訊 hook

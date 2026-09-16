@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AlertTriangle, Search, SearchX, X } from 'lucide-react'
 import { FilterToolbar } from '@/components/articles/FilterToolbar'
 import { ArticleGrid } from '@/components/articles/ArticleGrid'
+import { RandomPick } from '@/components/articles/RandomPick'
 import { Pagination } from '@/components/articles/Pagination'
 import { RecommendationModal } from '@/components/recommendations/RecommendationModal'
 import { HomePageJsonLd } from '@/components/seo/JsonLd'
@@ -127,75 +129,66 @@ function MainLayout() {
 
   if (articlesError) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <header className="bg-purple-800 py-4">
+      <div className="min-h-screen bg-[var(--brand-bg)]">
+        <header className="bg-[var(--brand-primary)] py-3">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <h1 className="text-xl md:text-2xl font-bold text-white">
-                  📚 聽語期刊速報
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 md:gap-4">
+                <h1 className="font-headline italic font-semibold text-lg md:text-xl text-[#F7F3EA] whitespace-nowrap">
+                  聽語期刊速報
                 </h1>
-                <span className="hidden md:inline-block text-purple-200 text-sm">
-                  專業期刊推播
+                <span className="hidden md:inline-block w-px h-4 bg-white/20" />
+                <span className="hidden md:inline-block text-[10px] font-bold tracking-[0.15em] uppercase text-[var(--brand-accent)] whitespace-nowrap">
+                  Audiology &amp; SLP Digest
                 </span>
               </div>
-              
-              <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={globalSearchQuery}
-                    onChange={(e) => setGlobalSearchQuery(e.target.value)}
-                    placeholder="搜尋關鍵字"
-                    className="w-48 md:w-64 px-4 py-2 pr-10 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault()
-                        handleHeaderSearch()
+
+              <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-md px-3 py-1.5 w-44 md:w-60">
+                <Search className="w-4 h-4 text-white/50 shrink-0" />
+                <input
+                  type="text"
+                  value={globalSearchQuery}
+                  onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                  placeholder="搜尋關鍵字或作者"
+                  className="bg-transparent border-none outline-none text-sm text-white placeholder-white/50 w-full min-w-0"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleHeaderSearch()
+                    }
+                  }}
+                />
+                {globalSearchQuery && (
+                  <button
+                    onClick={() => {
+                      setGlobalSearchQuery('')
+                      const newFilters = {
+                        ...filters,
+                        searchQuery: undefined
                       }
+                      setFilters(newFilters)
+                      setCurrentPage(1)
                     }}
-                  />
-                  
-                  {/* 搜尋圖示或清除按鈕 */}
-                  {globalSearchQuery ? (
-                    <button
-                      onClick={() => {
-                        setGlobalSearchQuery('')
-                        // 清除搜尋條件
-                        const newFilters = {
-                          ...filters,
-                          searchQuery: undefined
-                        }
-                        setFilters(newFilters)
-                        setCurrentPage(1)
-                      }}
-                      className="absolute right-3 top-2.5 h-5 w-5 text-purple-300 hover:text-white transition-colors"
-                    >
-                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  ) : (
-                    <svg className="absolute right-3 top-2.5 h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  )}
-                </div>
+                    className="text-white/50 hover:text-white transition-colors shrink-0"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </header>
-        
+
         <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
           <div className="min-h-[400px] flex flex-col items-center justify-center">
-            <div className="text-red-500 text-6xl mb-4">⚠️</div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">載入文章時發生錯誤</h3>
-            <p className="text-gray-600 mb-4 text-center max-w-md">
+            <AlertTriangle className="w-16 h-16 text-red-500 mb-4" />
+            <h3 className="text-lg font-medium text-[var(--brand-primary)] mb-2">載入文章時發生錯誤</h3>
+            <p className="text-[var(--brand-text-muted)] mb-4 text-center max-w-md">
               {articlesError.message || '無法連接到資料庫，請檢查網路連線或稍後再試'}
             </p>
             <button
               onClick={handleRefresh}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-[var(--brand-primary)] text-white rounded hover:bg-[var(--brand-primary-dark)] transition-colors"
             >
               重新載入
             </button>
@@ -209,66 +202,58 @@ function MainLayout() {
   const isSearching = !!filters.searchQuery
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[var(--brand-bg)]">
       {/* SEO 結構化資料 */}
       <HomePageJsonLd />
-      
-      {/* 現代化頂部導航欄 */}
-      <header className="bg-purple-800 py-4">
+
+      {/* 導覽列：單行深藏青色塊 */}
+      <header className="bg-[var(--brand-primary)] py-3">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             {/* 左側 Logo/標題 */}
-            <div className="flex items-center space-x-3">
-              <h1 className="text-xl md:text-2xl font-bold text-white">
-                📚 聽語期刊速報
+            <div className="flex items-center gap-3 md:gap-4">
+              <h1 className="font-headline italic font-semibold text-lg md:text-xl text-[#F7F3EA] whitespace-nowrap">
+                聽語期刊速報
               </h1>
-              <span className="hidden md:inline-block text-purple-200 text-sm">
-                專業期刊推播
+              <span className="hidden md:inline-block w-px h-4 bg-white/20" />
+              <span className="hidden md:inline-block text-[10px] font-bold tracking-[0.15em] uppercase text-[var(--brand-accent)] whitespace-nowrap">
+                Audiology &amp; SLP Digest
               </span>
             </div>
-            
+
             {/* 右側搜尋框 */}
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={globalSearchQuery}
-                  onChange={(e) => setGlobalSearchQuery(e.target.value)}
-                  placeholder="搜尋關鍵字"
-                  className="w-48 md:w-64 px-4 py-2 pr-10 bg-purple-700 text-white placeholder-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent transition-all"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault()
-                      handleHeaderSearch()
+            <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-md px-3 py-1.5 w-44 md:w-60">
+              <Search className="w-4 h-4 text-white/50 shrink-0" />
+              <input
+                type="text"
+                value={globalSearchQuery}
+                onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                placeholder="搜尋關鍵字或作者"
+                className="bg-transparent border-none outline-none text-sm text-white placeholder-white/50 w-full min-w-0"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    handleHeaderSearch()
+                  }
+                }}
+              />
+              {globalSearchQuery && (
+                <button
+                  onClick={() => {
+                    setGlobalSearchQuery('')
+                    // 清除搜尋條件
+                    const newFilters = {
+                      ...filters,
+                      searchQuery: undefined
                     }
+                    setFilters(newFilters)
+                    setCurrentPage(1)
                   }}
-                />
-                
-                {/* 搜尋圖示或清除按鈕 */}
-                {globalSearchQuery ? (
-                  <button
-                    onClick={() => {
-                      setGlobalSearchQuery('')
-                      // 清除搜尋條件
-                      const newFilters = {
-                        ...filters,
-                        searchQuery: undefined
-                      }
-                      setFilters(newFilters)
-                      setCurrentPage(1)
-                    }}
-                    className="absolute right-3 top-2.5 h-5 w-5 text-purple-300 hover:text-white transition-colors"
-                  >
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                ) : (
-                  <svg className="absolute right-3 top-2.5 h-5 w-5 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                )}
-              </div>
+                  className="text-white/50 hover:text-white transition-colors shrink-0"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -290,15 +275,20 @@ function MainLayout() {
             hideSearchBox={true}
           />
 
+          {/* 隨機精選：僅在第一頁且非搜尋狀態顯示 */}
+          {currentPage === 1 && !isSearching && (
+            <RandomPick onRecommend={handleRecommend} />
+          )}
+
           {/* 無搜尋結果提示 */}
           {isSearching && !articlesLoading && articlesData?.articles.length === 0 && (
             <div className="text-center py-12">
-              <div className="text-gray-400 text-6xl mb-4">🔍</div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">找不到相關文章</h3>
-              <p className="text-gray-600 mb-4">
-                沒有找到包含 &ldquo;<span className="font-medium text-blue-600">{filters.searchQuery}</span>&rdquo; 的文章
+              <SearchX className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-[var(--brand-primary)] mb-2">找不到相關文章</h3>
+              <p className="text-[var(--brand-text-muted)] mb-4">
+                沒有找到包含 &ldquo;<span className="font-medium text-[var(--brand-accent)]">{filters.searchQuery}</span>&rdquo; 的文章
               </p>
-              <div className="text-sm text-gray-500 space-y-1">
+              <div className="text-sm text-[var(--brand-text-faint)] space-y-1">
                 <p>建議您：</p>
                 <ul className="list-disc list-inside space-y-1 mt-2">
                   <li>檢查拼字是否正確</li>
@@ -310,7 +300,7 @@ function MainLayout() {
             </div>
           )}
 
-          {/* 文章網格 */}
+          {/* 文章清單 */}
           <ArticleGrid
             articles={articlesData?.articles || []}
             onLike={handleLike}
@@ -340,26 +330,23 @@ function MainLayout() {
       </div>
 
       {/* 頁腳 */}
-      <footer className="bg-white border-t border-gray-200 py-8 mt-12">
+      <footer className="border-t border-[var(--brand-border)] py-8 mt-12">
         <div className="container mx-auto px-6">
-          {/* AI 警告聲明 - 簡化版 */}
-          <div className="bg-amber-50 border-l-4 border-amber-400 p-3 mb-6">
-            <p className="text-sm text-amber-800">
-              <span className="font-medium">⚠️ 提醒：</span>
-              AI 生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
-            </p>
-          </div>
-          
           {/* 分享功能 */}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-[var(--brand-text-muted)]">
               喜歡這個網站嗎？分享給其他專業人員吧！
             </div>
             <SiteShareButtons className="shrink-0" />
           </div>
-          
+
+          {/* AI 免責聲明 */}
+          <p className="text-center text-xs italic text-[var(--brand-text-faint)] border-t border-[var(--brand-border)] pt-6">
+            AI 生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
+          </p>
+
           {/* 版權資訊 */}
-          <div className="text-center text-gray-600 border-t pt-6">
+          <div className="text-center text-[var(--brand-text-muted)] mt-4">
             <p>&copy; 2025 聽語期刊速報. 專為聽力學與語言治療專業人員設計</p>
             <p className="text-sm mt-2">
               建置於 Next.js 15, Supabase, Tailwind CSS

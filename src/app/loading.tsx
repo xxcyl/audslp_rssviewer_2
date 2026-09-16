@@ -1,8 +1,8 @@
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[var(--brand-bg)]">
       {/* 頁面標題區域載入中 */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12">
+      <div className="bg-[var(--brand-primary)] text-white py-12">
         <div className="container mx-auto px-6 text-center">
           <div className="animate-pulse">
             <div className="h-12 bg-white/20 rounded w-64 mx-auto mb-4"></div>
@@ -115,7 +115,7 @@ export default function Loading() {
       {/* 載入中的中心指示器 */}
       <div className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50">
         <div className="bg-white rounded-lg p-8 shadow-xl flex flex-col items-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-[var(--brand-accent)] border-t-transparent mb-4"></div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">載入中...</h3>
           <p className="text-sm text-gray-600 text-center">
             正在載入文章資料，請稍候

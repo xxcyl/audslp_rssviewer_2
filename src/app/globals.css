@@ -11,6 +11,11 @@
   overflow: hidden;
 }
 
+/* 學術質感標題字體 */
+.font-headline {
+  font-family: var(--font-newsreader), serif;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -52,6 +57,18 @@
 }
 
 :root {
+  /* 學術質感視覺方向：暖白紙感背景 + 深藏青主色 + 古銅點綴色 */
+  --brand-bg: #FAF8F3;
+  --brand-primary: #1B3A4B;
+  --brand-primary-dark: #142B38;
+  --brand-accent: #A9762F;
+  --brand-accent-dark: #8C6239;
+  --brand-text: #2A2725;
+  --brand-text-muted: #8A7A5C;
+  --brand-text-faint: #9C9585;
+  --brand-border: #E5DFD3;
+  --brand-featured-bg: #F1E9D8;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

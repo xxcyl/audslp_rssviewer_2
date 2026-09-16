@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { AlertTriangle, Home, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function Error({
@@ -15,18 +16,18 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6">
+    <div className="min-h-screen bg-[var(--brand-bg)] flex flex-col items-center justify-center px-6">
       <div className="max-w-md w-full text-center">
         {/* 錯誤圖示 */}
-        <div className="text-6xl mb-6">⚠️</div>
-        
+        <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-6" />
+
         {/* 錯誤標題 */}
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="font-headline text-3xl font-semibold text-[var(--brand-primary)] mb-4">
           發生錯誤了
         </h1>
-        
+
         {/* 錯誤描述 */}
-        <p className="text-gray-600 mb-6 leading-relaxed">
+        <p className="text-[var(--brand-text-muted)] mb-6 leading-relaxed">
           很抱歉，應用程式遇到了一些問題。這可能是暫時性的問題，請嘗試重新載入頁面。
         </p>
         
@@ -42,25 +43,27 @@ export default function Error({
         
         {/* 操作按鈕 */}
         <div className="space-y-4">
-          <Button 
+          <Button
             onClick={reset}
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-dark)]"
           >
-            🔄 重新載入
+            <RefreshCw className="w-4 h-4 mr-2" />
+            重新載入
           </Button>
-          
+
           <Button
             variant="outline"
             onClick={() => window.location.href = '/'}
             className="w-full"
           >
-            🏠 回到首頁
+            <Home className="w-4 h-4 mr-2" />
+            回到首頁
           </Button>
         </div>
         
         {/* 聯絡資訊 */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <p className="text-sm text-gray-500">
+        <div className="mt-8 pt-6 border-t border-[var(--brand-border)]">
+          <p className="text-sm text-[var(--brand-text-faint)]">
             如果問題持續存在，請重新整理頁面或檢查網路連線
           </p>
         </div>

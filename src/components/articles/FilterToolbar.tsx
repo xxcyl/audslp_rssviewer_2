@@ -1,7 +1,6 @@
 'use client'
 
-import { Filter, Search, X, ArrowUpDown } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Search, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { SearchHighlight } from '@/components/articles/SearchBar'
@@ -30,6 +29,9 @@ const SORT_OPTIONS = [
   { value: 'likes_count.desc', label: '最多按讚' },
 ] as const
 
+const selectTriggerClass = "border-none shadow-none bg-transparent px-0 h-auto gap-1 font-normal text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)] focus-visible:ring-0 [&_svg]:text-[var(--brand-text-muted)]"
+const searchInputClass = "pl-6 pr-8 border-0 border-b rounded-none shadow-none bg-transparent focus-visible:ring-0 border-[var(--brand-border)] focus-visible:border-[var(--brand-accent)]"
+
 export function FilterToolbar({
   sources,
   currentFilters,
@@ -39,7 +41,7 @@ export function FilterToolbar({
   isLoading = false,
   className
 }: FilterToolbarProps) {
-  
+
   const [searchValue, setSearchValue] = useState(currentFilters.searchQuery || '')
 
   // 同步外部搜尋值
@@ -98,152 +100,23 @@ export function FilterToolbar({
   const hasUnsubmittedSearch = searchValue !== (currentFilters.searchQuery || '')
 
   return (
-    <div className={cn("bg-white border border-gray-200 rounded-lg shadow-sm", className)}>
-      
-      {/* 主工具列 - 響應式設計優化 */}
-      <div className="px-4 sm:px-6 py-4">
-        {/* 桌面版：置中設計 */}
-        <div className="hidden md:flex items-center justify-center gap-4 max-w-3xl mx-auto">
-          
-          {/* 來源篩選 */}
-          <Select
-            value={currentFilters.source || 'all'}
-            onValueChange={handleSourceChange}
-            disabled={isLoading}
-          >
-            <SelectTrigger 
-              className={cn(
-                "w-[140px] h-10 text-sm border-gray-300",
-                currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
-              )}
-            >
-              <Filter className="w-4 h-4 mr-2" />
-              <SelectValue placeholder="所有來源" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">所有來源</SelectItem>
-              {sources.map((source) => (
-                <SelectItem key={source} value={source}>
-                  {source}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+    <div className={cn("border-b border-[var(--brand-border)]", className)}>
 
-          {/* 搜尋框 - 條件顯示 */}
-          {!hideSearchBox && (
-            <div className="flex-1 max-w-md">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  type="text"
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  onKeyDown={handleSearchKeyDown}
-                  placeholder="搜尋關鍵字"
-                  disabled={isLoading}
-                  className={cn(
-                    "pl-10 pr-10 h-10 border-gray-300 text-center",
-                    "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
-                    hasUnsubmittedSearch && "border-blue-300"
-                  )}
-                />
-                
-                {/* 清除按鈕 */}
-                {searchValue && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleSearchClear}
-                    disabled={isLoading}
-                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-gray-100"
-                  >
-                    <X className="w-3 h-3 text-gray-400" />
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
+      {/* 主工具列 */}
+      <div className="px-4 sm:px-6 py-3.5">
+        {/* 桌面版 */}
+        <div className="hidden md:flex items-center justify-between gap-6">
 
-          {/* 排序方式 */}
-          <Select
-            value={currentFilters.sortBy}
-            onValueChange={handleSortChange}
-            disabled={isLoading}
-          >
-            <SelectTrigger 
-              className="w-[140px] h-10 text-sm border-gray-300"
-            >
-              <ArrowUpDown className="w-4 h-4 mr-2" />
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SORT_OPTIONS.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* 手機版：垂直堆疊設計 */}
-        <div className="md:hidden space-y-4">
-          
-          {/* 第一行：搜尋框 - 條件顯示 */}
-          {!hideSearchBox && (
-            <div className="w-full">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  type="text"
-                  value={searchValue}
-                  onChange={handleSearchChange}
-                  onKeyDown={handleSearchKeyDown}
-                  placeholder="搜尋關鍵字"
-                  disabled={isLoading}
-                  className={cn(
-                    "pl-10 pr-10 h-12 border-gray-300 text-center",
-                    "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
-                    hasUnsubmittedSearch && "border-blue-300"
-                  )}
-                />
-                
-                {/* 清除按鈕 */}
-                {searchValue && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleSearchClear}
-                    disabled={isLoading}
-                    className="absolute right-1 top-1/2 transform -translate-y-1/2 h-10 w-10 p-0 hover:bg-gray-100"
-                  >
-                    <X className="w-4 h-4 text-gray-400" />
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* 第二行：篩選控制項 */}
-          <div className="flex gap-3">
-            
+          <div className="flex items-center gap-5 text-sm">
             {/* 來源篩選 */}
-            <div className="flex-1">
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-[var(--brand-primary)]">篩選</span>
               <Select
                 value={currentFilters.source || 'all'}
                 onValueChange={handleSourceChange}
                 disabled={isLoading}
               >
-                <SelectTrigger 
-                  className={cn(
-                    "w-full h-11 text-sm border-gray-300",
-                    currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
-                  )}
-                >
-                  <Filter className="w-4 h-4 mr-2" />
+                <SelectTrigger className={cn(selectTriggerClass, currentFilters.source && "text-[var(--brand-accent)]")}>
                   <SelectValue placeholder="所有來源" />
                 </SelectTrigger>
                 <SelectContent>
@@ -257,17 +130,129 @@ export function FilterToolbar({
               </Select>
             </div>
 
+            <span className="w-px h-3.5 bg-[var(--brand-border)]" />
+
             {/* 排序方式 */}
-            <div className="flex-1">
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-[var(--brand-primary)]">排序</span>
               <Select
                 value={currentFilters.sortBy}
                 onValueChange={handleSortChange}
                 disabled={isLoading}
               >
-                <SelectTrigger 
-                  className="w-full h-11 text-sm border-gray-300"
+                <SelectTrigger className={selectTriggerClass}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {SORT_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {/* 搜尋框 - 條件顯示 */}
+          {!hideSearchBox && (
+            <div className="flex-1 max-w-md">
+              <div className="relative">
+                <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-[var(--brand-text-faint)] w-4 h-4" />
+                <Input
+                  type="text"
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  onKeyDown={handleSearchKeyDown}
+                  placeholder="搜尋關鍵字"
+                  disabled={isLoading}
+                  className={cn("h-8", searchInputClass)}
+                />
+
+                {/* 清除按鈕 */}
+                {searchValue && (
+                  <button
+                    type="button"
+                    onClick={handleSearchClear}
+                    disabled={isLoading}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 text-[var(--brand-text-faint)] hover:text-[var(--brand-primary)]"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="text-xs text-[var(--brand-text-muted)] whitespace-nowrap">
+            共 <span className="text-[var(--brand-primary)] font-semibold">{totalCount.toLocaleString()}</span> 篇文章
+          </div>
+        </div>
+
+        {/* 手機版：垂直堆疊設計 */}
+        <div className="md:hidden space-y-3">
+
+          {/* 搜尋框 - 條件顯示 */}
+          {!hideSearchBox && (
+            <div className="relative">
+              <Search className="absolute left-0 top-1/2 -translate-y-1/2 text-[var(--brand-text-faint)] w-4 h-4" />
+              <Input
+                type="text"
+                value={searchValue}
+                onChange={handleSearchChange}
+                onKeyDown={handleSearchKeyDown}
+                placeholder="搜尋關鍵字"
+                disabled={isLoading}
+                className={cn("h-9", searchInputClass)}
+              />
+
+              {/* 清除按鈕 */}
+              {searchValue && (
+                <button
+                  type="button"
+                  onClick={handleSearchClear}
+                  disabled={isLoading}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 text-[var(--brand-text-faint)] hover:text-[var(--brand-primary)]"
                 >
-                  <ArrowUpDown className="w-4 h-4 mr-2" />
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* 篩選控制項 */}
+          <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-[var(--brand-primary)]">篩選</span>
+              <Select
+                value={currentFilters.source || 'all'}
+                onValueChange={handleSourceChange}
+                disabled={isLoading}
+              >
+                <SelectTrigger className={cn(selectTriggerClass, currentFilters.source && "text-[var(--brand-accent)]")}>
+                  <SelectValue placeholder="所有來源" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">所有來源</SelectItem>
+                  {sources.map((source) => (
+                    <SelectItem key={source} value={source}>
+                      {source}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <span className="w-px h-3.5 bg-[var(--brand-border)]" />
+
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-[var(--brand-primary)]">排序</span>
+              <Select
+                value={currentFilters.sortBy}
+                onValueChange={handleSortChange}
+                disabled={isLoading}
+              >
+                <SelectTrigger className={selectTriggerClass}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -284,7 +269,7 @@ export function FilterToolbar({
 
         {/* 搜尋提示 - 條件顯示 */}
         {!hideSearchBox && hasUnsubmittedSearch && (
-          <div className="mt-3 text-xs text-blue-600 text-center">
+          <div className="mt-2 text-xs text-[var(--brand-accent)] text-center md:text-left">
             按 Enter 開始搜尋
           </div>
         )}
@@ -292,24 +277,22 @@ export function FilterToolbar({
 
       {/* 搜尋結果統計 - 僅在搜尋時顯示且不隱藏搜尋框時 */}
       {!hideSearchBox && isSearching && (
-        <div className="px-4 sm:px-6 py-3 bg-blue-50 border-t border-blue-200 rounded-b-lg">
-          <div className="text-sm text-gray-700 text-center">
-            找到 <span className="font-medium text-blue-700">{totalCount.toLocaleString()}</span> 篇
-            關於 &ldquo;<SearchHighlight 
-              text={currentFilters.searchQuery!} 
+        <div className="px-4 sm:px-6 py-2.5 bg-[var(--brand-featured-bg)] border-t border-[var(--brand-border)]">
+          <div className="text-sm text-[var(--brand-text)]">
+            找到 <span className="font-medium text-[var(--brand-accent)]">{totalCount.toLocaleString()}</span> 篇
+            關於 &ldquo;<SearchHighlight
+              text={currentFilters.searchQuery!}
               searchTerm={currentFilters.searchQuery!}
-              className="font-medium text-blue-700"
+              className="font-medium text-[var(--brand-accent)]"
             />&rdquo; 的文章
-            
+
             {/* 清除搜尋按鈕 */}
-            <Button
-              variant="ghost"
-              size="sm"
+            <button
               onClick={handleSearchClear}
-              className="ml-3 h-6 px-2 text-xs text-blue-600 hover:text-blue-800"
+              className="ml-3 text-xs text-[var(--brand-accent)] hover:text-[var(--brand-accent-dark)] underline underline-offset-2"
             >
               清除搜尋
-            </Button>
+            </button>
           </div>
         </div>
       )}

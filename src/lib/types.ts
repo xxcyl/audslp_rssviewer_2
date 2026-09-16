@@ -15,6 +15,7 @@ export interface Article {
   embedding: number[] | null // VECTOR 類型，可為 null
   likes_count: number // integer，但前端處理時保證不為 null
   publication_types: string[] | null // text[] 類型，PubMed 官方研究類型分類，可為 null
+  pmc_id: string | null // PubMed Central ID，有值代表 PMC 提供免費全文，可為 null
 }
 
 export interface ArticleLike {

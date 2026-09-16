@@ -252,9 +252,9 @@ export function FilterToolbar({
             </div>
           )}
 
-          {/* 篩選控制項 */}
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-            <div className="flex items-center gap-1.5 whitespace-nowrap">
+          {/* 篩選控制項 - 單行水平捲動，避免佔用過多垂直空間 */}
+          <div className="flex items-center gap-4 overflow-x-auto text-sm [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
               <span className="font-semibold text-[var(--brand-primary)]">篩選</span>
               <Select
                 value={currentFilters.source || 'all'}
@@ -275,7 +275,7 @@ export function FilterToolbar({
               </Select>
             </div>
 
-            <div className="flex items-center gap-1.5 whitespace-nowrap">
+            <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
               <span className="font-semibold text-[var(--brand-primary)]">類型</span>
               <Select
                 value={currentFilters.publicationType || 'all'}
@@ -296,7 +296,7 @@ export function FilterToolbar({
               </Select>
             </div>
 
-            <div className="flex items-center gap-1.5 whitespace-nowrap">
+            <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
               <span className="font-semibold text-[var(--brand-primary)]">排序</span>
               <Select
                 value={currentFilters.sortBy}

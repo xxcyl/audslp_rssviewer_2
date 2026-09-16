@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Heart, Shuffle } from 'lucide-react'
+import { ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Heart, Shuffle, Unlock } from 'lucide-react'
 import { useRandomArticle } from '@/hooks/useArticles'
 import { useLikes } from '@/hooks/useLikes'
 import { RelatedArticlesPanel } from './RelatedArticlesPanel'
@@ -142,6 +142,18 @@ export function RandomPick({ className }: RandomPickProps) {
               >
                 <FileText className="w-3 h-3" />
                 DOI
+              </a>
+            )}
+
+            {article.pmc_id && (
+              <a
+                href={`https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmc_id}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-[var(--brand-accent-dark)] hover:text-[var(--brand-accent)] transition-colors"
+              >
+                <Unlock className="w-3 h-3" />
+                Free Full Text
               </a>
             )}
 

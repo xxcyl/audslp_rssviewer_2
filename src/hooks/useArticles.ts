@@ -71,7 +71,8 @@ async function fetchArticles({
         doi: result.doi as string | null,
         embedding: result.embedding as number[] | null,
         likes_count: (result.likes_count as number) || 0, // 保證不為 null
-        publication_types: (result.publication_types as string[] | null) ?? null
+        publication_types: (result.publication_types as string[] | null) ?? null,
+        pmc_id: (result.pmc_id as string | null) ?? null
       }))
 
       totalCount = countResult || 0

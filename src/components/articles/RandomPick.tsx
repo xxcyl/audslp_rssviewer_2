@@ -5,6 +5,7 @@ import { ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Heart, Shuffle }
 import { useRandomArticle } from '@/hooks/useArticles'
 import { useLikes } from '@/hooks/useLikes'
 import { RelatedArticlesPanel } from './RelatedArticlesPanel'
+import { getPrimaryEvidenceType, getEvidenceLabel, evidenceBadgeStyle } from '@/lib/publicationTypes'
 import { cn } from '@/lib/utils'
 
 interface RandomPickProps {
@@ -29,6 +30,7 @@ export function RandomPick({ className }: RandomPickProps) {
   }
 
   const hasEmbedding = article.embedding && article.embedding.length > 0
+  const evidenceType = getPrimaryEvidenceType(article.publication_types)
 
   return (
     <div className={className}>
@@ -61,9 +63,19 @@ export function RandomPick({ className }: RandomPickProps) {
       <div className="flex flex-col md:flex-row gap-4 md:gap-8">
         {/* 期刊來源 + 日期 */}
         <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-2 md:gap-1.5">
-          <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
-            {article.source || 'Unknown Source'}
-          </span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
+              {article.source || 'Unknown Source'}
+            </span>
+            {evidenceType && (
+              <span
+                className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase px-1.5 py-1"
+                style={evidenceBadgeStyle(evidenceType)}
+              >
+                {getEvidenceLabel(evidenceType)}
+              </span>
+            )}
+          </div>
           <span className="text-base text-[var(--brand-text-faint)]">
             {formatDate(article.published)}
           </span>

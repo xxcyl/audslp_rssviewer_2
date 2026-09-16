@@ -5,6 +5,7 @@ import { Heart, ExternalLink, FileText, Calendar, ChevronDown, ChevronUp } from 
 import { useLikes } from '@/hooks/useLikes'
 import { SearchHighlight } from './SearchBar'
 import { RelatedArticlesPanel } from './RelatedArticlesPanel'
+import { getPrimaryEvidenceType, getEvidenceLabel, evidenceBadgeStyle } from '@/lib/publicationTypes'
 import type { Article } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
@@ -69,6 +70,7 @@ export function ArticleCard({
   }
 
   const hasEmbedding = article.embedding && article.embedding.length > 0
+  const evidenceType = getPrimaryEvidenceType(article.publication_types)
 
   return (
     <div>
@@ -78,9 +80,19 @@ export function ArticleCard({
       )}>
         {/* 期刊來源 + 發布日期 */}
         <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-2 md:gap-1.5">
-          <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
-            {article.source || 'Unknown Source'}
-          </span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
+              {article.source || 'Unknown Source'}
+            </span>
+            {evidenceType && (
+              <span
+                className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase px-1.5 py-1"
+                style={evidenceBadgeStyle(evidenceType)}
+              >
+                {getEvidenceLabel(evidenceType)}
+              </span>
+            )}
+          </div>
           <span className="flex items-center gap-1 text-base text-[var(--brand-text-faint)]">
             <Calendar className="w-3.5 h-3.5" />
             {formatDate(article.published)}

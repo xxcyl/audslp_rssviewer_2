@@ -14,6 +14,7 @@ export interface Article {
   doi: string | null // varchar(255)，可為 null
   embedding: number[] | null // VECTOR 類型，可為 null
   likes_count: number // integer，但前端處理時保證不為 null
+  publication_types: string[] | null // text[] 類型，PubMed 官方研究類型分類，可為 null
 }
 
 export interface ArticleLike {
@@ -45,6 +46,7 @@ export interface PaginationState {
 // 篩選相關類型
 export interface FilterOptions {
   source?: string
+  publicationType?: string
   sortBy: 'published.desc' | 'published.asc' | 'created_at.desc' | 'likes_count.desc'
   searchQuery?: string
 }
@@ -61,6 +63,7 @@ export interface SupabaseQueryParams {
   page: number
   pageSize: number
   source?: string
+  publicationType?: string
   sortBy: string
   searchQuery?: string
 }

@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 interface ArticleCardProps {
   article: Article
   onLike?: (articleId: number) => void
-  onRecommend?: (articleId: number) => void
+  onRecommend?: (article: Article) => void
   searchTerm?: string // 新增：搜尋詞用於高亮
   className?: string
 }
@@ -180,7 +180,7 @@ export function ArticleCard({
 
           {hasEmbedding && (
             <button
-              onClick={() => onRecommend?.(article.id)}
+              onClick={() => onRecommend?.(article)}
               className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
             >
               <Search className="w-3 h-3" />

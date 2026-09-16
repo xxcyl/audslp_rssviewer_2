@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Heart, ExternalLink, FileText, Calendar, ChevronDown, ChevronUp } from 'lucide-react'
+import { Heart, ExternalLink, FileText, Calendar, ChevronDown, ChevronUp, Unlock } from 'lucide-react'
 import { useLikes } from '@/hooks/useLikes'
 import { SearchHighlight } from './SearchBar'
 import { RelatedArticlesPanel } from './RelatedArticlesPanel'
@@ -188,6 +188,18 @@ export function ArticleCard({
               >
                 <FileText className="w-3 h-3" />
                 DOI
+              </a>
+            )}
+
+            {article.pmc_id && (
+              <a
+                href={`https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmc_id}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-[var(--brand-accent-dark)] hover:text-[var(--brand-accent)] transition-colors"
+              >
+                <Unlock className="w-3 h-3" />
+                Free Full Text
               </a>
             )}
 

@@ -83,7 +83,7 @@ export function RandomPick({ className }: RandomPickProps) {
 
         {/* 標題與摘要 */}
         <div className="flex-1 flex flex-col gap-2.5 min-w-0">
-          <h3 className="text-3xl leading-snug text-[var(--brand-primary)]">
+          <h3 className="text-3xl leading-snug font-semibold text-[var(--brand-primary)]">
             {article.title_translated || article.title || '無標題'}
           </h3>
 

@@ -128,7 +128,7 @@ export function ArticleCard({
         )}
 
         {article.english_tldr && (
-          <p className="text-[13px] leading-relaxed italic text-[var(--brand-text-muted)] line-clamp-2">
+          <p className="text-[13px] leading-relaxed italic text-[var(--brand-text-muted)]">
             <SearchHighlight
               text={article.english_tldr}
               searchTerm={searchTerm || ''}

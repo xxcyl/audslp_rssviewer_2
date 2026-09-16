@@ -77,7 +77,7 @@ export function RandomPick({ onRecommend, className }: RandomPickProps) {
           )}
 
           {article.english_tldr && (
-            <p className="text-[13px] leading-relaxed italic text-[var(--brand-text-muted)] line-clamp-3">
+            <p className="text-[13px] leading-relaxed italic text-[var(--brand-text-muted)]">
               {article.english_tldr}
             </p>
           )}

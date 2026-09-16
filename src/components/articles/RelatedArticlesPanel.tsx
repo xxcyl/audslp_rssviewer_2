@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronUp } from 'lucide-react'
+import { ChevronUp, ExternalLink } from 'lucide-react'
 import { useSimilarArticles } from '@/hooks/useArticles'
 import type { RecommendedArticle } from '@/lib/types'
 
@@ -16,8 +16,15 @@ function similarityBadgeStyle(similarity: number) {
   return { background: '#D6D6D2', color: 'var(--brand-primary)' }
 }
 
+function resolvePubMedLink(article: RecommendedArticle): string | null {
+  if (article.link) return article.link
+  if (article.pmid) return `https://pubmed.ncbi.nlm.nih.gov/${article.pmid}/`
+  return null
+}
+
 function RelatedArticleRow({ article }: { article: RecommendedArticle }) {
   const percentage = Math.round(article.similarity * 100)
+  const pubmedLink = resolvePubMedLink(article)
 
   return (
     <div className="flex gap-3.5 items-start py-3 border-t border-[var(--brand-primary)]/[0.14]">
@@ -28,25 +35,27 @@ function RelatedArticleRow({ article }: { article: RecommendedArticle }) {
         {percentage}%
       </span>
       <div className="flex-1 min-w-0">
-        <div className="text-lg leading-snug text-[var(--brand-primary)]">
-          {article.title_translated || article.title || '無標題'}
-        </div>
+        {pubmedLink ? (
+          <a
+            href={pubmedLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-start gap-1.5 text-lg leading-snug text-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)] transition-colors"
+          >
+            {article.title_translated || article.title || '無標題'}
+            <ExternalLink className="w-3 h-3 shrink-0 mt-1.5" />
+          </a>
+        ) : (
+          <div className="text-lg leading-snug text-[var(--brand-primary)]">
+            {article.title_translated || article.title || '無標題'}
+          </div>
+        )}
         {article.tldr && (
           <div className="text-base text-[var(--brand-text-muted)] mt-1">
-            {article.tldr.length > 100 ? article.tldr.slice(0, 100) + '...' : article.tldr}
+            {article.tldr}
           </div>
         )}
       </div>
-      {article.link && (
-        <a
-          href={article.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="shrink-0 mt-1 text-sm text-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)] transition-colors"
-        >
-          PubMed ↗
-        </a>
-      )}
     </div>
   )
 }

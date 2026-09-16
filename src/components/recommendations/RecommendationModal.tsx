@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ExternalLink, FileText, Loader2, Star, ArrowLeft, Heart } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, Calendar, ExternalLink, FileText, Heart, Loader2, Search, SearchX, Star } from 'lucide-react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 // import { Badge } from '@/components/ui/badge' // 未使用，暫時註解
@@ -154,8 +154,9 @@ function ArticleDetailCard({
       </div>
 
       {/* 發布日期 */}
-      <div className="text-sm text-gray-500 mb-4">
-        📅 {article.published ? new Date(article.published).toLocaleDateString('zh-TW') : '未知日期'}
+      <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-4">
+        <Calendar className="w-3.5 h-3.5" />
+        {article.published ? new Date(article.published).toLocaleDateString('zh-TW') : '未知日期'}
       </div>
 
       {/* 摘要區域 */}
@@ -272,11 +273,13 @@ export function RecommendationModal({
                 >
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
-                📄 文章詳情
+                <FileText className="w-4 h-4" />
+                文章詳情
               </>
             ) : (
               <>
-                🔍 相關文章推薦
+                <Search className="w-4 h-4" />
+                相關文章推薦
               </>
             )}
           </DialogTitle>
@@ -306,7 +309,7 @@ export function RecommendationModal({
                 </div>
               ) : (
                 <div className="text-center py-16">
-                  <div className="text-red-500 text-4xl mb-4">⚠️</div>
+                  <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">無法載入文章</h3>
                   <p className="text-gray-600 mb-6">
                     無法取得文章詳細資訊，請稍後再試
@@ -331,7 +334,7 @@ export function RecommendationModal({
               {/* 錯誤狀態 */}
               {error && (
                 <div className="text-center py-16">
-                  <div className="text-red-500 text-4xl mb-4">⚠️</div>
+                  <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">載入推薦文章時發生錯誤</h3>
                   <p className="text-gray-600 mb-6">
                     {error.message || '無法載入相關文章，請稍後再試'}
@@ -358,7 +361,7 @@ export function RecommendationModal({
               {/* 無推薦文章 */}
               {similarArticles && similarArticles.length === 0 && !isLoading && !error && (
                 <div className="text-center py-16">
-                  <div className="text-gray-400 text-4xl mb-4">🔍</div>
+                  <SearchX className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">找不到相關文章</h3>
                   <p className="text-gray-600 mb-6">
                     很抱歉，目前沒有找到與此文章相關的其他文章。<br />

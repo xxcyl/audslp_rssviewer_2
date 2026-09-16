@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { AlertTriangle, Home, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function Error({
@@ -18,7 +19,7 @@ export default function Error({
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6">
       <div className="max-w-md w-full text-center">
         {/* 錯誤圖示 */}
-        <div className="text-6xl mb-6">⚠️</div>
+        <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-6" />
         
         {/* 錯誤標題 */}
         <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -42,19 +43,21 @@ export default function Error({
         
         {/* 操作按鈕 */}
         <div className="space-y-4">
-          <Button 
+          <Button
             onClick={reset}
             className="w-full bg-blue-600 hover:bg-blue-700"
           >
-            🔄 重新載入
+            <RefreshCw className="w-4 h-4 mr-2" />
+            重新載入
           </Button>
-          
+
           <Button
             variant="outline"
             onClick={() => window.location.href = '/'}
             className="w-full"
           >
-            🏠 回到首頁
+            <Home className="w-4 h-4 mr-2" />
+            回到首頁
           </Button>
         </div>
         

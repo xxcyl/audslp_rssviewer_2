@@ -1,5 +1,6 @@
 'use client'
 
+import { Inbox } from 'lucide-react'
 import { ArticleCard } from './ArticleCard'
 import type { Article } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -53,7 +54,7 @@ function ArticleCardSkeleton() {
 function EmptyState() {
   return (
     <div className="col-span-full flex flex-col items-center justify-center py-16 text-center">
-      <div className="text-6xl mb-4">📭</div>
+      <Inbox className="w-16 h-16 text-gray-300 mb-4" />
       <h3 className="text-xl font-semibold text-gray-700 mb-2">
         目前沒有文章
       </h3>

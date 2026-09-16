@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Heart, ExternalLink, FileText } from 'lucide-react'
+import { Heart, ExternalLink, FileText, Calendar, Search } from 'lucide-react'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -140,8 +140,9 @@ export function ArticleCard({
 
       <CardContent className="flex-1 space-y-3 px-2 md:px-4">
         {/* 發布日期 */}
-        <div className="text-sm text-muted-foreground">
-          📅 {formatDate(article.published)}
+        <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+          <Calendar className="w-3.5 h-3.5" />
+          {formatDate(article.published)}
         </div>
 
         {/* 摘要區域 - 直接顯示，無需展開按鈕 */}
@@ -226,7 +227,8 @@ export function ArticleCard({
               className="h-7 px-3 text-xs"
               onClick={handleRecommend}
             >
-              🔍 相關
+              <Search className="w-3 h-3 mr-1" />
+              相關
             </Button>
           )}
         </div>

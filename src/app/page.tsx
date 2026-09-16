@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AlertTriangle, BookOpen, SearchX } from 'lucide-react'
 import { FilterToolbar } from '@/components/articles/FilterToolbar'
 import { ArticleGrid } from '@/components/articles/ArticleGrid'
 import { Pagination } from '@/components/articles/Pagination'
@@ -132,14 +133,15 @@ function MainLayout() {
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <h1 className="text-xl md:text-2xl font-bold text-white">
-                  📚 聽語期刊速報
+                <h1 className="flex items-center gap-2 text-xl md:text-2xl font-bold text-white">
+                  <BookOpen className="w-5 h-5 md:w-6 md:h-6" />
+                  聽語期刊速報
                 </h1>
                 <span className="hidden md:inline-block text-purple-200 text-sm">
                   專業期刊推播
                 </span>
               </div>
-              
+
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   <input
@@ -155,7 +157,7 @@ function MainLayout() {
                       }
                     }}
                   />
-                  
+
                   {/* 搜尋圖示或清除按鈕 */}
                   {globalSearchQuery ? (
                     <button
@@ -185,10 +187,10 @@ function MainLayout() {
             </div>
           </div>
         </header>
-        
+
         <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
           <div className="min-h-[400px] flex flex-col items-center justify-center">
-            <div className="text-red-500 text-6xl mb-4">⚠️</div>
+            <AlertTriangle className="w-16 h-16 text-red-500 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">載入文章時發生錯誤</h3>
             <p className="text-gray-600 mb-4 text-center max-w-md">
               {articlesError.message || '無法連接到資料庫，請檢查網路連線或稍後再試'}
@@ -219,8 +221,9 @@ function MainLayout() {
           <div className="flex items-center justify-between">
             {/* 左側 Logo/標題 */}
             <div className="flex items-center space-x-3">
-              <h1 className="text-xl md:text-2xl font-bold text-white">
-                📚 聽語期刊速報
+              <h1 className="flex items-center gap-2 text-xl md:text-2xl font-bold text-white">
+                <BookOpen className="w-5 h-5 md:w-6 md:h-6" />
+                聽語期刊速報
               </h1>
               <span className="hidden md:inline-block text-purple-200 text-sm">
                 專業期刊推播
@@ -293,7 +296,7 @@ function MainLayout() {
           {/* 無搜尋結果提示 */}
           {isSearching && !articlesLoading && articlesData?.articles.length === 0 && (
             <div className="text-center py-12">
-              <div className="text-gray-400 text-6xl mb-4">🔍</div>
+              <SearchX className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">找不到相關文章</h3>
               <p className="text-gray-600 mb-4">
                 沒有找到包含 &ldquo;<span className="font-medium text-blue-600">{filters.searchQuery}</span>&rdquo; 的文章
@@ -344,9 +347,12 @@ function MainLayout() {
         <div className="container mx-auto px-6">
           {/* AI 警告聲明 - 簡化版 */}
           <div className="bg-amber-50 border-l-4 border-amber-400 p-3 mb-6">
-            <p className="text-sm text-amber-800">
-              <span className="font-medium">⚠️ 提醒：</span>
-              AI 生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
+            <p className="flex items-start gap-2 text-sm text-amber-800">
+              <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+              <span>
+                <span className="font-medium">提醒：</span>
+                AI 生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
+              </span>
             </p>
           </div>
           

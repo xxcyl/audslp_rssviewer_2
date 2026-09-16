@@ -29,18 +29,26 @@ export function RandomPick({ onRecommend, className }: RandomPickProps) {
   const hasEmbedding = article.embedding && article.embedding.length > 0
 
   return (
-    <div className={cn("bg-[var(--brand-featured-bg)] border-t-2 border-[var(--brand-accent)] px-5 md:px-8 py-6", className)}>
+    <div
+      className={cn("bg-[var(--brand-featured-bg)] border-4 border-[var(--brand-primary)] outline outline-3 outline-[var(--brand-bg)] -outline-offset-[9px] px-5 md:px-8 py-6", className)}
+      style={{
+        backgroundImage: 'radial-gradient(rgba(17,17,16,0.05) 1.5px, transparent 1.5px)',
+        backgroundSize: '7px 7px',
+        boxShadow: '8px 8px 0 var(--brand-accent)'
+      }}
+    >
       {/* 標籤 + 換一篇 */}
       <div className="flex items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-2">
-          <Dices className="w-3.5 h-3.5 text-[var(--brand-accent)]" />
-          <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-[var(--brand-accent)]">
+          <Dices className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
+          <span className="font-display text-[9px] tracking-normal uppercase text-[var(--brand-primary)]">
             隨機精選 · Random Pick
           </span>
         </div>
         <button
           onClick={() => reroll()}
-          className="flex items-center gap-1.5 text-xs text-[var(--brand-text-muted)] hover:text-[var(--brand-accent-dark)] transition-colors"
+          className="font-display flex items-center gap-1.5 text-[9px] text-[var(--brand-primary)] bg-[var(--brand-accent)] px-2.5 py-1.5 transition-colors hover:brightness-95"
+          style={{ boxShadow: '3px 3px 0 var(--brand-primary)' }}
         >
           <Shuffle className="w-3 h-3" />
           換一篇
@@ -49,36 +57,36 @@ export function RandomPick({ onRecommend, className }: RandomPickProps) {
 
       <div className="flex flex-col md:flex-row gap-4 md:gap-8">
         {/* 期刊來源 + 日期 */}
-        <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-1 md:gap-1.5">
-          <span className="text-[10.5px] font-bold tracking-wide uppercase text-[var(--brand-accent)]">
+        <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-2 md:gap-1.5">
+          <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
             {article.source || 'Unknown Source'}
           </span>
-          <span className="text-xs text-[var(--brand-text-faint)]">
+          <span className="text-base text-[var(--brand-text-faint)]">
             {formatDate(article.published)}
           </span>
         </div>
 
         {/* 標題與摘要 */}
         <div className="flex-1 flex flex-col gap-2.5 min-w-0">
-          <h3 className="font-headline font-semibold text-xl leading-snug text-[var(--brand-primary)]">
+          <h3 className="text-3xl leading-snug text-[var(--brand-primary)]">
             {article.title_translated || article.title || '無標題'}
           </h3>
 
           {article.title && article.title_translated && (
-            <p className="font-headline italic text-sm text-[var(--brand-text-muted)]">
-              {article.title}
+            <p className="text-base text-[var(--brand-text-muted)]">
+              {'// '}{article.title}
             </p>
           )}
 
           {article.tldr && (
-            <p className="text-sm leading-relaxed text-[var(--brand-text)] mt-1">
+            <p className="text-lg leading-relaxed text-[var(--brand-text)] mt-1">
               {article.tldr}
             </p>
           )}
 
           {article.english_tldr && (
-            <p className="text-[13px] leading-relaxed italic text-[var(--brand-text-muted)]">
-              {article.english_tldr}
+            <p className="text-base leading-relaxed text-[var(--brand-text-muted)]">
+              {'// '}{article.english_tldr}
             </p>
           )}
         </div>
@@ -89,15 +97,15 @@ export function RandomPick({ onRecommend, className }: RandomPickProps) {
             onClick={() => toggleLike()}
             disabled={likeLoading}
             className={cn(
-              "flex items-center gap-1.5 text-xs transition-colors",
-              isLiked ? "text-red-500" : "text-[var(--brand-text-muted)] hover:text-red-500"
+              "font-display flex items-center gap-1.5 text-[10px] border-2 px-1.5 py-1 transition-colors",
+              isLiked ? "text-red-500 border-red-500" : "text-[var(--brand-primary)] border-[var(--brand-primary)] hover:text-red-500 hover:border-red-500"
             )}
           >
             <Heart className={cn("w-3.5 h-3.5", isLiked && "fill-current")} />
             {totalLikes || 0}
           </button>
 
-          <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-xs text-[var(--brand-primary)]">
+          <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-base text-[var(--brand-primary)]">
             {article.link && (
               <a
                 href={article.link}

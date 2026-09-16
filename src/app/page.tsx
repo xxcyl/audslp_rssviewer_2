@@ -134,23 +134,23 @@ function MainLayout() {
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 md:gap-4">
-                <h1 className="font-headline italic font-semibold text-lg md:text-xl text-[#F7F3EA] whitespace-nowrap">
-                  聽語期刊速報
+                <h1 className="font-display text-xs md:text-sm text-[#FAFAF9] whitespace-nowrap">
+                  [ 聽語期刊速報 ]<span className="text-[var(--brand-accent)]">_</span>
                 </h1>
                 <span className="hidden md:inline-block w-px h-4 bg-white/20" />
-                <span className="hidden md:inline-block text-[10px] font-bold tracking-[0.15em] uppercase text-[var(--brand-accent)] whitespace-nowrap">
+                <span className="hidden md:inline-block text-sm font-bold tracking-[0.1em] uppercase text-[var(--brand-accent)] whitespace-nowrap">
                   Audiology &amp; SLP Digest
                 </span>
               </div>
 
-              <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-md px-3 py-1.5 w-44 md:w-60">
+              <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 py-1.5 w-44 md:w-60">
                 <Search className="w-4 h-4 text-white/50 shrink-0" />
                 <input
                   type="text"
                   value={globalSearchQuery}
                   onChange={(e) => setGlobalSearchQuery(e.target.value)}
                   placeholder="搜尋關鍵字或作者"
-                  className="bg-transparent border-none outline-none text-sm text-white placeholder-white/50 w-full min-w-0"
+                  className="bg-transparent border-none outline-none text-base text-white placeholder-white/50 w-full min-w-0"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault()
@@ -212,24 +212,24 @@ function MainLayout() {
           <div className="flex items-center justify-between gap-4">
             {/* 左側 Logo/標題 */}
             <div className="flex items-center gap-3 md:gap-4">
-              <h1 className="font-headline italic font-semibold text-lg md:text-xl text-[#F7F3EA] whitespace-nowrap">
-                聽語期刊速報
+              <h1 className="font-display text-xs md:text-sm text-[#FAFAF9] whitespace-nowrap">
+                [ 聽語期刊速報 ]<span className="text-[var(--brand-accent)]">_</span>
               </h1>
               <span className="hidden md:inline-block w-px h-4 bg-white/20" />
-              <span className="hidden md:inline-block text-[10px] font-bold tracking-[0.15em] uppercase text-[var(--brand-accent)] whitespace-nowrap">
+              <span className="hidden md:inline-block text-sm font-bold tracking-[0.1em] uppercase text-[var(--brand-accent)] whitespace-nowrap">
                 Audiology &amp; SLP Digest
               </span>
             </div>
 
             {/* 右側搜尋框 */}
-            <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-md px-3 py-1.5 w-44 md:w-60">
+            <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 py-1.5 w-44 md:w-60">
               <Search className="w-4 h-4 text-white/50 shrink-0" />
               <input
                 type="text"
                 value={globalSearchQuery}
                 onChange={(e) => setGlobalSearchQuery(e.target.value)}
                 placeholder="搜尋關鍵字或作者"
-                className="bg-transparent border-none outline-none text-sm text-white placeholder-white/50 w-full min-w-0"
+                className="bg-transparent border-none outline-none text-base text-white placeholder-white/50 w-full min-w-0"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     e.preventDefault()
@@ -341,8 +341,8 @@ function MainLayout() {
           </div>
 
           {/* AI 免責聲明 */}
-          <p className="text-center text-xs italic text-[var(--brand-text-faint)] border-t border-[var(--brand-border)] pt-6">
-            AI 生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
+          <p className="text-center text-base text-[var(--brand-text-faint)] border-t border-[var(--brand-border)] pt-6">
+            {'// '}AI 生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
           </p>
 
           {/* 版權資訊 */}

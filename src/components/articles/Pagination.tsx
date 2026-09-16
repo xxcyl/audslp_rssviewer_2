@@ -55,7 +55,7 @@ export function Pagination({
 
   return (
     <div className={cn("border-t border-[var(--brand-border)] pt-8 pb-2 flex flex-col items-center gap-2.5", className)}>
-      <div className="flex items-center gap-5 text-sm">
+      <div className="flex items-center gap-5 text-base">
         {/* 上一頁 */}
         <button
           onClick={() => onPageChange(currentPage - 1)}
@@ -64,7 +64,7 @@ export function Pagination({
             "flex items-center gap-1 transition-colors",
             currentPage === 1
               ? "text-[var(--brand-border)] cursor-not-allowed"
-              : "text-[var(--brand-primary)] hover:text-[var(--brand-accent)]"
+              : "text-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)]"
           )}
         >
           <ChevronLeft className="w-3.5 h-3.5" />
@@ -72,7 +72,7 @@ export function Pagination({
         </button>
 
         {/* 頁碼 */}
-        <div className="flex items-center gap-4">
+        <div className="font-display flex items-center gap-3 text-[11px]">
           {getPageRange().map((page, index) => {
             if (page === '...') {
               return (
@@ -92,9 +92,10 @@ export function Pagination({
                 className={cn(
                   "transition-colors",
                   isCurrentPage
-                    ? "font-bold text-[var(--brand-primary)] border-b-2 border-[var(--brand-accent)] pb-0.5"
+                    ? "bg-[var(--brand-primary)] text-[var(--brand-bg)] px-2.5 py-1"
                     : "text-[var(--brand-text-faint)] hover:text-[var(--brand-primary)]"
                 )}
+                style={isCurrentPage ? { boxShadow: '3px 3px 0 var(--brand-accent)' } : undefined}
               >
                 {pageNum}
               </button>
@@ -110,7 +111,7 @@ export function Pagination({
             "flex items-center gap-1 transition-colors",
             currentPage === totalPages
               ? "text-[var(--brand-border)] cursor-not-allowed"
-              : "text-[var(--brand-primary)] hover:text-[var(--brand-accent)]"
+              : "text-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)]"
           )}
         >
           下一頁
@@ -119,7 +120,7 @@ export function Pagination({
       </div>
 
       {/* 統計資訊 */}
-      <div className="text-xs text-[var(--brand-text-faint)]">
+      <div className="text-base text-[var(--brand-text-faint)]">
         共 {totalItems.toLocaleString()} 篇文章　·　第 {currentPage} / {totalPages} 頁
       </div>
     </div>

@@ -58,7 +58,7 @@ function RecommendationItem({
       <div className="space-y-3">
         {/* 相似度標籤 */}
         <div className="flex justify-start">
-          <div className={`px-3 py-1 rounded-full text-xs font-medium border ${similarityInfo.className} flex items-center gap-1`}>
+          <div className={`px-3 py-1 text-xs font-medium border ${similarityInfo.className} flex items-center gap-1`}>
             <Star className="w-3 h-3" />
             {(article.similarity * 100).toFixed(0)}% {similarityInfo.text}
           </div>
@@ -66,8 +66,8 @@ function RecommendationItem({
         
         {/* 標題 */}
         <div>
-          <h4 
-            className="font-headline font-semibold text-[var(--brand-primary)] leading-tight cursor-pointer hover:text-[var(--brand-accent-dark)] transition-colors"
+          <h4
+            className="text-xl font-semibold text-[var(--brand-primary)] leading-tight cursor-pointer hover:text-[var(--brand-accent-dark)] transition-colors"
             onClick={() => onArticleClick?.(article)}
           >
             {article.title_translated || article.title || '無標題'}
@@ -118,23 +118,23 @@ function ArticleDetailCard({
     <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
       {/* 頂部：來源期刊標籤 + 按讚按鈕 */}
       <div className="flex items-center justify-between mb-4">
-        <span className="bg-[var(--brand-accent)]/10 text-[var(--brand-accent-dark)] font-medium text-sm px-3 py-1 rounded-full">
+        <span className="font-display bg-[var(--brand-accent)] text-[var(--brand-primary)] text-[9px] px-2 py-1.5">
           {article.source || 'Unknown Source'}
         </span>
         
         {/* 按讚按鈕 - 移到右上角 */}
         <button
           className={cn(
-            "h-8 px-2 transition-colors min-w-[44px] rounded-md flex items-center gap-1",
-            isLiked ? "text-red-500 hover:text-red-600" : "text-[var(--brand-text-faint)] hover:text-red-500"
+            "font-display h-8 px-2 border-2 transition-colors min-w-[44px] flex items-center gap-1 text-[10px]",
+            isLiked ? "text-red-500 border-red-500" : "text-[var(--brand-primary)] border-[var(--brand-primary)] hover:text-red-500 hover:border-red-500"
           )}
           onClick={handleLike}
           disabled={likeLoading}
         >
-          <Heart 
-            className={cn("w-4 h-4", isLiked && "fill-current")} 
+          <Heart
+            className={cn("w-4 h-4", isLiked && "fill-current")}
           />
-          <span className="text-xs font-medium">
+          <span>
             {totalLikes || 0}
           </span>
         </button>
@@ -142,13 +142,13 @@ function ArticleDetailCard({
 
       {/* 標題區域 */}
       <div className="space-y-3 mb-6">
-        <h2 className="font-headline font-semibold text-xl leading-tight text-[var(--brand-primary)]">
+        <h2 className="text-2xl leading-tight text-[var(--brand-primary)]">
           {article.title_translated || article.title || '無標題'}
         </h2>
 
         {article.title && article.title_translated && (
-          <p className="font-headline text-sm text-[var(--brand-text-muted)] italic leading-relaxed">
-            {article.title}
+          <p className="text-base text-[var(--brand-text-muted)] leading-relaxed">
+            {'// '}{article.title}
           </p>
         )}
       </div>
@@ -185,8 +185,8 @@ function ArticleDetailCard({
           {/* 英文摘要 */}
           {article.english_tldr && (
             <div className="pl-4">
-              <div className="text-sm text-[var(--brand-text-muted)] italic leading-relaxed">
-                {article.english_tldr}
+              <div className="text-base text-[var(--brand-text-muted)] leading-relaxed">
+                {'// '}{article.english_tldr}
               </div>
             </div>
           )}
@@ -266,7 +266,7 @@ export function RecommendationModal({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
         <DialogHeader className="pb-4">
-          <DialogTitle className="font-headline flex items-center gap-3 text-lg text-[var(--brand-primary)]">
+          <DialogTitle className="font-display flex items-center gap-3 text-sm text-[var(--brand-primary)]">
             {selectedArticle ? (
               <>
                 <Button

@@ -76,19 +76,19 @@ export function ArticleCard({
       className
     )}>
       {/* 期刊來源 + 發布日期 */}
-      <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-1 md:gap-1.5">
-        <span className="text-[10.5px] font-bold tracking-wide uppercase text-[var(--brand-accent)]">
+      <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-2 md:gap-1.5">
+        <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
           {article.source || 'Unknown Source'}
         </span>
-        <span className="flex items-center gap-1 text-xs text-[var(--brand-text-faint)]">
-          <Calendar className="w-3 h-3" />
+        <span className="flex items-center gap-1 text-base text-[var(--brand-text-faint)]">
+          <Calendar className="w-3.5 h-3.5" />
           {formatDate(article.published)}
         </span>
       </div>
 
       {/* 標題與摘要 */}
       <div className="flex-1 flex flex-col gap-2 min-w-0">
-        <h3 className="font-headline font-semibold text-lg leading-snug text-[var(--brand-primary)]">
+        <h3 className="text-2xl leading-snug text-[var(--brand-primary)]">
           <SearchHighlight
             text={article.title_translated || article.title || '無標題'}
             searchTerm={searchTerm || ''}
@@ -96,7 +96,8 @@ export function ArticleCard({
         </h3>
 
         {article.title && article.title_translated && (
-          <p className="font-headline italic text-[13px] leading-relaxed text-[var(--brand-text-muted)]">
+          <p className="text-base leading-relaxed text-[var(--brand-text-muted)]">
+            {'// '}
             <SearchHighlight
               text={article.title}
               searchTerm={searchTerm || ''}
@@ -105,7 +106,7 @@ export function ArticleCard({
         )}
 
         {article.tldr && (
-          <p className="text-sm leading-relaxed text-[var(--brand-text)] mt-1">
+          <p className="text-lg leading-relaxed text-[var(--brand-text)] mt-1">
             {article.tldr.includes('|') ? (
               article.tldr.split('|').map((sentence, index, array) => (
                 <span key={index}>
@@ -128,7 +129,8 @@ export function ArticleCard({
         )}
 
         {article.english_tldr && (
-          <p className="text-[13px] leading-relaxed italic text-[var(--brand-text-muted)]">
+          <p className="text-base leading-relaxed text-[var(--brand-text-muted)]">
+            {'// '}
             <SearchHighlight
               text={article.english_tldr}
               searchTerm={searchTerm || ''}
@@ -143,15 +145,15 @@ export function ArticleCard({
           onClick={handleLike}
           disabled={likeLoading}
           className={cn(
-            "flex items-center gap-1.5 text-xs transition-colors",
-            localLiked ? "text-red-500" : "text-[var(--brand-text-faint)] hover:text-red-500"
+            "font-display flex items-center gap-1.5 text-[10px] border-2 px-1.5 py-1 transition-colors",
+            localLiked ? "text-red-500 border-red-500" : "text-[var(--brand-primary)] border-[var(--brand-primary)] hover:text-red-500 hover:border-red-500"
           )}
         >
           <Heart className={cn("w-3.5 h-3.5", localLiked && "fill-current")} />
           {localLikeCount || 0}
         </button>
 
-        <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-xs text-[var(--brand-primary)]">
+        <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-base text-[var(--brand-primary)]">
           {article.link && (
             <a
               href={article.link}

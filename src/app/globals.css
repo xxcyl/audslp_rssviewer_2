@@ -11,9 +11,9 @@
   overflow: hidden;
 }
 
-/* 學術質感標題字體 */
-.font-headline {
-  font-family: var(--font-newsreader), serif;
+/* 像素顯示字體（短字串用，如 logo、標籤、按鈕） */
+.font-display {
+  font-family: var(--font-pixel-display), monospace;
 }
 
 @theme inline {
@@ -57,19 +57,19 @@
 }
 
 :root {
-  /* 學術質感視覺方向：暖白紙感背景 + 深藏青主色 + 古銅點綴色 */
-  --brand-bg: #FAF8F3;
-  --brand-primary: #1B3A4B;
-  --brand-primary-dark: #142B38;
-  --brand-accent: #A9762F;
-  --brand-accent-dark: #8C6239;
-  --brand-text: #2A2725;
-  --brand-text-muted: #8A7A5C;
-  --brand-text-faint: #9C9585;
-  --brand-border: #E5DFD3;
-  --brand-featured-bg: #F1E9D8;
+  /* 高對比 + 復古 8-bit 視覺方向：近白底 + 近黑墨色 + 螢光黃綠強調色 */
+  --brand-bg: #FAFAF9;
+  --brand-primary: #111110;
+  --brand-primary-dark: #000000;
+  --brand-accent: #CBFF3D;
+  --brand-accent-dark: #5B6B0C;
+  --brand-text: #111110;
+  --brand-text-muted: #6B6B68;
+  --brand-text-faint: #9B9B97;
+  --brand-border: #E3E3E0;
+  --brand-featured-bg: #F1F1EE;
 
-  --radius: 0.625rem;
+  --radius: 0px;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);

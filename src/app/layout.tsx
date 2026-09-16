@@ -1,21 +1,20 @@
 import type { Metadata } from "next"
-import { Newsreader, Source_Sans_3 } from "next/font/google"
+import { Press_Start_2P, VT323 } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const sourceSans = Source_Sans_3({
+const pixelBody = VT323({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-source-sans",
-  fallback: ["system-ui", "-apple-system", "sans-serif"],
+  weight: "400",
+  variable: "--font-pixel-body",
+  fallback: ["monospace"],
 })
 
-const newsreader = Newsreader({
+const pixelDisplay = Press_Start_2P({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-newsreader",
-  fallback: ["serif"],
+  weight: "400",
+  variable: "--font-pixel-display",
+  fallback: ["monospace"],
 })
 
 export const metadata: Metadata = {
@@ -92,10 +91,10 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#1B3A4B" />
+        <meta name="theme-color" content="#111110" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
-      <body className={`${sourceSans.variable} ${newsreader.variable} ${sourceSans.className} antialiased`}>
+      <body className={`${pixelBody.variable} ${pixelDisplay.variable} ${pixelBody.className} antialiased`}>
         {children}
         <Analytics />
       </body>

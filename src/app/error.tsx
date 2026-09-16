@@ -22,7 +22,7 @@ export default function Error({
         <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-6" />
 
         {/* 錯誤標題 */}
-        <h1 className="font-headline text-3xl font-semibold text-[var(--brand-primary)] mb-4">
+        <h1 className="font-display text-lg text-[var(--brand-primary)] mb-4">
           發生錯誤了
         </h1>
 

@@ -149,7 +149,26 @@ async function fetchSimilarArticles(
       throw new Error(`相似文章載入失敗: ${error.message}`)
     }
 
-    return (data || []) as RecommendedArticle[]
+    const results = (data || []) as RecommendedArticle[]
+    if (results.length === 0) return results
+
+    // get_similar_articles 不保證回傳 link/pmid 等欄位，額外查詢補齊以確保連結正確
+    const ids = results.map((item) => item.id)
+    const { data: linkRows, error: linkError } = await supabase
+      .from('rss_entries')
+      .select('id, link, pmid, doi')
+      .in('id', ids)
+
+    if (linkError) {
+      console.warn('補齊相似文章連結失敗:', linkError)
+      return results
+    }
+
+    const linkById = new Map((linkRows || []).map((row) => [row.id, row]))
+    return results.map((item) => {
+      const linkRow = linkById.get(item.id)
+      return linkRow ? { ...item, link: linkRow.link, pmid: linkRow.pmid, doi: linkRow.doi } : item
+    })
   } catch (error) {
     console.error('fetchSimilarArticles error:', error)
     throw error

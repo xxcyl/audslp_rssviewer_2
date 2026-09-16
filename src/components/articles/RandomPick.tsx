@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Heart, Shuffle, Unlock } from 'lucide-react'
+import { ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Heart, Shuffle, Unlock, FlaskConical } from 'lucide-react'
 import { useRandomArticle } from '@/hooks/useArticles'
 import { useLikes } from '@/hooks/useLikes'
 import { RelatedArticlesPanel } from './RelatedArticlesPanel'
@@ -63,22 +63,21 @@ export function RandomPick({ className }: RandomPickProps) {
       <div className="flex flex-col md:flex-row gap-4 md:gap-8">
         {/* 期刊來源 + 日期 */}
         <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-2 md:gap-1.5">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
-              {article.source || 'Unknown Source'}
-            </span>
-            {evidenceType && (
-              <span
-                className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase px-1.5 py-1"
-                style={evidenceBadgeStyle(evidenceType)}
-              >
-                {getEvidenceLabel(evidenceType)}
-              </span>
-            )}
-          </div>
+          <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
+            {article.source || 'Unknown Source'}
+          </span>
           <span className="text-base text-[var(--brand-text-faint)]">
             {formatDate(article.published)}
           </span>
+          {evidenceType && (
+            <span
+              className="font-display inline-flex items-center gap-1 w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] px-1.5 py-1"
+              style={evidenceBadgeStyle(evidenceType)}
+            >
+              <FlaskConical className="w-2.5 h-2.5" />
+              {getEvidenceLabel(evidenceType)}
+            </span>
+          )}
         </div>
 
         {/* 標題與摘要 */}

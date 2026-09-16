@@ -105,8 +105,11 @@ function MainLayout() {
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 md:gap-4">
-                <h1 className="font-display text-xs md:text-sm text-[#FAFAF9] whitespace-nowrap">
-                  [ 聽語期刊速報 ]<span className="text-[var(--brand-accent)]">_</span>
+                <h1 className="flex items-center gap-1 text-[#FAFAF9] whitespace-nowrap">
+                  <span className="font-display text-xs md:text-sm">[</span>
+                  <span className="text-sm md:text-base font-bold tracking-wide">聽語期刊速報</span>
+                  <span className="font-display text-xs md:text-sm">]</span>
+                  <span className="font-display text-xs md:text-sm text-[var(--brand-accent)]">_</span>
                 </h1>
                 <span className="hidden md:inline-block w-px h-4 bg-white/20" />
                 <span className="hidden md:inline-block text-sm font-bold tracking-[0.1em] uppercase text-[var(--brand-accent)] whitespace-nowrap">
@@ -183,8 +186,11 @@ function MainLayout() {
           <div className="flex items-center justify-between gap-4">
             {/* 左側 Logo/標題 */}
             <div className="flex items-center gap-3 md:gap-4">
-              <h1 className="font-display text-xs md:text-sm text-[#FAFAF9] whitespace-nowrap">
-                [ 聽語期刊速報 ]<span className="text-[var(--brand-accent)]">_</span>
+              <h1 className="flex items-center gap-1 text-[#FAFAF9] whitespace-nowrap">
+                <span className="font-display text-xs md:text-sm">[</span>
+                <span className="text-sm md:text-base font-bold tracking-wide">聽語期刊速報</span>
+                <span className="font-display text-xs md:text-sm">]</span>
+                <span className="font-display text-xs md:text-sm text-[var(--brand-accent)]">_</span>
               </h1>
               <span className="hidden md:inline-block w-px h-4 bg-white/20" />
               <span className="hidden md:inline-block text-sm font-bold tracking-[0.1em] uppercase text-[var(--brand-accent)] whitespace-nowrap">

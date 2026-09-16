@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils'
 interface ArticleGridProps {
   articles: Article[]
   onLike?: (articleId: number) => void
-  onRecommend?: (articleId: number) => void
+  onRecommend?: (article: Article) => void
   isLoading?: boolean
   searchTerm?: string // 新增：搜尋詞用於高亮
   className?: string

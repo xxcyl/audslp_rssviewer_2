@@ -95,14 +95,11 @@ function MainLayout() {
     }, 500)
   }
 
-  const handleRecommend = (articleId: number) => {
-    const article = articlesData?.articles.find(a => a.id === articleId)
-    if (article) {
-      setRecommendationModal({
-        isOpen: true,
-        sourceArticle: article
-      })
-    }
+  const handleRecommend = (article: Article) => {
+    setRecommendationModal({
+      isOpen: true,
+      sourceArticle: article
+    })
   }
   
   const handleCloseRecommendation = () => {

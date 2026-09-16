@@ -3,10 +3,11 @@
 import { Dices, ExternalLink, FileText, Heart, Search, Shuffle } from 'lucide-react'
 import { useRandomArticle } from '@/hooks/useArticles'
 import { useLikes } from '@/hooks/useLikes'
+import type { Article } from '@/lib/types'
 import { cn } from '@/lib/utils'
 
 interface RandomPickProps {
-  onRecommend?: (articleId: number) => void
+  onRecommend?: (article: Article) => void
   className?: string
 }
 
@@ -132,7 +133,7 @@ export function RandomPick({ onRecommend, className }: RandomPickProps) {
 
             {hasEmbedding && (
               <button
-                onClick={() => onRecommend?.(article.id)}
+                onClick={() => onRecommend?.(article)}
                 className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
               >
                 <Search className="w-3 h-3" />

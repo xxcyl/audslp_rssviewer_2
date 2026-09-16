@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Heart, ExternalLink, FileText, Calendar, ChevronDown, ChevronUp, Unlock } from 'lucide-react'
+import { Heart, ExternalLink, FileText, Calendar, ChevronDown, ChevronUp, Unlock, FlaskConical } from 'lucide-react'
 import { useLikes } from '@/hooks/useLikes'
 import { SearchHighlight } from './SearchBar'
 import { RelatedArticlesPanel } from './RelatedArticlesPanel'
@@ -80,23 +80,22 @@ export function ArticleCard({
       )}>
         {/* 期刊來源 + 發布日期 */}
         <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-2 md:gap-1.5">
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
-              {article.source || 'Unknown Source'}
-            </span>
-            {evidenceType && (
-              <span
-                className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase px-1.5 py-1"
-                style={evidenceBadgeStyle(evidenceType)}
-              >
-                {getEvidenceLabel(evidenceType)}
-              </span>
-            )}
-          </div>
+          <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
+            {article.source || 'Unknown Source'}
+          </span>
           <span className="flex items-center gap-1 text-base text-[var(--brand-text-faint)]">
             <Calendar className="w-3.5 h-3.5" />
             {formatDate(article.published)}
           </span>
+          {evidenceType && (
+            <span
+              className="font-display inline-flex items-center gap-1 w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] px-1.5 py-1"
+              style={evidenceBadgeStyle(evidenceType)}
+            >
+              <FlaskConical className="w-2.5 h-2.5" />
+              {getEvidenceLabel(evidenceType)}
+            </span>
+          )}
         </div>
 
         {/* 標題與摘要 */}

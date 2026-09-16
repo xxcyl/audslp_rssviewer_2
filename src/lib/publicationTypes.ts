@@ -54,9 +54,10 @@ export function getEvidenceLabel(type: EvidenceType): string {
   return EVIDENCE_TYPE_LABEL[type]
 }
 
-export function evidenceBadgeStyle(type: EvidenceType): { background: string; color: string } {
+// 刻意用「外框、不填色」而不是實心色塊——避免跟期刊來源徽章（實心螢光綠底）撞色混淆
+export function evidenceBadgeStyle(type: EvidenceType): { borderColor: string; color: string } {
   const tier = EVIDENCE_TIER[type]
-  if (tier === 'high') return { background: 'var(--brand-primary)', color: 'var(--brand-accent)' }
-  if (tier === 'mid') return { background: 'var(--brand-accent)', color: 'var(--brand-primary)' }
-  return { background: '#D6D6D2', color: 'var(--brand-primary)' }
+  if (tier === 'high') return { borderColor: 'var(--brand-primary)', color: 'var(--brand-primary)' }
+  if (tier === 'mid') return { borderColor: 'var(--brand-accent-dark)', color: 'var(--brand-accent-dark)' }
+  return { borderColor: 'var(--brand-text-faint)', color: 'var(--brand-text-muted)' }
 }

@@ -1,20 +1,21 @@
 'use client'
 
-import { Dices, ExternalLink, FileText, Heart, Search, Shuffle } from 'lucide-react'
+import { useState } from 'react'
+import { ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Heart, Shuffle } from 'lucide-react'
 import { useRandomArticle } from '@/hooks/useArticles'
 import { useLikes } from '@/hooks/useLikes'
-import type { Article } from '@/lib/types'
+import { RelatedArticlesPanel } from './RelatedArticlesPanel'
 import { cn } from '@/lib/utils'
 
 interface RandomPickProps {
-  onRecommend?: (article: Article) => void
   className?: string
 }
 
-export function RandomPick({ onRecommend, className }: RandomPickProps) {
+export function RandomPick({ className }: RandomPickProps) {
   const { data: article, isLoading, reroll } = useRandomArticle()
   const articleId = article?.id ?? 0
   const { isLiked, totalLikes, toggleLike, isLoading: likeLoading } = useLikes(articleId)
+  const [isRelatedOpen, setIsRelatedOpen] = useState(false)
 
   if (isLoading || !article) return null
 
@@ -30,8 +31,9 @@ export function RandomPick({ onRecommend, className }: RandomPickProps) {
   const hasEmbedding = article.embedding && article.embedding.length > 0
 
   return (
+    <div className={className}>
     <div
-      className={cn("bg-[var(--brand-featured-bg)] border-4 border-[var(--brand-primary)] outline outline-3 outline-[var(--brand-bg)] -outline-offset-[9px] px-5 md:px-8 py-6", className)}
+      className="bg-[var(--brand-featured-bg)] border-4 border-[var(--brand-primary)] outline outline-3 outline-[var(--brand-bg)] -outline-offset-[9px] px-5 md:px-8 py-6"
       style={{
         backgroundImage: 'radial-gradient(rgba(17,17,16,0.05) 1.5px, transparent 1.5px)',
         backgroundSize: '7px 7px',
@@ -133,16 +135,27 @@ export function RandomPick({ onRecommend, className }: RandomPickProps) {
 
             {hasEmbedding && (
               <button
-                onClick={() => onRecommend?.(article)}
-                className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
+                onClick={() => setIsRelatedOpen(v => !v)}
+                className={cn(
+                  "flex items-center gap-1 transition-colors",
+                  isRelatedOpen
+                    ? "bg-[var(--brand-primary)] text-[var(--brand-accent)] px-1.5 py-0.5"
+                    : "hover:text-[var(--brand-accent-dark)]"
+                )}
               >
-                <Search className="w-3 h-3" />
                 相關文獻
+                {isRelatedOpen ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
               </button>
             )}
           </div>
         </div>
       </div>
+    </div>
+    {isRelatedOpen && (
+      <div className="mt-1">
+        <RelatedArticlesPanel articleId={article.id} onClose={() => setIsRelatedOpen(false)} />
+      </div>
+    )}
     </div>
   )
 }

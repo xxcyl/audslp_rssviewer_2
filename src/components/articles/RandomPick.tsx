@@ -49,7 +49,7 @@ export function RandomPick({ onRecommend, className }: RandomPickProps) {
 
       <div className="flex flex-col md:flex-row gap-4 md:gap-8">
         {/* 期刊來源 + 日期 */}
-        <div className="flex flex-row md:flex-col md:w-[190px] flex-shrink-0 gap-3 md:gap-1.5 items-baseline md:items-start">
+        <div className="flex flex-col md:w-[190px] flex-shrink-0 gap-1 md:gap-1.5">
           <span className="text-[10.5px] font-bold tracking-wide uppercase text-[var(--brand-accent)]">
             {article.source || 'Unknown Source'}
           </span>

@@ -74,7 +74,7 @@ export function RelatedArticlesPanel({ articleId, onClose }: RelatedArticlesPane
       }}
     >
       <div className="flex items-center justify-between">
-        <span className="font-display text-[9px] text-[var(--brand-primary)]">相關文獻 · RELATED</span>
+        <span className="font-display text-[9px] text-[var(--brand-primary)]">RELATED</span>
         <button
           onClick={onClose}
           className="font-display flex items-center gap-1.5 text-[9px] text-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)] transition-colors"

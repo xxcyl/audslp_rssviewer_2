@@ -45,7 +45,7 @@ export function RandomPick({ className }: RandomPickProps) {
         <div className="flex items-center gap-2">
           <Dices className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
           <span className="font-display text-[9px] tracking-normal uppercase text-[var(--brand-primary)]">
-            隨機精選 · Random Pick
+            Random Pick
           </span>
         </div>
         <button
@@ -54,7 +54,7 @@ export function RandomPick({ className }: RandomPickProps) {
           style={{ boxShadow: '3px 3px 0 var(--brand-primary)' }}
         >
           <Shuffle className="w-3 h-3" />
-          換一篇
+          Reroll
         </button>
       </div>
 
@@ -143,7 +143,7 @@ export function RandomPick({ className }: RandomPickProps) {
                     : "hover:text-[var(--brand-accent-dark)]"
                 )}
               >
-                相關文獻
+                Related
                 {isRelatedOpen ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
               </button>
             )}

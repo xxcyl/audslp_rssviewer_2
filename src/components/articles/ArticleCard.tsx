@@ -189,7 +189,7 @@ export function ArticleCard({
                     : "hover:text-[var(--brand-accent-dark)]"
                 )}
               >
-                相關文獻
+                Related
                 {isRelatedOpen ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
               </button>
             )}

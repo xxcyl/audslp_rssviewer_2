@@ -2,9 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { Heart, ExternalLink, FileText, Calendar, Search } from 'lucide-react'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { useLikes } from '@/hooks/useLikes'
 import { SearchHighlight } from './SearchBar'
 import type { Article } from '@/lib/types'
@@ -18,9 +15,9 @@ interface ArticleCardProps {
   className?: string
 }
 
-export function ArticleCard({ 
-  article, 
-  onLike, 
+export function ArticleCard({
+  article,
+  onLike,
   onRecommend,
   searchTerm, // 新增參數
   className
@@ -32,11 +29,11 @@ export function ArticleCard({
     toggleLike,
     isLoading: likeLoading
   } = useLikes(article.id)
-  
+
   // 本地狀態
   const [localLiked, setLocalLiked] = useState(isLiked)
   const [localLikeCount, setLocalLikeCount] = useState(totalLikes)
-  
+
   // 同步遠端狀態
   useEffect(() => {
     setLocalLiked(isLiked)
@@ -48,25 +45,17 @@ export function ArticleCard({
       // 樂觀更新 UI
       setLocalLiked(!localLiked)
       setLocalLikeCount(prev => localLiked ? prev - 1 : prev + 1)
-      
+
       // 呼叫 hook 中的按讚函數
       toggleLike()
-      
+
       // 通知父組件
-      if (onLike) {
-        onLike(article.id)
-      }
+      onLike?.(article.id)
     } catch (error) {
       // 如果失敗，恢復狀態
       setLocalLiked(isLiked)
       setLocalLikeCount(totalLikes)
       console.error('按讚失敗:', error)
-    }
-  }
-
-  const handleRecommend = () => {
-    if (onRecommend) {
-      onRecommend(article.id)
     }
   }
 
@@ -82,157 +71,122 @@ export function ArticleCard({
   const hasEmbedding = article.embedding && article.embedding.length > 0
 
   return (
-    <Card className={cn(
-      "flex flex-col h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1",
-      // 手機版卡片加大，增加內邊距
-      "p-2 md:p-3", // 增加內邊距
+    <div className={cn(
+      "flex flex-col md:flex-row gap-4 md:gap-8 py-6 border-t border-[var(--brand-primary)]/[0.14]",
       className
     )}>
-      <CardHeader className="space-y-3 pb-3 px-2 md:px-4">
-        {/* 來源標籤 + 按讚按鈕 */}
-        <div className="flex items-center justify-between">
-          <Badge 
-            variant="secondary" 
-            className="bg-purple-100 text-purple-800 font-medium text-xs px-2 py-1"
-          >
-            {article.source || 'Unknown Source'}
-          </Badge>
-          
-          {/* 按讚按鈕 - 移到右上角 */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className={cn(
-              "h-7 px-2 transition-colors min-w-[40px]",
-              localLiked ? "text-red-500 hover:text-red-600" : "text-gray-400 hover:text-red-500"
-            )}
-            onClick={handleLike}
-            disabled={likeLoading}
-          >
-            <Heart 
-              className={cn("w-4 h-4 mr-1", localLiked && "fill-current")} 
-            />
-            <span className="text-xs font-medium">
-              {localLikeCount || 0}
-            </span>
-          </Button>
-        </div>
+      {/* 期刊來源 + 發布日期 */}
+      <div className="flex flex-row md:flex-col md:w-[190px] flex-shrink-0 gap-3 md:gap-1.5 items-baseline md:items-start">
+        <span className="text-[10.5px] font-bold tracking-wide uppercase text-[var(--brand-accent)]">
+          {article.source || 'Unknown Source'}
+        </span>
+        <span className="flex items-center gap-1 text-xs text-[var(--brand-text-faint)]">
+          <Calendar className="w-3 h-3" />
+          {formatDate(article.published)}
+        </span>
+      </div>
 
-        {/* 標題 */}
-        <div className="space-y-2">
-          <h3 className="font-semibold text-base md:text-lg leading-tight text-gray-900">
-            <SearchHighlight 
-              text={article.title_translated || article.title || '無標題'}
+      {/* 標題與摘要 */}
+      <div className="flex-1 flex flex-col gap-2 min-w-0">
+        <h3 className="font-headline font-semibold text-lg leading-snug text-[var(--brand-primary)]">
+          <SearchHighlight
+            text={article.title_translated || article.title || '無標題'}
+            searchTerm={searchTerm || ''}
+          />
+        </h3>
+
+        {article.title && article.title_translated && (
+          <p className="font-headline italic text-[13px] leading-relaxed text-[var(--brand-text-muted)]">
+            <SearchHighlight
+              text={article.title}
               searchTerm={searchTerm || ''}
             />
-          </h3>
-          
-          {article.title && article.title_translated && (
-            <p className="text-xs md:text-sm text-gray-600 italic leading-relaxed">
-              <SearchHighlight 
-                text={article.title}
-                searchTerm={searchTerm || ''}
-              />
-            </p>
-          )}
-        </div>
-      </CardHeader>
+          </p>
+        )}
 
-      <CardContent className="flex-1 space-y-3 px-2 md:px-4">
-        {/* 發布日期 */}
-        <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-          <Calendar className="w-3.5 h-3.5" />
-          {formatDate(article.published)}
-        </div>
-
-        {/* 摘要區域 - 直接顯示，無需展開按鈕 */}
-        {(article.tldr || article.english_tldr) && (
-          <div className="space-y-3">
-            {/* 中文摘要 */}
-            {article.tldr && (
-              <div className="border-l-2 border-purple-200 pl-3">
-                <div className="text-xs md:text-sm text-gray-800 leading-relaxed">
-                  {article.tldr.includes('|') ? (
-                    article.tldr.split('|').map((sentence, index, array) => (
-                      <span key={index}>
-                        <span className="font-medium text-gray-900">
-                          <SearchHighlight 
-                            text={sentence.trim()}
-                            searchTerm={searchTerm || ''}
-                          />
-                        </span>
-                        {index < array.length - 1 && (
-                          <span className="text-gray-500 font-bold mx-1"> | </span>
-                        )}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="font-medium text-gray-900">
-                      <SearchHighlight 
-                        text={article.tldr}
-                        searchTerm={searchTerm || ''}
-                      />
-                    </span>
-                  )}
-                </div>
-              </div>
-            )}
-            
-            {/* 原文摘要 */}
-            {article.english_tldr && (
-              <div className="pl-3">
-                <div className="text-xs md:text-sm text-gray-500 italic leading-relaxed">
+        {article.tldr && (
+          <p className="text-sm leading-relaxed text-[var(--brand-text)] mt-1">
+            {article.tldr.includes('|') ? (
+              article.tldr.split('|').map((sentence, index, array) => (
+                <span key={index}>
                   <SearchHighlight
-                    text={article.english_tldr}
+                    text={sentence.trim()}
                     searchTerm={searchTerm || ''}
                   />
-                </div>
-              </div>
+                  {index < array.length - 1 && (
+                    <span className="text-[var(--brand-text-faint)] mx-1.5">·</span>
+                  )}
+                </span>
+              ))
+            ) : (
+              <SearchHighlight
+                text={article.tldr}
+                searchTerm={searchTerm || ''}
+              />
             )}
-          </div>
+          </p>
         )}
-      </CardContent>
 
-      <CardFooter className="pt-3 border-t bg-gray-50/50 px-2 md:px-4">
-        {/* 功能按鈕 */}
-        <div className="flex gap-2">
+        {article.english_tldr && (
+          <p className="text-[13px] leading-relaxed italic text-[var(--brand-text-muted)] line-clamp-2">
+            <SearchHighlight
+              text={article.english_tldr}
+              searchTerm={searchTerm || ''}
+            />
+          </p>
+        )}
+      </div>
+
+      {/* 按讚與外部連結 */}
+      <div className="flex flex-row md:flex-col md:w-[140px] flex-shrink-0 items-center md:items-end justify-between gap-3">
+        <button
+          onClick={handleLike}
+          disabled={likeLoading}
+          className={cn(
+            "flex items-center gap-1.5 text-xs transition-colors",
+            localLiked ? "text-red-500" : "text-[var(--brand-text-faint)] hover:text-red-500"
+          )}
+        >
+          <Heart className={cn("w-3.5 h-3.5", localLiked && "fill-current")} />
+          {localLikeCount || 0}
+        </button>
+
+        <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-xs text-[var(--brand-primary)]">
           {article.link && (
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="h-7 px-3 text-xs"
-              onClick={() => window.open(article.link!, '_blank')}
+            <a
+              href={article.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
             >
-              <ExternalLink className="w-3 h-3 mr-1" />
+              <ExternalLink className="w-3 h-3" />
               PubMed
-            </Button>
+            </a>
           )}
-          
+
           {article.doi && (
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="h-7 px-3 text-xs"
-              onClick={() => window.open(`https://doi.org/${article.doi}`, '_blank')}
+            <a
+              href={`https://doi.org/${article.doi}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
             >
-              <FileText className="w-3 h-3 mr-1" />
+              <FileText className="w-3 h-3" />
               DOI
-            </Button>
+            </a>
           )}
-          
+
           {hasEmbedding && (
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="h-7 px-3 text-xs"
-              onClick={handleRecommend}
+            <button
+              onClick={() => onRecommend?.(article.id)}
+              className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
             >
-              <Search className="w-3 h-3 mr-1" />
-              相關
-            </Button>
+              <Search className="w-3 h-3" />
+              相關文獻
+            </button>
           )}
         </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   )
 }

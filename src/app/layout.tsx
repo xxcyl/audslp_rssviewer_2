@@ -1,9 +1,22 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Newsreader, Source_Sans_3 } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
+const sourceSans = Source_Sans_3({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-source-sans",
+  fallback: ["system-ui", "-apple-system", "sans-serif"],
+})
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
+  fallback: ["serif"],
+})
 
 export const metadata: Metadata = {
   title: {
@@ -79,10 +92,10 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#7c3aed" />
+        <meta name="theme-color" content="#1B3A4B" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${sourceSans.variable} ${newsreader.variable} ${sourceSans.className} antialiased`}>
         {children}
         <Analytics />
       </body>

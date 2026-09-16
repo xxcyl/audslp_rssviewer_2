@@ -30,19 +30,19 @@ function RecommendationItem({
     if (percentage >= 80) {
       return { 
         text: '高度相似', 
-        className: 'bg-purple-100 text-purple-800 border-purple-200' 
+        className: 'bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] border-[var(--brand-primary)]/20'
       }
     }
     if (percentage >= 60) {
       return { 
         text: '相當相似', 
-        className: 'bg-blue-100 text-blue-800 border-blue-200' 
+        className: 'bg-[var(--brand-accent)]/10 text-[var(--brand-accent-dark)] border-[var(--brand-accent)]/20'
       }
     }
     if (percentage >= 40) {
       return { 
         text: '部分相似', 
-        className: 'bg-green-100 text-green-800 border-green-200' 
+        className: 'bg-[#EEF0E4] text-[#5C6B4A] border-[#D8DCC7]'
       }
     }
     return { 
@@ -54,7 +54,7 @@ function RecommendationItem({
   const similarityInfo = getSimilarityBadge(article.similarity)
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-200 hover:border-purple-300">
+    <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-200 hover:border-[var(--brand-accent)]/40">
       <div className="space-y-3">
         {/* 相似度標籤 */}
         <div className="flex justify-start">
@@ -67,7 +67,7 @@ function RecommendationItem({
         {/* 標題 */}
         <div>
           <h4 
-            className="font-semibold text-gray-900 leading-tight cursor-pointer hover:text-purple-700 transition-colors"
+            className="font-headline font-semibold text-[var(--brand-primary)] leading-tight cursor-pointer hover:text-[var(--brand-accent-dark)] transition-colors"
             onClick={() => onArticleClick?.(article)}
           >
             {article.title_translated || article.title || '無標題'}
@@ -76,8 +76,8 @@ function RecommendationItem({
 
         {/* 摘要 */}
         {article.tldr && (
-          <div className="border-l-2 border-purple-200 pl-3">
-            <p className="text-sm text-gray-700 leading-relaxed">
+          <div className="border-l-2 border-[var(--brand-primary)]/20 pl-3">
+            <p className="text-sm text-[var(--brand-text)] leading-relaxed">
               {article.tldr.length > 120 ? article.tldr.substring(0, 120) + '...' : article.tldr}
             </p>
           </div>
@@ -118,7 +118,7 @@ function ArticleDetailCard({
     <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
       {/* 頂部：來源期刊標籤 + 按讚按鈕 */}
       <div className="flex items-center justify-between mb-4">
-        <span className="bg-purple-100 text-purple-800 font-medium text-sm px-3 py-1 rounded-full">
+        <span className="bg-[var(--brand-accent)]/10 text-[var(--brand-accent-dark)] font-medium text-sm px-3 py-1 rounded-full">
           {article.source || 'Unknown Source'}
         </span>
         
@@ -126,7 +126,7 @@ function ArticleDetailCard({
         <button
           className={cn(
             "h-8 px-2 transition-colors min-w-[44px] rounded-md flex items-center gap-1",
-            isLiked ? "text-red-500 hover:text-red-600" : "text-gray-400 hover:text-red-500"
+            isLiked ? "text-red-500 hover:text-red-600" : "text-[var(--brand-text-faint)] hover:text-red-500"
           )}
           onClick={handleLike}
           disabled={likeLoading}
@@ -142,19 +142,19 @@ function ArticleDetailCard({
 
       {/* 標題區域 */}
       <div className="space-y-3 mb-6">
-        <h2 className="font-semibold text-xl leading-tight text-gray-900">
+        <h2 className="font-headline font-semibold text-xl leading-tight text-[var(--brand-primary)]">
           {article.title_translated || article.title || '無標題'}
         </h2>
-        
+
         {article.title && article.title_translated && (
-          <p className="text-sm text-gray-600 italic leading-relaxed">
+          <p className="font-headline text-sm text-[var(--brand-text-muted)] italic leading-relaxed">
             {article.title}
           </p>
         )}
       </div>
 
       {/* 發布日期 */}
-      <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-4">
+      <div className="flex items-center gap-1.5 text-sm text-[var(--brand-text-faint)] mb-4">
         <Calendar className="w-3.5 h-3.5" />
         {article.published ? new Date(article.published).toLocaleDateString('zh-TW') : '未知日期'}
       </div>
@@ -164,28 +164,28 @@ function ArticleDetailCard({
         <div className="space-y-4 mb-6">
           {/* 中文摘要 */}
           {article.tldr && (
-            <div className="border-l-2 border-purple-200 pl-4">
-              <div className="text-sm text-gray-800 leading-relaxed">
+            <div className="border-l-2 border-[var(--brand-primary)]/20 pl-4">
+              <div className="text-sm text-[var(--brand-text)] leading-relaxed">
                 {article.tldr.includes('|') ? (
                   article.tldr.split('|').map((sentence, index, array) => (
                     <span key={index}>
-                      <span className="font-medium text-gray-900">{sentence.trim()}</span>
+                      <span className="font-medium text-[var(--brand-text)]">{sentence.trim()}</span>
                       {index < array.length - 1 && (
-                        <span className="text-gray-500 font-bold mx-1"> | </span>
+                        <span className="text-[var(--brand-text-faint)] font-bold mx-1"> | </span>
                       )}
                     </span>
                   ))
                 ) : (
-                  <span className="font-medium text-gray-900">{article.tldr}</span>
+                  <span className="font-medium text-[var(--brand-text)]">{article.tldr}</span>
                 )}
               </div>
             </div>
           )}
-          
+
           {/* 英文摘要 */}
           {article.english_tldr && (
             <div className="pl-4">
-              <div className="text-sm text-gray-500 italic leading-relaxed">
+              <div className="text-sm text-[var(--brand-text-muted)] italic leading-relaxed">
                 {article.english_tldr}
               </div>
             </div>
@@ -193,27 +193,31 @@ function ArticleDetailCard({
         </div>
       )}
 
-      {/* 底部操作按鈕 - 類似首頁卡片 */}
-      <div className="pt-4 border-t bg-gray-50/50 -mx-6 -mb-6 px-6 pb-6 rounded-b-lg">
-        <div className="flex gap-2">
+      {/* 底部連結 */}
+      <div className="pt-4 mt-2 border-t border-[var(--brand-border)]">
+        <div className="flex gap-5 text-xs text-[var(--brand-primary)]">
           {article.link && (
-            <button 
-              onClick={() => window.open(article.link!, '_blank')}
-              className="h-8 px-3 text-xs border border-gray-300 rounded hover:bg-gray-50 transition-colors flex items-center gap-1"
+            <a
+              href={article.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
             >
               <ExternalLink className="w-3 h-3" />
               PubMed
-            </button>
+            </a>
           )}
-          
+
           {article.doi && (
-            <button 
-              onClick={() => window.open(`https://doi.org/${article.doi}`, '_blank')}
-              className="h-8 px-3 text-xs border border-gray-300 rounded hover:bg-gray-50 transition-colors flex items-center gap-1"
+            <a
+              href={`https://doi.org/${article.doi}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
             >
               <FileText className="w-3 h-3" />
               DOI
-            </button>
+            </a>
           )}
         </div>
       </div>
@@ -262,14 +266,14 @@ export function RecommendationModal({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
         <DialogHeader className="pb-4">
-          <DialogTitle className="flex items-center gap-3 text-lg">
+          <DialogTitle className="font-headline flex items-center gap-3 text-lg text-[var(--brand-primary)]">
             {selectedArticle ? (
               <>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleBackToList}
-                  className="p-1 h-8 w-8 text-purple-600 hover:text-purple-700 hover:bg-purple-50"
+                  className="p-1 h-8 w-8 text-[var(--brand-primary)] hover:text-[var(--brand-primary-dark)] hover:bg-[var(--brand-primary)]/5"
                 >
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
@@ -291,8 +295,8 @@ export function RecommendationModal({
             <div>
               {isDetailLoading ? (
                 <div className="flex flex-col items-center justify-center py-16">
-                  <Loader2 className="w-8 h-8 animate-spin text-purple-600 mb-4" />
-                  <p className="text-gray-600">正在載入文章詳情...</p>
+                  <Loader2 className="w-8 h-8 animate-spin text-[var(--brand-accent)] mb-4" />
+                  <p className="text-[var(--brand-text-muted)]">正在載入文章詳情...</p>
                 </div>
               ) : articleDetail ? (
                 <div className="max-w-3xl mx-auto">
@@ -310,8 +314,8 @@ export function RecommendationModal({
               ) : (
                 <div className="text-center py-16">
                   <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">無法載入文章</h3>
-                  <p className="text-gray-600 mb-6">
+                  <h3 className="text-lg font-medium text-[var(--brand-primary)] mb-2">無法載入文章</h3>
+                  <p className="text-[var(--brand-text-muted)] mb-6">
                     無法取得文章詳細資訊，請稍後再試
                   </p>
                   <Button onClick={handleBackToList} variant="outline" size="lg">
@@ -326,8 +330,8 @@ export function RecommendationModal({
               {/* 載入中狀態 */}
               {isLoading && (
                 <div className="flex flex-col items-center justify-center py-16">
-                  <Loader2 className="w-8 h-8 animate-spin text-purple-600 mb-4" />
-                  <p className="text-gray-600">正在使用 AI 技術尋找相關文章...</p>
+                  <Loader2 className="w-8 h-8 animate-spin text-[var(--brand-accent)] mb-4" />
+                  <p className="text-[var(--brand-text-muted)]">正在使用 AI 技術尋找相關文章...</p>
                 </div>
               )}
 
@@ -335,8 +339,8 @@ export function RecommendationModal({
               {error && (
                 <div className="text-center py-16">
                   <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">載入推薦文章時發生錯誤</h3>
-                  <p className="text-gray-600 mb-6">
+                  <h3 className="text-lg font-medium text-[var(--brand-primary)] mb-2">載入推薦文章時發生錯誤</h3>
+                  <p className="text-[var(--brand-text-muted)] mb-6">
                     {error.message || '無法載入相關文章，請稍後再試'}
                   </p>
                   <Button onClick={onClose} variant="outline" size="lg">
@@ -362,8 +366,8 @@ export function RecommendationModal({
               {similarArticles && similarArticles.length === 0 && !isLoading && !error && (
                 <div className="text-center py-16">
                   <SearchX className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">找不到相關文章</h3>
-                  <p className="text-gray-600 mb-6">
+                  <h3 className="text-lg font-medium text-[var(--brand-primary)] mb-2">找不到相關文章</h3>
+                  <p className="text-[var(--brand-text-muted)] mb-6">
                     很抱歉，目前沒有找到與此文章相關的其他文章。<br />
                     這可能是因為該文章的主題比較獨特。
                   </p>

@@ -18,10 +18,11 @@ interface ArticlesResponse {
 }
 
 // 獲取文章資料的 API 函數 (更新版本，支援搜尋)
-async function fetchArticles({ 
-  page, 
-  pageSize, 
-  source, 
+async function fetchArticles({
+  page,
+  pageSize,
+  source,
+  publicationType,
   sortBy,
   searchQuery
 }: SupabaseQueryParams): Promise<ArticlesResponse> {
@@ -69,7 +70,8 @@ async function fetchArticles({
         pmid: result.pmid as string | null,
         doi: result.doi as string | null,
         embedding: result.embedding as number[] | null,
-        likes_count: (result.likes_count as number) || 0 // 保證不為 null
+        likes_count: (result.likes_count as number) || 0, // 保證不為 null
+        publication_types: (result.publication_types as string[] | null) ?? null
       }))
 
       totalCount = countResult || 0
@@ -81,6 +83,9 @@ async function fetchArticles({
       // 應用篩選條件
       if (source) {
         query = query.eq('source', source)
+      }
+      if (publicationType) {
+        query = query.contains('publication_types', [publicationType])
       }
 
       // 應用排序
@@ -183,6 +188,7 @@ export function useArticles({ page, pageSize, filters }: UseArticlesOptions) {
       page,
       pageSize,
       source: filters.source,
+      publicationType: filters.publicationType,
       sortBy: filters.sortBy,
       searchQuery: filters.searchQuery,
     }),

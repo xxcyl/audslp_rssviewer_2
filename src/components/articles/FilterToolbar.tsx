@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input'
 import { SearchHighlight } from '@/components/articles/SearchBar'
 import type { FilterOptions } from '@/lib/types'
+import { EVIDENCE_TYPE_PRIORITY, getEvidenceLabel } from '@/lib/publicationTypes'
 import { cn } from '@/lib/utils'
 import { useState, useEffect } from 'react'
 
@@ -89,6 +90,13 @@ export function FilterToolbar({
     })
   }
 
+  const handlePublicationTypeChange = (publicationType: string) => {
+    onFiltersChange({
+      ...currentFilters,
+      publicationType: publicationType === 'all' ? undefined : publicationType
+    })
+  }
+
   const handleSortChange = (sortBy: FilterOptions['sortBy']) => {
     onFiltersChange({
       ...currentFilters,
@@ -124,6 +132,30 @@ export function FilterToolbar({
                   {sources.map((source) => (
                     <SelectItem key={source} value={source}>
                       {source}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <span className="w-px h-3.5 bg-[var(--brand-border)]" />
+
+            {/* 研究類型篩選 */}
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-[var(--brand-primary)]">類型</span>
+              <Select
+                value={currentFilters.publicationType || 'all'}
+                onValueChange={handlePublicationTypeChange}
+                disabled={isLoading || isSearching}
+              >
+                <SelectTrigger className={cn(selectTriggerClass, currentFilters.publicationType && "text-[var(--brand-accent)]")}>
+                  <SelectValue placeholder="所有類型" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">所有類型</SelectItem>
+                  {EVIDENCE_TYPE_PRIORITY.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {getEvidenceLabel(type)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -237,6 +269,29 @@ export function FilterToolbar({
                   {sources.map((source) => (
                     <SelectItem key={source} value={source}>
                       {source}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <span className="w-px h-3.5 bg-[var(--brand-border)]" />
+
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-[var(--brand-primary)]">類型</span>
+              <Select
+                value={currentFilters.publicationType || 'all'}
+                onValueChange={handlePublicationTypeChange}
+                disabled={isLoading || isSearching}
+              >
+                <SelectTrigger className={cn(selectTriggerClass, currentFilters.publicationType && "text-[var(--brand-accent)]")}>
+                  <SelectValue placeholder="所有類型" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">所有類型</SelectItem>
+                  {EVIDENCE_TYPE_PRIORITY.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {getEvidenceLabel(type)}
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -197,7 +197,7 @@ function MainLayout() {
             </p>
             <button
               onClick={handleRefresh}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
             >
               重新載入
             </button>
@@ -299,7 +299,7 @@ function MainLayout() {
               <SearchX className="w-16 h-16 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">找不到相關文章</h3>
               <p className="text-gray-600 mb-4">
-                沒有找到包含 &ldquo;<span className="font-medium text-blue-600">{filters.searchQuery}</span>&rdquo; 的文章
+                沒有找到包含 &ldquo;<span className="font-medium text-purple-600">{filters.searchQuery}</span>&rdquo; 的文章
               </p>
               <div className="text-sm text-gray-500 space-y-1">
                 <p>建議您：</p>

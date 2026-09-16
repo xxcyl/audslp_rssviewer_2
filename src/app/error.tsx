@@ -45,7 +45,7 @@ export default function Error({
         <div className="space-y-4">
           <Button
             onClick={reset}
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            className="w-full bg-purple-600 hover:bg-purple-700"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
             重新載入

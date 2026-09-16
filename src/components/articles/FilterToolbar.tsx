@@ -114,7 +114,7 @@ export function FilterToolbar({
             <SelectTrigger 
               className={cn(
                 "w-[140px] h-10 text-sm border-gray-300",
-                currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
+                currentFilters.source && "border-purple-400 bg-purple-50 text-purple-700"
               )}
             >
               <Filter className="w-4 h-4 mr-2" />
@@ -144,8 +144,8 @@ export function FilterToolbar({
                   disabled={isLoading}
                   className={cn(
                     "pl-10 pr-10 h-10 border-gray-300 text-center",
-                    "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
-                    hasUnsubmittedSearch && "border-blue-300"
+                    "focus:ring-1 focus:ring-purple-500 focus:border-purple-500",
+                    hasUnsubmittedSearch && "border-purple-300"
                   )}
                 />
                 
@@ -205,8 +205,8 @@ export function FilterToolbar({
                   disabled={isLoading}
                   className={cn(
                     "pl-10 pr-10 h-12 border-gray-300 text-center",
-                    "focus:ring-1 focus:ring-blue-500 focus:border-blue-500",
-                    hasUnsubmittedSearch && "border-blue-300"
+                    "focus:ring-1 focus:ring-purple-500 focus:border-purple-500",
+                    hasUnsubmittedSearch && "border-purple-300"
                   )}
                 />
                 
@@ -240,7 +240,7 @@ export function FilterToolbar({
                 <SelectTrigger 
                   className={cn(
                     "w-full h-11 text-sm border-gray-300",
-                    currentFilters.source && "border-blue-400 bg-blue-50 text-blue-700"
+                    currentFilters.source && "border-purple-400 bg-purple-50 text-purple-700"
                   )}
                 >
                   <Filter className="w-4 h-4 mr-2" />
@@ -284,7 +284,7 @@ export function FilterToolbar({
 
         {/* 搜尋提示 - 條件顯示 */}
         {!hideSearchBox && hasUnsubmittedSearch && (
-          <div className="mt-3 text-xs text-blue-600 text-center">
+          <div className="mt-3 text-xs text-purple-600 text-center">
             按 Enter 開始搜尋
           </div>
         )}
@@ -292,21 +292,21 @@ export function FilterToolbar({
 
       {/* 搜尋結果統計 - 僅在搜尋時顯示且不隱藏搜尋框時 */}
       {!hideSearchBox && isSearching && (
-        <div className="px-4 sm:px-6 py-3 bg-blue-50 border-t border-blue-200 rounded-b-lg">
+        <div className="px-4 sm:px-6 py-3 bg-purple-50 border-t border-purple-200 rounded-b-lg">
           <div className="text-sm text-gray-700 text-center">
-            找到 <span className="font-medium text-blue-700">{totalCount.toLocaleString()}</span> 篇
-            關於 &ldquo;<SearchHighlight 
-              text={currentFilters.searchQuery!} 
+            找到 <span className="font-medium text-purple-700">{totalCount.toLocaleString()}</span> 篇
+            關於 &ldquo;<SearchHighlight
+              text={currentFilters.searchQuery!}
               searchTerm={currentFilters.searchQuery!}
-              className="font-medium text-blue-700"
+              className="font-medium text-purple-700"
             />&rdquo; 的文章
-            
+
             {/* 清除搜尋按鈕 */}
             <Button
               variant="ghost"
               size="sm"
               onClick={handleSearchClear}
-              className="ml-3 h-6 px-2 text-xs text-blue-600 hover:text-blue-800"
+              className="ml-3 h-6 px-2 text-xs text-purple-600 hover:text-purple-800"
             >
               清除搜尋
             </Button>

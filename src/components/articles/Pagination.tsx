@@ -106,7 +106,7 @@ export function Pagination({
                 onClick={() => onPageChange(pageNum)}
                 className={cn(
                   "h-8 w-8 p-0 text-sm",
-                  isCurrentPage && "bg-blue-600 text-white hover:bg-blue-700"
+                  isCurrentPage && "bg-purple-600 text-white hover:bg-purple-700"
                 )}
               >
                 {pageNum}
@@ -147,7 +147,7 @@ export function Pagination({
             min={1}
             max={totalPages}
             defaultValue={currentPage}
-            className="w-14 h-8 text-center border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+            className="w-14 h-8 text-center border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 const value = parseInt(e.currentTarget.value, 10)

@@ -76,7 +76,7 @@ function RecommendationItem({
 
         {/* 摘要 */}
         {article.tldr && (
-          <div className="bg-blue-50 border-l-4 border-blue-300 p-3 rounded-r-lg">
+          <div className="border-l-2 border-purple-200 pl-3">
             <p className="text-sm text-gray-700 leading-relaxed">
               {article.tldr.length > 120 ? article.tldr.substring(0, 120) + '...' : article.tldr}
             </p>
@@ -164,7 +164,7 @@ function ArticleDetailCard({
         <div className="space-y-4 mb-6">
           {/* 中文摘要 */}
           {article.tldr && (
-            <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-300">
+            <div className="border-l-2 border-purple-200 pl-4">
               <div className="text-sm text-gray-800 leading-relaxed">
                 {article.tldr.includes('|') ? (
                   article.tldr.split('|').map((sentence, index, array) => (
@@ -184,8 +184,8 @@ function ArticleDetailCard({
           
           {/* 英文摘要 */}
           {article.english_tldr && (
-            <div className="bg-gray-50 p-4 rounded-lg border-l-4 border-gray-400">
-              <div className="text-sm text-gray-700 italic leading-relaxed">
+            <div className="pl-4">
+              <div className="text-sm text-gray-500 italic leading-relaxed">
                 {article.english_tldr}
               </div>
             </div>

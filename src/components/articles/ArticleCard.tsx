@@ -150,7 +150,7 @@ export function ArticleCard({
           <div className="space-y-3">
             {/* 中文摘要 */}
             {article.tldr && (
-              <div className="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-300">
+              <div className="border-l-2 border-purple-200 pl-3">
                 <div className="text-xs md:text-sm text-gray-800 leading-relaxed">
                   {article.tldr.includes('|') ? (
                     article.tldr.split('|').map((sentence, index, array) => (
@@ -180,9 +180,9 @@ export function ArticleCard({
             
             {/* 原文摘要 */}
             {article.english_tldr && (
-              <div className="bg-gray-50 p-3 rounded-lg border-l-4 border-gray-400">
-                <div className="text-xs md:text-sm text-gray-700 italic leading-relaxed">
-                  <SearchHighlight 
+              <div className="pl-3">
+                <div className="text-xs md:text-sm text-gray-500 italic leading-relaxed">
+                  <SearchHighlight
                     text={article.english_tldr}
                     searchTerm={searchTerm || ''}
                   />

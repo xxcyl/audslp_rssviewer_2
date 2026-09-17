@@ -1,6 +1,6 @@
 // Supabase 客戶端設定
 import { createClient } from '@supabase/supabase-js'
-import { Article, ArticleLike } from './types'
+import { Article, Bookmark } from './types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
@@ -17,13 +17,13 @@ export type Database = {
     Tables: {
       rss_entries: {
         Row: Article
-        Insert: Omit<Article, 'id' | 'created_at' | 'likes_count'>
+        Insert: Omit<Article, 'id' | 'created_at'>
         Update: Partial<Omit<Article, 'id' | 'created_at'>>
       }
-      article_likes: {
-        Row: ArticleLike
-        Insert: Omit<ArticleLike, 'id' | 'created_at'>
-        Update: Partial<Omit<ArticleLike, 'id' | 'created_at'>>
+      bookmarks: {
+        Row: Bookmark
+        Insert: Omit<Bookmark, 'created_at'>
+        Update: Partial<Omit<Bookmark, 'user_id' | 'article_id' | 'created_at'>>
       }
     }
     Functions: {
@@ -34,14 +34,6 @@ export type Database = {
           limit_count?: number
         }
         Returns: (Article & { similarity: number })[]
-      }
-      increment_likes: {
-        Args: { article_id: number }
-        Returns: void
-      }
-      decrement_likes: {
-        Args: { article_id: number }
-        Returns: void
       }
     }
   }

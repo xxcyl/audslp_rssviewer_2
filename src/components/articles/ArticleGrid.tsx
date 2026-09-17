@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils'
 
 interface ArticleGridProps {
   articles: Article[]
-  onLike?: (articleId: number) => void
   isLoading?: boolean
   searchTerm?: string // 新增：搜尋詞用於高亮
   onMeshTermClick?: (term: string) => void
@@ -53,7 +52,6 @@ function EmptyState() {
 
 export function ArticleGrid({
   articles,
-  onLike,
   isLoading = false,
   searchTerm,
   onMeshTermClick,
@@ -85,7 +83,6 @@ export function ArticleGrid({
         <ArticleCard
           key={article.id}
           article={article}
-          onLike={onLike}
           searchTerm={searchTerm} // 傳遞搜尋詞給 ArticleCard
           onMeshTermClick={onMeshTermClick}
         />

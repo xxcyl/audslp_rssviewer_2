@@ -27,7 +27,6 @@ const SORT_OPTIONS = [
   { value: 'created_at.desc', label: '最新收錄' },
   { value: 'published.desc', label: '最新發布' },
   { value: 'published.asc', label: '最舊發布' },
-  { value: 'likes_count.desc', label: '最多按讚' },
 ] as const
 
 const selectTriggerClass = "border-none shadow-none bg-transparent px-0 h-auto gap-1 font-normal text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)] focus-visible:ring-0 [&_svg]:text-[var(--brand-text-muted)]"

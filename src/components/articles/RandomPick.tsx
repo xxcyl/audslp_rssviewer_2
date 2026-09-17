@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Heart, Shuffle, Unlock, FlaskConical } from 'lucide-react'
+import { Bookmark, ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Shuffle, Unlock, FlaskConical } from 'lucide-react'
 import { useRandomArticle } from '@/hooks/useArticles'
-import { useLikes } from '@/hooks/useLikes'
+import { useBookmarks } from '@/hooks/useBookmarks'
 import { RelatedArticlesPanel } from './RelatedArticlesPanel'
 import { getPrimaryEvidenceType, getEvidenceLabel, evidenceBadgeStyle } from '@/lib/publicationTypes'
 import { cn } from '@/lib/utils'
@@ -16,7 +16,7 @@ interface RandomPickProps {
 export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
   const { data: article, isLoading, reroll } = useRandomArticle()
   const articleId = article?.id ?? 0
-  const { isLiked, totalLikes, toggleLike, isLoading: likeLoading } = useLikes(articleId)
+  const { isBookmarked, toggleBookmark, isLoading: bookmarkLoading } = useBookmarks(articleId)
   const [isRelatedOpen, setIsRelatedOpen] = useState(false)
 
   if (isLoading || !article) return null
@@ -136,18 +136,18 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
           )}
         </div>
 
-        {/* 按讚與外部連結 */}
+        {/* 收藏與外部連結 */}
         <div className="flex flex-row md:flex-col md:w-[140px] flex-shrink-0 items-center md:items-end justify-between gap-3">
           <button
-            onClick={() => toggleLike()}
-            disabled={likeLoading}
+            onClick={toggleBookmark}
+            disabled={bookmarkLoading}
+            title={isBookmarked ? '取消收藏' : '收藏文章'}
             className={cn(
               "font-display flex items-center gap-1.5 text-[10px] border-2 px-1.5 py-1 transition-colors",
-              isLiked ? "text-red-500 border-red-500" : "text-[var(--brand-primary)] border-[var(--brand-primary)] hover:text-red-500 hover:border-red-500"
+              isBookmarked ? "text-[var(--brand-accent-dark)] border-[var(--brand-accent-dark)]" : "text-[var(--brand-primary)] border-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)] hover:border-[var(--brand-accent-dark)]"
             )}
           >
-            <Heart className={cn("w-3.5 h-3.5", isLiked && "fill-current")} />
-            {totalLikes || 0}
+            <Bookmark className={cn("w-3.5 h-3.5", isBookmarked && "fill-current")} />
           </button>
 
           <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-base text-[var(--brand-primary)]">

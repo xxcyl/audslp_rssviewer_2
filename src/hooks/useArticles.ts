@@ -102,7 +102,6 @@ async function fetchArticles({
         pmid: result.pmid as string | null,
         doi: result.doi as string | null,
         embedding: result.embedding as number[] | null,
-        likes_count: (result.likes_count as number) || 0, // 保證不為 null
         publication_types: (result.publication_types as string[] | null) ?? null,
         pmc_id: (result.pmc_id as string | null) ?? null,
         mesh_terms: (result.mesh_terms as string[] | null) ?? null
@@ -317,19 +316,10 @@ export function useArticleStats() {
 
         if (recentError) throw recentError
 
-        // 熱門文章數（按讚數 > 0）
-        const { count: popularArticles, error: popularError } = await supabase
-          .from('rss_entries')
-          .select('*', { count: 'exact', head: true })
-          .gt('likes_count', 0)
-
-        if (popularError) throw popularError
-
         return {
           totalArticles: totalArticles || 0,
           totalSources,
           recentArticles: recentArticles || 0,
-          popularArticles: popularArticles || 0,
         }
       } catch (error) {
         console.error('統計資訊載入失敗:', error)

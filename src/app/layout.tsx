@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Press_Start_2P, VT323 } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { Providers } from "./providers"
 import "./globals.css"
 
 const pixelBody = VT323({
@@ -95,7 +96,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
       <body className={`${pixelBody.variable} ${pixelDisplay.variable} ${pixelBody.className} antialiased`}>
-        {children}
+        <Providers>{children}</Providers>
         <Analytics />
       </body>
     </html>

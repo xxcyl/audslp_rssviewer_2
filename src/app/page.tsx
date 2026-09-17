@@ -88,7 +88,7 @@ function MainLayout() {
       <div className="min-h-screen bg-[var(--brand-bg)]">
         <header className="sticky top-0 z-40 bg-[var(--brand-primary)] py-3">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between gap-2 md:gap-4">
               <div className="flex items-center gap-3 md:gap-4">
                 <h1>
                   <button
@@ -108,14 +108,14 @@ function MainLayout() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 py-1.5 w-44 md:w-60">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 h-9 w-24 sm:w-44 md:w-60">
                   <Search className="w-4 h-4 text-white/50 shrink-0" />
                   <input
                     type="text"
                     value={globalSearchQuery}
                     onChange={(e) => setGlobalSearchQuery(e.target.value)}
-                    placeholder="搜尋關鍵字或作者"
+                    placeholder="搜尋關鍵字"
                     className="bg-transparent border-none outline-none text-base text-white placeholder-white/50 w-full min-w-0"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
@@ -177,7 +177,7 @@ function MainLayout() {
       {/* 導覽列：單行深藏青色塊 */}
       <header className="sticky top-0 z-40 bg-[var(--brand-primary)] py-3">
         <div className="container mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center justify-between gap-2 md:gap-4">
             {/* 左側 Logo/標題 */}
             <div className="flex items-center gap-3 md:gap-4">
               <h1>
@@ -199,14 +199,14 @@ function MainLayout() {
             </div>
 
             {/* 右側搜尋框 + 登入 */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 py-1.5 w-44 md:w-60">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 h-9 w-24 sm:w-44 md:w-60">
                 <Search className="w-4 h-4 text-white/50 shrink-0" />
                 <input
                   type="text"
                   value={globalSearchQuery}
                   onChange={(e) => setGlobalSearchQuery(e.target.value)}
-                  placeholder="搜尋關鍵字或作者"
+                  placeholder="搜尋關鍵字"
                   className="bg-transparent border-none outline-none text-base text-white placeholder-white/50 w-full min-w-0"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {

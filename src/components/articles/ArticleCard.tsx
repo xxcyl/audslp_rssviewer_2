@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Heart, ExternalLink, FileText, Calendar, ChevronDown, ChevronUp, Unlock, FlaskConical } from 'lucide-react'
-import { useLikes } from '@/hooks/useLikes'
+import { useState } from 'react'
+import { Bookmark, ExternalLink, FileText, Calendar, ChevronDown, ChevronUp, Unlock, FlaskConical } from 'lucide-react'
+import { useBookmarks } from '@/hooks/useBookmarks'
 import { SearchHighlight } from './SearchBar'
 import { RelatedArticlesPanel } from './RelatedArticlesPanel'
 import { getPrimaryEvidenceType, getEvidenceLabel, evidenceBadgeStyle } from '@/lib/publicationTypes'
@@ -11,7 +11,6 @@ import { cn } from '@/lib/utils'
 
 interface ArticleCardProps {
   article: Article
-  onLike?: (articleId: number) => void
   searchTerm?: string // 新增：搜尋詞用於高亮
   onMeshTermClick?: (term: string) => void
   className?: string
@@ -19,48 +18,12 @@ interface ArticleCardProps {
 
 export function ArticleCard({
   article,
-  onLike,
   searchTerm, // 新增參數
   onMeshTermClick,
   className
 }: ArticleCardProps) {
-  // 使用按讚 hook
-  const {
-    isLiked,
-    totalLikes,
-    toggleLike,
-    isLoading: likeLoading
-  } = useLikes(article.id)
-
-  // 本地狀態
-  const [localLiked, setLocalLiked] = useState(isLiked)
-  const [localLikeCount, setLocalLikeCount] = useState(totalLikes)
+  const { isBookmarked, toggleBookmark, isLoading: bookmarkLoading } = useBookmarks(article.id)
   const [isRelatedOpen, setIsRelatedOpen] = useState(false)
-
-  // 同步遠端狀態
-  useEffect(() => {
-    setLocalLiked(isLiked)
-    setLocalLikeCount(totalLikes)
-  }, [isLiked, totalLikes])
-
-  const handleLike = async () => {
-    try {
-      // 樂觀更新 UI
-      setLocalLiked(!localLiked)
-      setLocalLikeCount(prev => localLiked ? prev - 1 : prev + 1)
-
-      // 呼叫 hook 中的按讚函數
-      toggleLike()
-
-      // 通知父組件
-      onLike?.(article.id)
-    } catch (error) {
-      // 如果失敗，恢復狀態
-      setLocalLiked(isLiked)
-      setLocalLikeCount(totalLikes)
-      console.error('按讚失敗:', error)
-    }
-  }
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return '未知日期'
@@ -183,18 +146,18 @@ export function ArticleCard({
           )}
         </div>
 
-        {/* 按讚與外部連結 */}
+        {/* 收藏與外部連結 */}
         <div className="flex flex-row md:flex-col md:w-[140px] flex-shrink-0 items-center md:items-end justify-between gap-3">
           <button
-            onClick={handleLike}
-            disabled={likeLoading}
+            onClick={toggleBookmark}
+            disabled={bookmarkLoading}
+            title={isBookmarked ? '取消收藏' : '收藏文章'}
             className={cn(
               "font-display flex items-center gap-1.5 text-[10px] border-2 px-1.5 py-1 transition-colors",
-              localLiked ? "text-red-500 border-red-500" : "text-[var(--brand-primary)] border-[var(--brand-primary)] hover:text-red-500 hover:border-red-500"
+              isBookmarked ? "text-[var(--brand-accent-dark)] border-[var(--brand-accent-dark)]" : "text-[var(--brand-primary)] border-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)] hover:border-[var(--brand-accent-dark)]"
             )}
           >
-            <Heart className={cn("w-3.5 h-3.5", localLiked && "fill-current")} />
-            {localLikeCount || 0}
+            <Bookmark className={cn("w-3.5 h-3.5", isBookmarked && "fill-current")} />
           </button>
 
           <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-base text-[var(--brand-primary)]">

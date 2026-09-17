@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AlertTriangle, Search, SearchX, X } from 'lucide-react'
 import { FilterToolbar } from '@/components/articles/FilterToolbar'
 import { ArticleGrid } from '@/components/articles/ArticleGrid'
@@ -10,26 +9,13 @@ import { Pagination } from '@/components/articles/Pagination'
 import { HomePageJsonLd } from '@/components/seo/JsonLd'
 import { SiteShareButtons } from '@/components/social/ShareButtons'
 import { useArticles } from '@/hooks/useArticles'
-import { useBatchLikes } from '@/hooks/useLikes'
+import { AuthButton } from '@/components/auth/AuthButton'
 import type { FilterOptions } from '@/lib/types'
 
-// 建立 QueryClient
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 5 * 60 * 1000, // 5 分鐘
-      gcTime: 10 * 60 * 1000, // 10 分鐘
-    },
-  },
-})
-
-// 主頁面組件（包含 QueryClient Provider）
+// 主頁面組件（QueryClientProvider/AuthProvider 已上移到 app/providers.tsx，
+// 讓 /bookmarks 等其他路由也能共用同一份 cache 跟登入狀態）
 export default function HomePage() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <MainLayout />
-    </QueryClientProvider>
-  )
+  return <MainLayout />
 }
 
 // 主要布局組件
@@ -55,13 +41,6 @@ function MainLayout() {
     filters
   })
 
-  // 獲取批量按讚狀態
-  const articleIds = articlesData?.articles.map(article => article.id) || []
-  const { data: likedArticles = new Set() } = useBatchLikes(articleIds)
-  
-  // 使用 likedArticles 來顯示按讚狀態（目前先保留備用）
-  console.log('Current liked articles:', likedArticles.size)
-
   // 處理篩選功能
   const handleFiltersChange = (newFilters: FilterOptions) => {
     setFilters(newFilters)
@@ -84,16 +63,6 @@ function MainLayout() {
     setFilters({ sortBy: 'created_at.desc' })
     setCurrentPage(1)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  // 處理按讚功能
-  const handleLike = async (articleId: number) => {
-    console.log('按讚文章:', articleId)
-    // 這裡會觸發重新載入來更新按讚狀態
-    // 當按讚 hook 完整實作後，這裡會自動更新
-    setTimeout(() => {
-      refetchArticles()
-    }, 500)
   }
 
   // 點擊文章的 MeSH 主題標籤：直接以該主題詞觸發搜尋
@@ -139,37 +108,40 @@ function MainLayout() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 py-1.5 w-44 md:w-60">
-                <Search className="w-4 h-4 text-white/50 shrink-0" />
-                <input
-                  type="text"
-                  value={globalSearchQuery}
-                  onChange={(e) => setGlobalSearchQuery(e.target.value)}
-                  placeholder="搜尋關鍵字或作者"
-                  className="bg-transparent border-none outline-none text-base text-white placeholder-white/50 w-full min-w-0"
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault()
-                      handleHeaderSearch()
-                    }
-                  }}
-                />
-                {globalSearchQuery && (
-                  <button
-                    onClick={() => {
-                      setGlobalSearchQuery('')
-                      const newFilters = {
-                        ...filters,
-                        searchQuery: undefined
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 py-1.5 w-44 md:w-60">
+                  <Search className="w-4 h-4 text-white/50 shrink-0" />
+                  <input
+                    type="text"
+                    value={globalSearchQuery}
+                    onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                    placeholder="搜尋關鍵字或作者"
+                    className="bg-transparent border-none outline-none text-base text-white placeholder-white/50 w-full min-w-0"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleHeaderSearch()
                       }
-                      setFilters(newFilters)
-                      setCurrentPage(1)
                     }}
-                    className="text-white/50 hover:text-white transition-colors shrink-0"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                )}
+                  />
+                  {globalSearchQuery && (
+                    <button
+                      onClick={() => {
+                        setGlobalSearchQuery('')
+                        const newFilters = {
+                          ...filters,
+                          searchQuery: undefined
+                        }
+                        setFilters(newFilters)
+                        setCurrentPage(1)
+                      }}
+                      className="text-white/50 hover:text-white transition-colors shrink-0"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+                <AuthButton />
               </div>
             </div>
           </div>
@@ -226,39 +198,42 @@ function MainLayout() {
               </span>
             </div>
 
-            {/* 右側搜尋框 */}
-            <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 py-1.5 w-44 md:w-60">
-              <Search className="w-4 h-4 text-white/50 shrink-0" />
-              <input
-                type="text"
-                value={globalSearchQuery}
-                onChange={(e) => setGlobalSearchQuery(e.target.value)}
-                placeholder="搜尋關鍵字或作者"
-                className="bg-transparent border-none outline-none text-base text-white placeholder-white/50 w-full min-w-0"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault()
-                    handleHeaderSearch()
-                  }
-                }}
-              />
-              {globalSearchQuery && (
-                <button
-                  onClick={() => {
-                    setGlobalSearchQuery('')
-                    // 清除搜尋條件
-                    const newFilters = {
-                      ...filters,
-                      searchQuery: undefined
+            {/* 右側搜尋框 + 登入 */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 bg-white/10 border-2 border-white/35 px-3 py-1.5 w-44 md:w-60">
+                <Search className="w-4 h-4 text-white/50 shrink-0" />
+                <input
+                  type="text"
+                  value={globalSearchQuery}
+                  onChange={(e) => setGlobalSearchQuery(e.target.value)}
+                  placeholder="搜尋關鍵字或作者"
+                  className="bg-transparent border-none outline-none text-base text-white placeholder-white/50 w-full min-w-0"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleHeaderSearch()
                     }
-                    setFilters(newFilters)
-                    setCurrentPage(1)
                   }}
-                  className="text-white/50 hover:text-white transition-colors shrink-0"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              )}
+                />
+                {globalSearchQuery && (
+                  <button
+                    onClick={() => {
+                      setGlobalSearchQuery('')
+                      // 清除搜尋條件
+                      const newFilters = {
+                        ...filters,
+                        searchQuery: undefined
+                      }
+                      setFilters(newFilters)
+                      setCurrentPage(1)
+                    }}
+                    className="text-white/50 hover:text-white transition-colors shrink-0"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+              <AuthButton />
             </div>
           </div>
         </div>
@@ -308,7 +283,6 @@ function MainLayout() {
           {/* 文章清單 */}
           <ArticleGrid
             articles={articlesData?.articles || []}
-            onLike={handleLike}
             isLoading={articlesLoading}
             searchTerm={filters.searchQuery} // 新增：傳遞搜尋詞用於高亮
             onMeshTermClick={handleMeshTermClick}

@@ -27,6 +27,7 @@ Disallow: /api/
 Disallow: /_next/
 Disallow: /admin/
 Disallow: /private/
+Disallow: /bookmarks
 
 # 搜尋引擎特定設定
 User-agent: Googlebot

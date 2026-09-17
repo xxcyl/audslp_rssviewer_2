@@ -13,24 +13,16 @@ export interface Article {
   pmid: string | null // varchar(50)，可為 null
   doi: string | null // varchar(255)，可為 null
   embedding: number[] | null // VECTOR 類型，可為 null
-  likes_count: number // integer，但前端處理時保證不為 null
   publication_types: string[] | null // text[] 類型，PubMed 官方研究類型分類，可為 null
   pmc_id: string | null // PubMed Central ID，有值代表 PMC 提供免費全文，可為 null
   mesh_terms: string[] | null // text[] 類型，PubMed MeSH 主要主題標籤，可為 null
 }
 
-export interface ArticleLike {
-  id: string
+// 個人收藏（需登入），取代原本的匿名按讚
+export interface Bookmark {
+  user_id: string
   article_id: number
-  user_fingerprint: string
-  ip_address?: string
-  user_agent?: string
   created_at: string
-}
-
-export interface LikeStatus {
-  isLiked: boolean
-  totalLikes: number
 }
 
 export interface RecommendedArticle extends Article {
@@ -49,7 +41,7 @@ export interface PaginationState {
 export interface FilterOptions {
   source?: string
   publicationType?: string
-  sortBy: 'published.desc' | 'published.asc' | 'created_at.desc' | 'likes_count.desc'
+  sortBy: 'published.desc' | 'published.asc' | 'created_at.desc'
   searchQuery?: string
 }
 
@@ -75,7 +67,6 @@ export interface StatsInfo {
   totalArticles: number
   totalSources: number
   recentArticles: number
-  popularArticles: number
 }
 
 // 錯誤處理
@@ -102,9 +93,9 @@ export interface BaseComponentProps {
 // 文章卡片組件 Props
 export interface ArticleCardProps extends BaseComponentProps {
   article: Article
-  showLikeButton?: boolean
+  showBookmarkButton?: boolean
   showRecommendations?: boolean
-  onLike?: (articleId: number) => void
+  onBookmark?: (articleId: number) => void
   onRecommend?: (articleId: number) => void
 }
 

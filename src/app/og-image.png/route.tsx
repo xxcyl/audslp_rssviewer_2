@@ -70,10 +70,10 @@ export async function GET() {
             marginBottom: '32px',
           }}
         >
-          <span style={{ fontFamily: '"Press Start 2P"', color: BRAND_ACCENT, fontSize: '48px' }}>[</span>
+          <span style={{ color: BRAND_ACCENT }}>[</span>
           <span>聽語期刊速報</span>
-          <span style={{ fontFamily: '"Press Start 2P"', color: BRAND_ACCENT, fontSize: '48px' }}>]</span>
-          <span style={{ fontFamily: '"Press Start 2P"', color: BRAND_ACCENT, fontSize: '48px' }}>_</span>
+          <span style={{ color: BRAND_ACCENT }}>]</span>
+          <span style={{ color: BRAND_ACCENT }}>_</span>
         </div>
 
         {/* 副標題：像素字體 */}

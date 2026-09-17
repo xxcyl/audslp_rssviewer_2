@@ -13,6 +13,7 @@ interface ArticleCardProps {
   article: Article
   onLike?: (articleId: number) => void
   searchTerm?: string // 新增：搜尋詞用於高亮
+  onMeshTermClick?: (term: string) => void
   className?: string
 }
 
@@ -20,6 +21,7 @@ export function ArticleCard({
   article,
   onLike,
   searchTerm, // 新增參數
+  onMeshTermClick,
   className
 }: ArticleCardProps) {
   // 使用按讚 hook
@@ -163,6 +165,21 @@ export function ArticleCard({
                 searchTerm={searchTerm || ''}
               />
             </p>
+          )}
+
+          {article.mesh_terms && article.mesh_terms.length > 0 && (
+            <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
+              {article.mesh_terms.slice(0, 4).map((term) => (
+                <button
+                  key={term}
+                  type="button"
+                  onClick={() => onMeshTermClick?.(term)}
+                  className="text-sm text-[var(--brand-text-faint)] hover:text-[var(--brand-accent-dark)] hover:underline transition-colors"
+                >
+                  #{term}
+                </button>
+              ))}
+            </div>
           )}
         </div>
 

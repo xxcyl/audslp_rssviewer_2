@@ -16,6 +16,7 @@ export interface Article {
   likes_count: number // integer，但前端處理時保證不為 null
   publication_types: string[] | null // text[] 類型，PubMed 官方研究類型分類，可為 null
   pmc_id: string | null // PubMed Central ID，有值代表 PMC 提供免費全文，可為 null
+  mesh_terms: string[] | null // text[] 類型，PubMed MeSH 主要主題標籤，可為 null
 }
 
 export interface ArticleLike {

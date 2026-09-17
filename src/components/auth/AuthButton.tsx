@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Bookmark, LogOut, User } from 'lucide-react'
+import { Bookmark, LogIn, LogOut, User } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,13 +16,16 @@ export function AuthButton() {
   if (isLoading) return null
 
   if (!user) {
+    // 英文 + icon：font-display（像素字體）沒有中文字符，中文字會落到 fallback
+    // 字型渲染跑版，比照 Reroll／RANDOM PICK 等既有徽章的英文標籤處理方式
     return (
       <button
         type="button"
         onClick={openLogin}
-        className="font-display text-[9px] text-[var(--brand-primary)] bg-[var(--brand-accent)] px-2.5 py-1.5 whitespace-nowrap hover:brightness-95 transition-[filter]"
+        className="font-display flex items-center gap-1.5 h-9 text-[9px] text-[var(--brand-primary)] bg-[var(--brand-accent)] px-2.5 whitespace-nowrap hover:brightness-95 transition-[filter]"
       >
-        登入
+        <LogIn className="w-3 h-3" />
+        <span className="hidden sm:inline">LOG IN</span>
       </button>
     )
   }
@@ -32,7 +35,7 @@ export function AuthButton() {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors"
+          className="flex items-center justify-center h-9 w-9 text-white/80 hover:text-white transition-colors"
         >
           <User className="w-4 h-4" />
         </button>

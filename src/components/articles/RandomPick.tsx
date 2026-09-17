@@ -148,6 +148,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
             )}
           >
             <Bookmark className={cn("w-3.5 h-3.5", isBookmarked && "fill-current")} />
+            {article.bookmark_count > 0 && article.bookmark_count}
           </button>
 
           <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-base text-[var(--brand-primary)]">

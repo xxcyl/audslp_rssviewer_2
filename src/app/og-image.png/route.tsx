@@ -26,6 +26,13 @@ export async function GET() {
     'https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nVivY.ttf'
   ).then((res) => res.arrayBuffer())
 
+  // 主標題的中文字跟 [ ] _ 括號原本落在不同 fallback 字型，字級/基線對不齊。
+  // 改成明確載入同一個中文字型（Google 依 text 參數回傳的裁切子集，僅含這幾個字），
+  // 讓整行標題（中英文、符號）都用同一套字型度量繪製。
+  const titleFontData = await fetch(
+    'https://fonts.gstatic.com/l/font?kit=-nFuOG829Oofr2wohFbTp9ifNAn722rq0MXz70e1_CpWpzXr_zBDItm8U7hM11ENFJsJSO9sCg&skey=3904269dc8bdd0a1&v=v39'
+  ).then((res) => res.arrayBuffer())
+
   return new ImageResponse(
     (
       <div
@@ -59,13 +66,15 @@ export async function GET() {
           ))}
         </div>
 
-        {/* 主標題：比照網站 header 的 [ 標題 ]_ 樣式，中文用粗體（像素字體無 CJK 字符） */}
+        {/* 主標題：比照網站 header 的 [ 標題 ]_ 樣式；中文跟符號共用同一個明確載入的
+            字型，避免中文落到 fallback 字型、跟符號字級/基線對不齊 */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: '14px',
             fontSize: '72px',
+            fontFamily: '"Noto Sans TC"',
             fontWeight: 700,
             marginBottom: '32px',
           }}
@@ -132,6 +141,12 @@ export async function GET() {
           data: pixelFontData,
           style: 'normal',
           weight: 400,
+        },
+        {
+          name: 'Noto Sans TC',
+          data: titleFontData,
+          style: 'normal',
+          weight: 700,
         },
       ],
     }

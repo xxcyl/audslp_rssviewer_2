@@ -69,14 +69,29 @@ export function RandomPick({ className }: RandomPickProps) {
           <span className="text-base text-[var(--brand-text-faint)]">
             {formatDate(article.published)}
           </span>
-          {evidenceType && (
-            <span
-              className="font-display inline-flex items-center gap-1 w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] px-1.5 py-1"
-              style={evidenceBadgeStyle(evidenceType)}
-            >
-              <FlaskConical className="w-2.5 h-2.5" />
-              {getEvidenceLabel(evidenceType)}
-            </span>
+          {(evidenceType || article.pmc_id) && (
+            <div className="flex flex-wrap items-center gap-1.5">
+              {evidenceType && (
+                <span
+                  className="font-display inline-flex items-center gap-1 w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] px-1.5 py-1"
+                  style={evidenceBadgeStyle(evidenceType)}
+                >
+                  <FlaskConical className="w-2.5 h-2.5" />
+                  {getEvidenceLabel(evidenceType)}
+                </span>
+              )}
+              {article.pmc_id && (
+                <a
+                  href={`https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmc_id}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-display inline-flex items-center gap-1 w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] border-[var(--brand-accent-dark)] text-[var(--brand-accent-dark)] px-1.5 py-1 hover:bg-[var(--brand-accent-dark)] hover:text-white transition-colors"
+                >
+                  <Unlock className="w-2.5 h-2.5" />
+                  Free Full Text
+                </a>
+              )}
+            </div>
           )}
         </div>
 
@@ -141,18 +156,6 @@ export function RandomPick({ className }: RandomPickProps) {
               >
                 <FileText className="w-3 h-3" />
                 DOI
-              </a>
-            )}
-
-            {article.pmc_id && (
-              <a
-                href={`https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmc_id}/`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-[var(--brand-accent-dark)] hover:text-[var(--brand-accent)] transition-colors"
-              >
-                <Unlock className="w-3 h-3" />
-                Free Full Text
               </a>
             )}
 

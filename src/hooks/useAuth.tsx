@@ -10,6 +10,7 @@ interface AuthContextValue {
   session: Session | null
   isLoading: boolean
   signInWithMagicLink: (email: string) => Promise<{ error: string | null }>
+  verifyEmailCode: (email: string, token: string) => Promise<{ error: string | null }>
   signOut: () => Promise<void>
   openLogin: () => void
 }
@@ -46,6 +47,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error?.message ?? null }
   }
 
+  // 跨裝置收信時（例如電腦上按登入、手機收信）點連結只會讓手機登入，
+  // 電腦那邊收不到 token。改用信裡同時附的 6 位數驗證碼，手動輸入回
+  // 原本操作的裝置，就能確保登入的是發起請求的那個瀏覽器
+  const verifyEmailCode = async (email: string, token: string) => {
+    const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' })
+    return { error: error?.message ?? null }
+  }
+
   const signOut = async () => {
     await supabase.auth.signOut()
   }
@@ -57,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         session,
         isLoading,
         signInWithMagicLink,
+        verifyEmailCode,
         signOut,
         openLogin: () => setIsLoginOpen(true),
       }}

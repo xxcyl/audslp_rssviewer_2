@@ -96,6 +96,14 @@ function MainLayout() {
     }, 500)
   }
 
+  // 點擊文章的 MeSH 主題標籤：直接以該主題詞觸發搜尋
+  const handleMeshTermClick = (term: string) => {
+    setGlobalSearchQuery(term)
+    setFilters({ ...filters, searchQuery: term })
+    setCurrentPage(1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   // 處理標題欄搜尋 - 只在按下 Enter 時觸發
   const handleHeaderSearch = () => {
     const newFilters = {
@@ -274,7 +282,7 @@ function MainLayout() {
 
           {/* 隨機精選：僅在第一頁且非搜尋狀態顯示 */}
           {currentPage === 1 && !isSearching && (
-            <RandomPick />
+            <RandomPick onMeshTermClick={handleMeshTermClick} />
           )}
 
           {/* 無搜尋結果提示 */}
@@ -303,6 +311,7 @@ function MainLayout() {
             onLike={handleLike}
             isLoading={articlesLoading}
             searchTerm={filters.searchQuery} // 新增：傳遞搜尋詞用於高亮
+            onMeshTermClick={handleMeshTermClick}
           />
 
           {/* 分頁 */}

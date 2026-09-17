@@ -10,9 +10,10 @@ import { cn } from '@/lib/utils'
 
 interface RandomPickProps {
   className?: string
+  onMeshTermClick?: (term: string) => void
 }
 
-export function RandomPick({ className }: RandomPickProps) {
+export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
   const { data: article, isLoading, reroll } = useRandomArticle()
   const articleId = article?.id ?? 0
   const { isLiked, totalLikes, toggleLike, isLoading: likeLoading } = useLikes(articleId)
@@ -117,6 +118,21 @@ export function RandomPick({ className }: RandomPickProps) {
             <p className="text-base leading-relaxed text-[var(--brand-text-muted)]">
               {'// '}{article.english_tldr}
             </p>
+          )}
+
+          {article.mesh_terms && article.mesh_terms.length > 0 && (
+            <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1">
+              {article.mesh_terms.slice(0, 4).map((term) => (
+                <button
+                  key={term}
+                  type="button"
+                  onClick={() => onMeshTermClick?.(term)}
+                  className="text-sm text-[var(--brand-text-faint)] hover:text-[var(--brand-accent-dark)] hover:underline transition-colors"
+                >
+                  #{term}
+                </button>
+              ))}
+            </div>
           )}
         </div>
 

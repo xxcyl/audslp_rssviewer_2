@@ -10,6 +10,7 @@ interface ArticleGridProps {
   onLike?: (articleId: number) => void
   isLoading?: boolean
   searchTerm?: string // 新增：搜尋詞用於高亮
+  onMeshTermClick?: (term: string) => void
   className?: string
 }
 
@@ -55,6 +56,7 @@ export function ArticleGrid({
   onLike,
   isLoading = false,
   searchTerm,
+  onMeshTermClick,
   className
 }: ArticleGridProps) {
 
@@ -85,6 +87,7 @@ export function ArticleGrid({
           article={article}
           onLike={onLike}
           searchTerm={searchTerm} // 傳遞搜尋詞給 ArticleCard
+          onMeshTermClick={onMeshTermClick}
         />
       ))}
     </div>

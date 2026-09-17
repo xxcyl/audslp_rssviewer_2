@@ -16,6 +16,7 @@ export interface Article {
   publication_types: string[] | null // text[] 類型，PubMed 官方研究類型分類，可為 null
   pmc_id: string | null // PubMed Central ID，有值代表 PMC 提供免費全文，可為 null
   mesh_terms: string[] | null // text[] 類型，PubMed MeSH 主要主題標籤，可為 null
+  bookmark_count: number // 被收藏的總次數（由 DB trigger 同步，不記錄是誰收藏），保證不為 null
 }
 
 // 個人收藏（需登入），取代原本的匿名按讚
@@ -41,7 +42,7 @@ export interface PaginationState {
 export interface FilterOptions {
   source?: string
   publicationType?: string
-  sortBy: 'published.desc' | 'published.asc' | 'created_at.desc'
+  sortBy: 'published.desc' | 'published.asc' | 'created_at.desc' | 'bookmark_count.desc'
   searchQuery?: string
 }
 

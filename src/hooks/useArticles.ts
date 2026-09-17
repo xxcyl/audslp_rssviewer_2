@@ -104,7 +104,8 @@ async function fetchArticles({
         embedding: result.embedding as number[] | null,
         publication_types: (result.publication_types as string[] | null) ?? null,
         pmc_id: (result.pmc_id as string | null) ?? null,
-        mesh_terms: (result.mesh_terms as string[] | null) ?? null
+        mesh_terms: (result.mesh_terms as string[] | null) ?? null,
+        bookmark_count: (result.bookmark_count as number) || 0
       }))
 
       totalCount = countResult || 0

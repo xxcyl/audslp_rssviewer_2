@@ -7,14 +7,32 @@ const BRAND_PRIMARY = '#111110'
 const BRAND_ACCENT = '#CBFF3D'
 const BRAND_ACCENT_DARK = '#5B6B0C'
 
+// LED 分段式 EQ 長條，呼應復古 8-bit 音量表，比實心色塊更有像素感
+function EqBar({ height, segments }: { height: number; segments: number }) {
+  const gap = 5
+  const segH = (height - gap * (segments - 1)) / segments
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column-reverse', gap: `${gap}px` }}>
+      {Array.from({ length: segments }).map((_, i) => (
+        <div key={i} style={{ width: '22px', height: `${segH}px`, background: BRAND_ACCENT }} />
+      ))}
+    </div>
+  )
+}
+
 export async function GET() {
+  // 動態載入 Press Start 2P 像素字體（@vercel/og 只支援 ttf/otf/woff，不支援 woff2）
+  const pixelFontData = await fetch(
+    'https://fonts.gstatic.com/s/pressstart2p/v16/e3t4euO8T-267oIAQAu6jDQyK3nVivY.ttf'
+  ).then((res) => res.arrayBuffer())
+
   return new ImageResponse(
     (
       <div
         style={{
           background: BRAND_PRIMARY,
-          backgroundImage: 'radial-gradient(rgba(255,255,255,0.06) 2px, transparent 2px)',
-          backgroundSize: '28px 28px',
+          backgroundImage: 'radial-gradient(rgba(255,255,255,0.07) 2px, transparent 2px)',
+          backgroundSize: '24px 24px',
           width: '100%',
           height: '100%',
           display: 'flex',
@@ -24,61 +42,66 @@ export async function GET() {
           color: '#FAFAF9',
           fontFamily: '"Courier New", monospace',
           position: 'relative',
+          border: `14px solid ${BRAND_ACCENT}`,
+          boxSizing: 'border-box',
         }}
       >
-        {/* EQ / 聲波圖示，呼應網站 favicon */}
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '14px', marginBottom: '48px' }}>
-          {[36, 62, 88, 54, 30].map((h, i) => (
-            <div
-              key={i}
-              style={{ width: '22px', height: `${h}px`, background: BRAND_ACCENT }}
-            />
+        {/* EQ / 聲波圖示，呼應網站 favicon 的 LED 分段風格 */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '16px', marginBottom: '48px' }}>
+          {[
+            [36, 3],
+            [62, 5],
+            [88, 7],
+            [54, 4],
+            [30, 3],
+          ].map(([h, segs], i) => (
+            <EqBar key={i} height={h} segments={segs} />
           ))}
         </div>
 
-        {/* 主標題：比照網站 header 的 [ 標題 ]_ 樣式 */}
+        {/* 主標題：比照網站 header 的 [ 標題 ]_ 樣式，中文用粗體（像素字體無 CJK 字符） */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '10px',
-            fontSize: '76px',
+            gap: '14px',
+            fontSize: '72px',
             fontWeight: 700,
-            marginBottom: '24px',
+            marginBottom: '32px',
           }}
         >
-          <span style={{ color: BRAND_ACCENT }}>[</span>
+          <span style={{ fontFamily: '"Press Start 2P"', color: BRAND_ACCENT, fontSize: '48px' }}>[</span>
           <span>聽語期刊速報</span>
-          <span style={{ color: BRAND_ACCENT }}>]</span>
-          <span style={{ color: BRAND_ACCENT }}>_</span>
+          <span style={{ fontFamily: '"Press Start 2P"', color: BRAND_ACCENT, fontSize: '48px' }}>]</span>
+          <span style={{ fontFamily: '"Press Start 2P"', color: BRAND_ACCENT, fontSize: '48px' }}>_</span>
         </div>
 
-        {/* 副標題 */}
+        {/* 副標題：像素字體 */}
         <div
           style={{
-            fontSize: '28px',
-            letterSpacing: '0.15em',
-            textTransform: 'uppercase',
+            fontFamily: '"Press Start 2P"',
+            fontSize: '20px',
+            letterSpacing: '0.1em',
             color: BRAND_ACCENT,
-            fontWeight: 700,
             marginBottom: '56px',
           }}
         >
-          Audiology &amp; SLP Digest
+          AUDIOLOGY &amp; SLP DIGEST
         </div>
 
-        {/* 特色標籤：比照網站的外框徽章樣式 */}
-        <div style={{ display: 'flex', gap: '20px' }}>
-          {['AI 智慧推薦', '跨期刊搜尋', '證據等級標示'].map((label) => (
+        {/* 特色標籤：像素字體 + 硬邊偏移陰影，呼應網站卡片的復古描邊風格 */}
+        <div style={{ display: 'flex', gap: '32px' }}>
+          {['AI PICKS', 'CROSS-JOURNAL SEARCH', 'EVIDENCE TIER'].map((label) => (
             <div
               key={label}
               style={{
                 display: 'flex',
-                border: `2px solid ${BRAND_ACCENT_DARK}`,
+                border: `2px solid ${BRAND_ACCENT}`,
                 color: BRAND_ACCENT,
-                padding: '14px 26px',
-                fontSize: '22px',
-                fontWeight: 700,
+                padding: '14px 20px',
+                fontFamily: '"Press Start 2P"',
+                fontSize: '13px',
+                boxShadow: `6px 6px 0 ${BRAND_ACCENT_DARK}`,
               }}
             >
               {label}
@@ -90,10 +113,10 @@ export async function GET() {
         <div
           style={{
             position: 'absolute',
-            bottom: '36px',
-            fontSize: '22px',
+            bottom: '40px',
+            fontFamily: '"Press Start 2P"',
+            fontSize: '16px',
             color: 'rgba(250,250,249,0.5)',
-            letterSpacing: '0.05em',
           }}
         >
           audslp.vercel.app
@@ -103,6 +126,14 @@ export async function GET() {
     {
       width: 1200,
       height: 630,
+      fonts: [
+        {
+          name: 'Press Start 2P',
+          data: pixelFontData,
+          style: 'normal',
+          weight: 400,
+        },
+      ],
     }
   )
 }

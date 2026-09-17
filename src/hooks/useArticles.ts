@@ -17,6 +17,38 @@ interface ArticlesResponse {
   sources: string[]
 }
 
+// 取得所有不重複的期刊來源。單次 select 會受 PostgREST 預設的每次請求列數上限
+// （通常是 1000 筆）限制，資料表成長超過上限後，較晚新增、id 較大的來源就會
+// 抓不到——分頁掃過所有列以取得完整、不重複的來源清單。
+async function fetchAllSources(): Promise<string[]> {
+  const sourcesSet = new Set<string>()
+  const pageSize = 1000
+  let from = 0
+
+  while (true) {
+    const { data, error } = await supabase
+      .from('rss_entries')
+      .select('source')
+      .not('source', 'is', null)
+      .range(from, from + pageSize - 1)
+
+    if (error) {
+      console.warn('載入來源列表失敗:', error)
+      break
+    }
+    if (!data || data.length === 0) break
+
+    data.forEach((item) => {
+      if (item.source) sourcesSet.add(item.source)
+    })
+
+    if (data.length < pageSize) break
+    from += pageSize
+  }
+
+  return [...sourcesSet].sort()
+}
+
 // 獲取文章資料的 API 函數 (更新版本，支援搜尋)
 async function fetchArticles({
   page,
@@ -113,18 +145,7 @@ async function fetchArticles({
     }
 
     // 同時獲取所有來源（無論是否在搜尋模式）
-    const { data: sourcesData, error: sourcesError } = await supabase
-      .from('rss_entries')
-      .select('source')
-      .not('source', 'is', null)
-
-    if (sourcesError) {
-      console.warn('載入來源列表失敗:', sourcesError)
-    }
-
-    const sources = sourcesData 
-      ? [...new Set(sourcesData.map(item => item.source).filter(Boolean))].sort()
-      : []
+    const sources = await fetchAllSources()
 
     return {
       articles,

@@ -78,6 +78,14 @@ function MainLayout() {
     refetchArticles()
   }
 
+  // 點擊 header 標題：重置搜尋/篩選並回到頂部（單頁應用內的「回首頁」）
+  const handleGoHome = () => {
+    setGlobalSearchQuery('')
+    setFilters({ sortBy: 'created_at.desc' })
+    setCurrentPage(1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
   // 處理按讚功能
   const handleLike = async (articleId: number) => {
     console.log('按讚文章:', articleId)
@@ -101,15 +109,21 @@ function MainLayout() {
   if (articlesError) {
     return (
       <div className="min-h-screen bg-[var(--brand-bg)]">
-        <header className="bg-[var(--brand-primary)] py-3">
+        <header className="sticky top-0 z-40 bg-[var(--brand-primary)] py-3">
           <div className="container mx-auto px-4 md:px-6">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-3 md:gap-4">
-                <h1 className="flex items-center gap-1 text-[#FAFAF9] whitespace-nowrap">
-                  <span className="font-display text-xs md:text-sm">[</span>
-                  <span className="text-sm md:text-base font-bold tracking-wide">聽語期刊速報</span>
-                  <span className="font-display text-xs md:text-sm">]</span>
-                  <span className="font-display text-xs md:text-sm text-[var(--brand-accent)]">_</span>
+                <h1>
+                  <button
+                    type="button"
+                    onClick={handleGoHome}
+                    className="flex items-center gap-1 text-[#FAFAF9] whitespace-nowrap hover:opacity-80 transition-opacity"
+                  >
+                    <span className="font-display text-xs md:text-sm">[</span>
+                    <span className="text-sm md:text-base font-bold tracking-wide">聽語期刊速報</span>
+                    <span className="font-display text-xs md:text-sm">]</span>
+                    <span className="font-display text-xs md:text-sm text-[var(--brand-accent)]">_</span>
+                  </button>
                 </h1>
                 <span className="hidden md:inline-block w-px h-4 bg-white/20" />
                 <span className="hidden md:inline-block text-sm font-bold tracking-[0.1em] uppercase text-[var(--brand-accent)] whitespace-nowrap">
@@ -181,16 +195,22 @@ function MainLayout() {
       <HomePageJsonLd />
 
       {/* 導覽列：單行深藏青色塊 */}
-      <header className="bg-[var(--brand-primary)] py-3">
+      <header className="sticky top-0 z-40 bg-[var(--brand-primary)] py-3">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between gap-4">
             {/* 左側 Logo/標題 */}
             <div className="flex items-center gap-3 md:gap-4">
-              <h1 className="flex items-center gap-1 text-[#FAFAF9] whitespace-nowrap">
-                <span className="font-display text-xs md:text-sm">[</span>
-                <span className="text-sm md:text-base font-bold tracking-wide">聽語期刊速報</span>
-                <span className="font-display text-xs md:text-sm">]</span>
-                <span className="font-display text-xs md:text-sm text-[var(--brand-accent)]">_</span>
+              <h1>
+                <button
+                  type="button"
+                  onClick={handleGoHome}
+                  className="flex items-center gap-1 text-[#FAFAF9] whitespace-nowrap hover:opacity-80 transition-opacity"
+                >
+                  <span className="font-display text-xs md:text-sm">[</span>
+                  <span className="text-sm md:text-base font-bold tracking-wide">聽語期刊速報</span>
+                  <span className="font-display text-xs md:text-sm">]</span>
+                  <span className="font-display text-xs md:text-sm text-[var(--brand-accent)]">_</span>
+                </button>
               </h1>
               <span className="hidden md:inline-block w-px h-4 bg-white/20" />
               <span className="hidden md:inline-block text-sm font-bold tracking-[0.1em] uppercase text-[var(--brand-accent)] whitespace-nowrap">

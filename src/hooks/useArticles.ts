@@ -302,17 +302,8 @@ export function useArticleStats() {
 
         if (countError) throw countError
 
-        // 來源數量
-        const { data: sourcesData, error: sourcesError } = await supabase
-          .from('rss_entries')
-          .select('source')
-          .not('source', 'is', null)
-
-        if (sourcesError) throw sourcesError
-
-        const totalSources = new Set(
-          sourcesData?.map(item => item.source).filter(Boolean)
-        ).size
+        // 來源數量（分頁掃過所有列，避免 PostgREST 列數上限導致低估）
+        const totalSources = (await fetchAllSources()).length
 
         // 最近 7 天的文章數
         const sevenDaysAgo = new Date()

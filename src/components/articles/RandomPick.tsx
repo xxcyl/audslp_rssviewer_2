@@ -85,7 +85,7 @@ export function RandomPick({ className }: RandomPickProps) {
                   href={`https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmc_id}/`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-display inline-flex items-center gap-1 w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] border-[var(--brand-accent-dark)] text-[var(--brand-accent-dark)] px-1.5 py-1 hover:bg-[var(--brand-accent-dark)] hover:text-white transition-colors"
+                  className="font-display inline-flex items-center gap-1 w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] border-blue-600 text-blue-600 px-1.5 py-1 hover:bg-blue-600 hover:text-white transition-colors"
                 >
                   <Unlock className="w-2.5 h-2.5" />
                   Free Full Text

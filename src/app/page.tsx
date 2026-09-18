@@ -323,7 +323,7 @@ function MainLayout() {
 
           {/* AI 免責聲明 */}
           <p className="text-center text-base text-[var(--brand-text-faint)] border-t border-[var(--brand-border)] pt-6">
-            {'// '}AI 生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
+            {'// '}AI（GPT-5 mini）生成的摘要和翻譯僅供參考，請以 PubMed 原文為準。
           </p>
 
           {/* 版權資訊 */}

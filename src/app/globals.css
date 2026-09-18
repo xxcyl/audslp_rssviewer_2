@@ -16,6 +16,23 @@
   font-family: var(--font-pixel-display), monospace;
 }
 
+/* 跑馬燈：內容需重複兩份緊接排列，-50% 剛好等於捲完一份的距離，
+   接到第二份時視覺上無縫銜接 */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

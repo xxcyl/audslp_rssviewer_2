@@ -14,6 +14,17 @@ export function TrendingKeywords({ onTermClick, className }: TrendingKeywordsPro
 
   const isEmpty = !isLoading && (!keywords || keywords.length === 0)
 
+  const renderTag = (term: string, key: string) => (
+    <button
+      key={key}
+      type="button"
+      onClick={() => onTermClick(term)}
+      className="shrink-0 text-sm text-[var(--brand-text-faint)] hover:text-[var(--brand-accent-dark)] hover:underline transition-colors whitespace-nowrap"
+    >
+      #{term}
+    </button>
+  )
+
   return (
     <div className={cn('flex items-center gap-2.5 min-w-0', className)}>
       <div className="flex items-center gap-1.5 shrink-0">
@@ -23,32 +34,34 @@ export function TrendingKeywords({ onTermClick, className }: TrendingKeywordsPro
         </span>
       </div>
 
-      <div className="flex items-center gap-x-3 overflow-x-auto min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {isLoading ? (
-          Array.from({ length: 6 }).map((_, i) => (
+      {isLoading ? (
+        <div className="flex items-center gap-x-3 min-w-0">
+          {Array.from({ length: 6 }).map((_, i) => (
             <span
               key={i}
               className="inline-block h-3.5 w-16 shrink-0 bg-[var(--brand-primary)]/10 animate-pulse"
             />
-          ))
-        ) : isEmpty ? (
-          <span className="text-sm text-[var(--brand-text-faint)] whitespace-nowrap">
-            這段期間還沒有足夠的主題資料
-          </span>
-        ) : (
-          keywords!.map(({ term, article_count }) => (
-            <button
-              key={term}
-              type="button"
-              onClick={() => onTermClick(term)}
-              className="shrink-0 text-sm text-[var(--brand-text-faint)] hover:text-[var(--brand-accent-dark)] hover:underline transition-colors whitespace-nowrap"
-            >
-              #{term}
-              <span className="text-[var(--brand-text-faint)]/60 ml-0.5">{article_count}</span>
-            </button>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      ) : isEmpty ? (
+        <span className="text-sm text-[var(--brand-text-faint)] whitespace-nowrap">
+          這段期間還沒有足夠的主題資料
+        </span>
+      ) : (
+        <>
+          {/* 桌機：手動橫向捲動 */}
+          <div className="hidden md:flex items-center gap-x-3 overflow-x-auto min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {keywords!.map(({ term }) => renderTag(term, term))}
+          </div>
+
+          {/* 手機：跑馬燈自動捲動，內容重複兩份做無縫循環 */}
+          <div className="md:hidden flex-1 min-w-0 overflow-hidden">
+            <div className="flex items-center gap-x-6 w-max animate-marquee">
+              {[...keywords!, ...keywords!].map(({ term }, i) => renderTag(term, `${term}-${i}`))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }

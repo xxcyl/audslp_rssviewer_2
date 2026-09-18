@@ -152,7 +152,7 @@ function MainLayout() {
           </div>
         </header>
 
-        <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
+        <div className="container mx-auto px-4 md:px-6 pt-3 pb-6 md:pt-4 md:pb-8">
           <div className="min-h-[400px] flex flex-col items-center justify-center">
             <AlertTriangle className="w-16 h-16 text-red-500 mb-4" />
             <h3 className="text-lg font-medium text-[var(--brand-primary)] mb-2">載入文章時發生錯誤</h3>
@@ -245,7 +245,7 @@ function MainLayout() {
       </header>
 
       {/* 主要內容 */}
-      <div className="container mx-auto px-4 md:px-6 py-6 md:py-8">
+      <div className="container mx-auto px-4 md:px-6 pt-3 pb-6 md:pt-4 md:pb-8">
         <div className="space-y-6">
           {/* 搜尋和篩選工具列 - 簡化版 */}
           <FilterToolbar

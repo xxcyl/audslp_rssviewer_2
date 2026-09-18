@@ -257,49 +257,54 @@ export function FilterToolbar({
             </div>
           )}
 
-          {/* 篩選控制項 - 單行水平捲動，避免佔用過多垂直空間 */}
-          <div className="flex items-center gap-4 overflow-x-auto text-sm [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
-              <Select
-                value={currentFilters.source || 'all'}
-                onValueChange={handleSourceChange}
-                disabled={isLoading}
-              >
-                <SelectTrigger className={cn(selectTriggerClass, currentFilters.source && "text-[var(--brand-accent)]")}>
-                  <SelectValue placeholder="所有來源" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">所有來源</SelectItem>
-                  {sources.map((source) => (
-                    <SelectItem key={source} value={source}>
-                      {source}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          {/* 篩選控制項：來源/類型靠左（可橫向捲動），排序固定靠右，避免排序
+              換成純圖示後跟寬的文字下拉擠在一起，比例看起來不協調 */}
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <div className="flex items-center gap-4 overflow-x-auto min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
+                <Select
+                  value={currentFilters.source || 'all'}
+                  onValueChange={handleSourceChange}
+                  disabled={isLoading}
+                >
+                  <SelectTrigger className={cn(selectTriggerClass, currentFilters.source && "text-[var(--brand-accent)]")}>
+                    <SelectValue placeholder="所有來源" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">所有來源</SelectItem>
+                    {sources.map((source) => (
+                      <SelectItem key={source} value={source}>
+                        {source}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
+                <Select
+                  value={currentFilters.publicationType || 'all'}
+                  onValueChange={handlePublicationTypeChange}
+                  disabled={isLoading || isSearching}
+                >
+                  <SelectTrigger className={cn(selectTriggerClass, currentFilters.publicationType && "text-[var(--brand-accent)]")}>
+                    <SelectValue placeholder="所有類型" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">所有類型</SelectItem>
+                    {EVIDENCE_TYPE_PRIORITY.map((type) => (
+                      <SelectItem key={type} value={type}>
+                        {getEvidenceLabel(type)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
-            <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
-              <Select
-                value={currentFilters.publicationType || 'all'}
-                onValueChange={handlePublicationTypeChange}
-                disabled={isLoading || isSearching}
-              >
-                <SelectTrigger className={cn(selectTriggerClass, currentFilters.publicationType && "text-[var(--brand-accent)]")}>
-                  <SelectValue placeholder="所有類型" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">所有類型</SelectItem>
-                  {EVIDENCE_TYPE_PRIORITY.map((type) => (
-                    <SelectItem key={type} value={type}>
-                      {getEvidenceLabel(type)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <span className="w-px h-3.5 bg-[var(--brand-border)] shrink-0" />
 
-            <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
+            <div className="flex items-center gap-1.5 shrink-0">
               <ArrowUpDown className="w-3.5 h-3.5 text-[var(--brand-text-muted)] shrink-0" />
               <Select
                 value={currentFilters.sortBy}

@@ -176,7 +176,9 @@ export function FilterToolbar({
                 disabled={isLoading}
               >
                 <SelectTrigger className={selectTriggerClass}>
-                  <SelectValue />
+                  <span className="sr-only">
+                    <SelectValue />
+                  </span>
                 </SelectTrigger>
                 <SelectContent>
                   {sortOptions.map((option) => (
@@ -305,7 +307,9 @@ export function FilterToolbar({
                 disabled={isLoading}
               >
                 <SelectTrigger className={selectTriggerClass}>
-                  <SelectValue />
+                  <span className="sr-only">
+                    <SelectValue />
+                  </span>
                 </SelectTrigger>
                 <SelectContent>
                   {sortOptions.map((option) => (

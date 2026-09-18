@@ -1,6 +1,6 @@
 'use client'
 
-import { Search, X } from 'lucide-react'
+import { ArrowUpDown, Search, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { SearchHighlight } from '@/components/articles/SearchBar'
@@ -123,7 +123,6 @@ export function FilterToolbar({
           <div className="flex items-center gap-5 text-sm">
             {/* 來源篩選 */}
             <div className="flex items-center gap-1.5">
-              <span className="font-semibold text-[var(--brand-primary)]">篩選</span>
               <Select
                 value={currentFilters.source || 'all'}
                 onValueChange={handleSourceChange}
@@ -147,7 +146,6 @@ export function FilterToolbar({
 
             {/* 研究類型篩選 */}
             <div className="flex items-center gap-1.5">
-              <span className="font-semibold text-[var(--brand-primary)]">類型</span>
               <Select
                 value={currentFilters.publicationType || 'all'}
                 onValueChange={handlePublicationTypeChange}
@@ -171,7 +169,7 @@ export function FilterToolbar({
 
             {/* 排序方式 */}
             <div className="flex items-center gap-1.5">
-              <span className="font-semibold text-[var(--brand-primary)]">排序</span>
+              <ArrowUpDown className="w-3.5 h-3.5 text-[var(--brand-text-muted)] shrink-0" />
               <Select
                 value={currentFilters.sortBy}
                 onValueChange={handleSortChange}
@@ -260,7 +258,6 @@ export function FilterToolbar({
           {/* 篩選控制項 - 單行水平捲動，避免佔用過多垂直空間 */}
           <div className="flex items-center gap-4 overflow-x-auto text-sm [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
-              <span className="font-semibold text-[var(--brand-primary)]">篩選</span>
               <Select
                 value={currentFilters.source || 'all'}
                 onValueChange={handleSourceChange}
@@ -281,7 +278,6 @@ export function FilterToolbar({
             </div>
 
             <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
-              <span className="font-semibold text-[var(--brand-primary)]">類型</span>
               <Select
                 value={currentFilters.publicationType || 'all'}
                 onValueChange={handlePublicationTypeChange}
@@ -302,7 +298,7 @@ export function FilterToolbar({
             </div>
 
             <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
-              <span className="font-semibold text-[var(--brand-primary)]">排序</span>
+              <ArrowUpDown className="w-3.5 h-3.5 text-[var(--brand-text-muted)] shrink-0" />
               <Select
                 value={currentFilters.sortBy}
                 onValueChange={handleSortChange}

@@ -30,6 +30,10 @@ const SORT_OPTIONS = [
   { value: 'bookmark_count.desc', label: '最多收藏' },
 ] as const
 
+// 「最相關」只有搜尋模式下才有意義（沒有搜尋詞就沒有相關度可排），
+// 一般瀏覽模式下這個值送到 rss_entries 直接 .order() 會因為欄位不存在而出錯
+const SEARCH_SORT_OPTION = { value: 'relevance.desc', label: '最相關' } as const
+
 const selectTriggerClass = "border-none shadow-none bg-transparent px-0 h-auto gap-1 font-normal text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)] focus-visible:ring-0 [&_svg]:text-[var(--brand-text-muted)]"
 const searchInputClass = "pl-6 pr-8 border-0 border-b rounded-none shadow-none bg-transparent focus-visible:ring-0 border-[var(--brand-border)] focus-visible:border-[var(--brand-accent)]"
 
@@ -106,6 +110,7 @@ export function FilterToolbar({
 
   const isSearching = !!currentFilters.searchQuery
   const hasUnsubmittedSearch = searchValue !== (currentFilters.searchQuery || '')
+  const sortOptions = isSearching ? [SEARCH_SORT_OPTION, ...SORT_OPTIONS] : SORT_OPTIONS
 
   return (
     <div className={cn("border-b border-[var(--brand-border)]", className)}>
@@ -176,7 +181,7 @@ export function FilterToolbar({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {SORT_OPTIONS.map((option) => (
+                  {sortOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
@@ -307,7 +312,7 @@ export function FilterToolbar({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {SORT_OPTIONS.map((option) => (
+                  {sortOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>

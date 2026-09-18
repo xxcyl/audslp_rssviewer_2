@@ -292,6 +292,32 @@ export function useRandomArticle() {
   }
 }
 
+// 熱門 MeSH 主題詞 hook（首頁「熱門主題」區塊用）
+export interface TrendingKeyword {
+  term: string
+  article_count: number
+}
+
+export function useTrendingKeywords(daysBack: 7 | 30 = 7) {
+  return useQuery({
+    queryKey: ['trending-keywords', daysBack],
+    queryFn: async (): Promise<TrendingKeyword[]> => {
+      const { data, error } = await supabase.rpc('get_trending_mesh_terms', {
+        days_back: daysBack,
+        limit_count: 12
+      })
+
+      if (error) {
+        throw new Error(`熱門主題載入失敗: ${error.message}`)
+      }
+
+      return (data || []) as TrendingKeyword[]
+    },
+    staleTime: 30 * 60 * 1000, // 30 分鐘內資料視為新鮮
+    gcTime: 60 * 60 * 1000,
+  })
+}
+
 // 統計資訊 hook
 export function useArticleStats() {
   return useQuery({

@@ -5,6 +5,7 @@ import { AlertTriangle, Search, SearchX, X } from 'lucide-react'
 import { FilterToolbar } from '@/components/articles/FilterToolbar'
 import { ArticleGrid } from '@/components/articles/ArticleGrid'
 import { RandomPick } from '@/components/articles/RandomPick'
+import { TrendingKeywords } from '@/components/articles/TrendingKeywords'
 import { Pagination } from '@/components/articles/Pagination'
 import { HomePageJsonLd } from '@/components/seo/JsonLd'
 import { SiteShareButtons } from '@/components/social/ShareButtons'
@@ -258,6 +259,11 @@ function MainLayout() {
             isLoading={articlesLoading}
             hideSearchBox={true}
           />
+
+          {/* 熱門主題：僅在第一頁且非搜尋狀態顯示 */}
+          {currentPage === 1 && !isSearching && (
+            <TrendingKeywords onTermClick={handleMeshTermClick} />
+          )}
 
           {/* 隨機精選：僅在第一頁且非搜尋狀態顯示 */}
           {currentPage === 1 && !isSearching && (

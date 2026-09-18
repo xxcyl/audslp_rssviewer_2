@@ -308,7 +308,7 @@ export function useTrendingKeywords() {
     queryFn: async (): Promise<TrendingKeyword[]> => {
       const { data, error } = await supabase.rpc('get_trending_mesh_terms', {
         days_back: TRENDING_DAYS_BACK,
-        limit_count: 12
+        limit_count: 5
       })
 
       if (error) {

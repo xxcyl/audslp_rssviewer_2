@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { TrendingUp } from 'lucide-react'
 import { useTrendingKeywords } from '@/hooks/useArticles'
 import { cn } from '@/lib/utils'
@@ -11,52 +10,29 @@ interface TrendingKeywordsProps {
 }
 
 export function TrendingKeywords({ onTermClick, className }: TrendingKeywordsProps) {
-  // PubMed 的 MeSH 標籤編目常常要幾週才會完成，剛入庫的文章短期內多半還沒有
-  // MeSH 資料，「本週」很容易完全沒東西可顯示，所以預設用「本月」較穩妥。
-  const [daysBack, setDaysBack] = useState<7 | 30>(30)
-  const { data: keywords, isLoading } = useTrendingKeywords(daysBack)
+  const { data: keywords, isLoading } = useTrendingKeywords()
 
   const isEmpty = !isLoading && (!keywords || keywords.length === 0)
 
   return (
-    <div className={cn('flex flex-wrap items-center gap-2.5', className)}>
+    <div className={cn('flex items-center gap-2.5 min-w-0', className)}>
       <div className="flex items-center gap-1.5 shrink-0">
         <TrendingUp className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
-        <span className="font-display text-[9px] tracking-normal uppercase text-[var(--brand-primary)]">
+        <span className="font-display text-[9px] tracking-normal uppercase text-[var(--brand-primary)] whitespace-nowrap">
           Trending
         </span>
       </div>
 
-      <div className="flex items-center gap-1 shrink-0">
-        {([7, 30] as const).map((option) => (
-          <button
-            key={option}
-            type="button"
-            onClick={() => setDaysBack(option)}
-            className={cn(
-              'font-display text-[8px] px-1.5 py-1 transition-colors',
-              daysBack === option
-                ? 'bg-[var(--brand-primary)] text-[var(--brand-accent)]'
-                : 'text-[var(--brand-text-faint)] hover:text-[var(--brand-primary)]'
-            )}
-          >
-            {option === 7 ? '本週' : '本月'}
-          </button>
-        ))}
-      </div>
-
-      <div className="w-px h-4 bg-[var(--brand-primary)]/15 shrink-0" />
-
-      <div className="flex flex-wrap gap-x-3 gap-y-1.5 min-w-0">
+      <div className="flex items-center gap-x-3 overflow-x-auto min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {isLoading ? (
           Array.from({ length: 6 }).map((_, i) => (
             <span
               key={i}
-              className="inline-block h-3.5 w-16 bg-[var(--brand-primary)]/10 animate-pulse"
+              className="inline-block h-3.5 w-16 shrink-0 bg-[var(--brand-primary)]/10 animate-pulse"
             />
           ))
         ) : isEmpty ? (
-          <span className="text-sm text-[var(--brand-text-faint)]">
+          <span className="text-sm text-[var(--brand-text-faint)] whitespace-nowrap">
             這段期間還沒有足夠的主題資料
           </span>
         ) : (
@@ -65,7 +41,7 @@ export function TrendingKeywords({ onTermClick, className }: TrendingKeywordsPro
               key={term}
               type="button"
               onClick={() => onTermClick(term)}
-              className="text-sm text-[var(--brand-text-faint)] hover:text-[var(--brand-accent-dark)] hover:underline transition-colors"
+              className="shrink-0 text-sm text-[var(--brand-text-faint)] hover:text-[var(--brand-accent-dark)] hover:underline transition-colors whitespace-nowrap"
             >
               #{term}
               <span className="text-[var(--brand-text-faint)]/60 ml-0.5">{article_count}</span>

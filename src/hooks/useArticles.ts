@@ -180,11 +180,11 @@ async function fetchSimilarArticles(
     const results = (data || []) as RecommendedArticle[]
     if (results.length === 0) return results
 
-    // get_similar_articles 不保證回傳 link/pmid 等欄位，額外查詢補齊以確保連結正確
+    // get_similar_articles 不保證回傳 link/pmid/pmc_id 等欄位，額外查詢補齊以確保連結正確
     const ids = results.map((item) => item.id)
     const { data: linkRows, error: linkError } = await supabase
       .from('rss_entries')
-      .select('id, link, pmid, doi')
+      .select('id, link, pmid, doi, pmc_id')
       .in('id', ids)
 
     if (linkError) {
@@ -195,7 +195,9 @@ async function fetchSimilarArticles(
     const linkById = new Map((linkRows || []).map((row) => [row.id, row]))
     return results.map((item) => {
       const linkRow = linkById.get(item.id)
-      return linkRow ? { ...item, link: linkRow.link, pmid: linkRow.pmid, doi: linkRow.doi } : item
+      return linkRow
+        ? { ...item, link: linkRow.link, pmid: linkRow.pmid, doi: linkRow.doi, pmc_id: linkRow.pmc_id }
+        : item
     })
   } catch (error) {
     console.error('fetchSimilarArticles error:', error)

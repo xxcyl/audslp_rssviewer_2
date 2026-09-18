@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronUp, ExternalLink } from 'lucide-react'
+import { ChevronUp, ExternalLink, Unlock } from 'lucide-react'
 import { useSimilarArticles } from '@/hooks/useArticles'
 import type { RecommendedArticle } from '@/lib/types'
 
@@ -54,6 +54,17 @@ function RelatedArticleRow({ article }: { article: RecommendedArticle }) {
           <div className="text-base text-[var(--brand-text-muted)] mt-1">
             {article.tldr}
           </div>
+        )}
+        {article.pmc_id && (
+          <a
+            href={`https://www.ncbi.nlm.nih.gov/pmc/articles/${article.pmc_id}/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-display inline-flex items-center gap-1 w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] border-blue-600 text-blue-600 px-1.5 py-1 mt-1.5 hover:bg-blue-600 hover:text-white transition-colors"
+          >
+            <Unlock className="w-2.5 h-2.5" />
+            Free Full Text
+          </a>
         )}
       </div>
     </div>

@@ -298,12 +298,16 @@ export interface TrendingKeyword {
   article_count: number
 }
 
-export function useTrendingKeywords(daysBack: 7 | 30 = 7) {
+// PubMed 的 MeSH 標籤編目常要幾週才會完成，「本週」幾乎必然沒資料，
+// 固定用 30 天當作「熱門主題」的統計區間。
+const TRENDING_DAYS_BACK = 30
+
+export function useTrendingKeywords() {
   return useQuery({
-    queryKey: ['trending-keywords', daysBack],
+    queryKey: ['trending-keywords', TRENDING_DAYS_BACK],
     queryFn: async (): Promise<TrendingKeyword[]> => {
       const { data, error } = await supabase.rpc('get_trending_mesh_terms', {
-        days_back: daysBack,
+        days_back: TRENDING_DAYS_BACK,
         limit_count: 12
       })
 

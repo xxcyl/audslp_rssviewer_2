@@ -11,10 +11,12 @@ interface TrendingKeywordsProps {
 }
 
 export function TrendingKeywords({ onTermClick, className }: TrendingKeywordsProps) {
-  const [daysBack, setDaysBack] = useState<7 | 30>(7)
+  // PubMed 的 MeSH 標籤編目常常要幾週才會完成，剛入庫的文章短期內多半還沒有
+  // MeSH 資料，「本週」很容易完全沒東西可顯示，所以預設用「本月」較穩妥。
+  const [daysBack, setDaysBack] = useState<7 | 30>(30)
   const { data: keywords, isLoading } = useTrendingKeywords(daysBack)
 
-  if (!isLoading && (!keywords || keywords.length === 0)) return null
+  const isEmpty = !isLoading && (!keywords || keywords.length === 0)
 
   return (
     <div className={cn('flex flex-wrap items-center gap-2.5', className)}>
@@ -46,24 +48,30 @@ export function TrendingKeywords({ onTermClick, className }: TrendingKeywordsPro
       <div className="w-px h-4 bg-[var(--brand-primary)]/15 shrink-0" />
 
       <div className="flex flex-wrap gap-x-3 gap-y-1.5 min-w-0">
-        {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => (
-              <span
-                key={i}
-                className="inline-block h-3.5 w-16 bg-[var(--brand-primary)]/10 animate-pulse"
-              />
-            ))
-          : keywords!.map(({ term, article_count }) => (
-              <button
-                key={term}
-                type="button"
-                onClick={() => onTermClick(term)}
-                className="text-sm text-[var(--brand-text-faint)] hover:text-[var(--brand-accent-dark)] hover:underline transition-colors"
-              >
-                #{term}
-                <span className="text-[var(--brand-text-faint)]/60 ml-0.5">{article_count}</span>
-              </button>
-            ))}
+        {isLoading ? (
+          Array.from({ length: 6 }).map((_, i) => (
+            <span
+              key={i}
+              className="inline-block h-3.5 w-16 bg-[var(--brand-primary)]/10 animate-pulse"
+            />
+          ))
+        ) : isEmpty ? (
+          <span className="text-sm text-[var(--brand-text-faint)]">
+            這段期間還沒有足夠的主題資料
+          </span>
+        ) : (
+          keywords!.map(({ term, article_count }) => (
+            <button
+              key={term}
+              type="button"
+              onClick={() => onTermClick(term)}
+              className="text-sm text-[var(--brand-text-faint)] hover:text-[var(--brand-accent-dark)] hover:underline transition-colors"
+            >
+              #{term}
+              <span className="text-[var(--brand-text-faint)]/60 ml-0.5">{article_count}</span>
+            </button>
+          ))
+        )}
       </div>
     </div>
   )

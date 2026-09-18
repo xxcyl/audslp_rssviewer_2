@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Bookmark, ChevronDown, ChevronUp, Dices, ExternalLink, FileText, Shuffle, Unlock, FlaskConical } from 'lucide-react'
 import { useRandomArticle } from '@/hooks/useArticles'
 import { useBookmarks } from '@/hooks/useBookmarks'
@@ -99,7 +100,9 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
         {/* 標題與摘要 */}
         <div className="flex-1 flex flex-col gap-2.5 min-w-0">
           <h3 className="text-3xl leading-snug font-semibold text-[var(--brand-primary)]">
-            {article.title_translated || article.title || '無標題'}
+            <Link href={`/article/${article.id}`} className="hover:text-[var(--brand-accent-dark)] transition-colors">
+              {article.title_translated || article.title || '無標題'}
+            </Link>
           </h3>
 
           {article.title && article.title_translated && (

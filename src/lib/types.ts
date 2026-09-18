@@ -42,7 +42,7 @@ export interface PaginationState {
 export interface FilterOptions {
   source?: string
   publicationType?: string
-  sortBy: 'published.desc' | 'published.asc' | 'created_at.desc' | 'bookmark_count.desc'
+  sortBy: 'published.desc' | 'published.asc' | 'created_at.desc' | 'bookmark_count.desc' | 'relevance.desc'
   searchQuery?: string
 }
 

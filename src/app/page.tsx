@@ -68,18 +68,22 @@ function MainLayout() {
   // 點擊文章的 MeSH 主題標籤：直接以該主題詞觸發搜尋
   const handleMeshTermClick = (term: string) => {
     setGlobalSearchQuery(term)
-    setFilters({ ...filters, searchQuery: term })
+    setFilters({ ...filters, searchQuery: term, sortBy: 'relevance.desc' })
     setCurrentPage(1)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   // 處理標題欄搜尋 - 只在按下 Enter 時觸發
+  // 開始搜尋時預設用「最相關」排序；「最相關」只有搜尋模式下有意義，
+  // 所以清空搜尋詞時要一併把排序改回一般瀏覽用的預設值，避免殘留
+  // relevance.desc 送進一般的 .order() 查詢造成欄位不存在的錯誤
   const handleHeaderSearch = () => {
-    const newFilters = {
+    const trimmedQuery = globalSearchQuery.trim()
+    setFilters({
       ...filters,
-      searchQuery: globalSearchQuery || undefined
-    }
-    setFilters(newFilters)
+      searchQuery: trimmedQuery || undefined,
+      sortBy: trimmedQuery ? 'relevance.desc' : 'created_at.desc'
+    })
     setCurrentPage(1)
   }
 
@@ -128,11 +132,11 @@ function MainLayout() {
                     <button
                       onClick={() => {
                         setGlobalSearchQuery('')
-                        const newFilters = {
+                        setFilters({
                           ...filters,
-                          searchQuery: undefined
-                        }
-                        setFilters(newFilters)
+                          searchQuery: undefined,
+                          sortBy: filters.sortBy === 'relevance.desc' ? 'created_at.desc' : filters.sortBy
+                        })
                         setCurrentPage(1)
                       }}
                       className="text-white/50 hover:text-white transition-colors shrink-0"
@@ -219,12 +223,12 @@ function MainLayout() {
                   <button
                     onClick={() => {
                       setGlobalSearchQuery('')
-                      // 清除搜尋條件
-                      const newFilters = {
+                      // 清除搜尋條件，順便把「最相關」排序改回一般瀏覽預設值
+                      setFilters({
                         ...filters,
-                        searchQuery: undefined
-                      }
-                      setFilters(newFilters)
+                        searchQuery: undefined,
+                        sortBy: filters.sortBy === 'relevance.desc' ? 'created_at.desc' : filters.sortBy
+                      })
                       setCurrentPage(1)
                     }}
                     className="text-white/50 hover:text-white transition-colors shrink-0"

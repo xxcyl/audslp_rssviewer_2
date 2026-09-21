@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowUpDown, Search, Sparkles, X } from 'lucide-react'
+import { ArrowUpDown, Search, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { SearchHighlight } from '@/components/articles/SearchBar'
@@ -134,13 +134,12 @@ export function FilterToolbar({
               onClick={handleTodayOnlyToggle}
               disabled={isLoading || isSearching}
               className={cn(
-                "flex items-center gap-1.5 transition-colors disabled:opacity-50",
+                "text-sm border-[1.5px] px-2 py-1 transition-colors disabled:opacity-50",
                 currentFilters.todayOnly
-                  ? "text-[var(--brand-accent-dark)] font-semibold"
-                  : "text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)]"
+                  ? "bg-[var(--brand-accent)] border-[var(--brand-accent)] text-[var(--brand-primary)] font-semibold"
+                  : "border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:border-[var(--brand-primary)] hover:text-[var(--brand-primary)]"
               )}
             >
-              <Sparkles className="w-3.5 h-3.5" />
               今日新增
             </button>
 
@@ -291,13 +290,12 @@ export function FilterToolbar({
                 onClick={handleTodayOnlyToggle}
                 disabled={isLoading || isSearching}
                 className={cn(
-                  "flex items-center gap-1.5 whitespace-nowrap shrink-0 transition-colors disabled:opacity-50",
+                  "text-sm whitespace-nowrap shrink-0 border-[1.5px] px-2 py-1 transition-colors disabled:opacity-50",
                   currentFilters.todayOnly
-                    ? "text-[var(--brand-accent-dark)] font-semibold"
-                    : "text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)]"
+                    ? "bg-[var(--brand-accent)] border-[var(--brand-accent)] text-[var(--brand-primary)] font-semibold"
+                    : "border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:border-[var(--brand-primary)] hover:text-[var(--brand-primary)]"
                 )}
               >
-                <Sparkles className="w-3.5 h-3.5" />
                 今日新增
               </button>
 

@@ -24,17 +24,21 @@ interface FilterToolbarProps {
 }
 
 const SORT_OPTIONS = [
-  { value: 'created_at.desc', label: '最新收錄' },
-  { value: 'published.desc', label: '最新發布' },
-  { value: 'published.asc', label: '最舊發布' },
-  { value: 'bookmark_count.desc', label: '最多收藏' },
+  { value: 'created_at.desc', label: 'NEWEST ADDED' },
+  { value: 'published.desc', label: 'LATEST PUBLISHED' },
+  { value: 'published.asc', label: 'OLDEST PUBLISHED' },
+  { value: 'bookmark_count.desc', label: 'MOST BOOKMARKED' },
 ] as const
 
 // 「最相關」只有搜尋模式下才有意義（沒有搜尋詞就沒有相關度可排），
 // 一般瀏覽模式下這個值送到 rss_entries 直接 .order() 會因為欄位不存在而出錯
-const SEARCH_SORT_OPTION = { value: 'relevance.desc', label: '最相關' } as const
+const SEARCH_SORT_OPTION = { value: 'relevance.desc', label: 'MOST RELEVANT' } as const
 
 const selectTriggerClass = "border-none shadow-none bg-transparent px-0 h-auto gap-1 font-normal text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)] focus-visible:ring-0 [&_svg]:text-[var(--brand-text-muted)]"
+// 篩選標籤的「未篩選」狀態（所有來源/所有類型）用像素字體 + 全大寫，跟
+// TRENDING、RANDOM PICK 等 UI 骨架文字同一套視覺語彙；但選了實際來源/
+// 類型後就不套用，因為期刊全名可能很長，用像素字體會太擠、不好讀
+const pixelLabelClass = "font-display uppercase tracking-wide text-[8px] leading-relaxed"
 const searchInputClass = "pl-6 pr-8 border-0 border-b rounded-none shadow-none bg-transparent focus-visible:ring-0 border-[var(--brand-border)] focus-visible:border-[var(--brand-accent)]"
 
 export function FilterToolbar({
@@ -134,13 +138,14 @@ export function FilterToolbar({
               onClick={handleTodayOnlyToggle}
               disabled={isLoading || isSearching}
               className={cn(
-                "text-sm border-[1.5px] px-2 py-1 transition-colors disabled:opacity-50",
+                pixelLabelClass,
+                "border-[1.5px] px-1.5 py-1 transition-colors disabled:opacity-50",
                 currentFilters.todayOnly
-                  ? "bg-[var(--brand-accent)] border-[var(--brand-accent)] text-[var(--brand-primary)] font-semibold"
+                  ? "bg-[var(--brand-accent)] border-[var(--brand-accent)] text-[var(--brand-primary)]"
                   : "border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:border-[var(--brand-primary)] hover:text-[var(--brand-primary)]"
               )}
             >
-              今日新增
+              TODAY
             </button>
 
             <span className="w-px h-3.5 bg-[var(--brand-border)]" />
@@ -152,11 +157,11 @@ export function FilterToolbar({
                 onValueChange={handleSourceChange}
                 disabled={isLoading}
               >
-                <SelectTrigger className={cn(selectTriggerClass, currentFilters.source && "text-[var(--brand-accent)]")}>
-                  <SelectValue placeholder="所有來源" />
+                <SelectTrigger className={cn(selectTriggerClass, currentFilters.source ? "text-[var(--brand-accent)]" : pixelLabelClass)}>
+                  <SelectValue placeholder="ALL SOURCES" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">所有來源</SelectItem>
+                  <SelectItem value="all">ALL SOURCES</SelectItem>
                   {sources.map((source) => (
                     <SelectItem key={source} value={source}>
                       {source}
@@ -175,11 +180,11 @@ export function FilterToolbar({
                 onValueChange={handlePublicationTypeChange}
                 disabled={isLoading || isSearching}
               >
-                <SelectTrigger className={cn(selectTriggerClass, currentFilters.publicationType && "text-[var(--brand-accent)]")}>
-                  <SelectValue placeholder="所有類型" />
+                <SelectTrigger className={cn(selectTriggerClass, pixelLabelClass, currentFilters.publicationType && "text-[var(--brand-accent)]")}>
+                  <SelectValue placeholder="ALL TYPES" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">所有類型</SelectItem>
+                  <SelectItem value="all">ALL TYPES</SelectItem>
                   {EVIDENCE_TYPE_PRIORITY.map((type) => (
                     <SelectItem key={type} value={type}>
                       {getEvidenceLabel(type)}
@@ -284,19 +289,21 @@ export function FilterToolbar({
           {/* 篩選控制項：來源/類型靠左（可橫向捲動），排序固定靠右，避免排序
               換成純圖示後跟寬的文字下拉擠在一起，比例看起來不協調 */}
           <div className="flex items-center justify-between gap-3 text-sm">
-            <div className="flex items-center gap-4 overflow-x-auto min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <div className="relative min-w-0">
+              <div className="flex items-center gap-4 overflow-x-auto min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <button
                 type="button"
                 onClick={handleTodayOnlyToggle}
                 disabled={isLoading || isSearching}
                 className={cn(
-                  "text-sm whitespace-nowrap shrink-0 border-[1.5px] px-2 py-1 transition-colors disabled:opacity-50",
+                  pixelLabelClass,
+                  "whitespace-nowrap shrink-0 border-[1.5px] px-1.5 py-1 transition-colors disabled:opacity-50",
                   currentFilters.todayOnly
-                    ? "bg-[var(--brand-accent)] border-[var(--brand-accent)] text-[var(--brand-primary)] font-semibold"
+                    ? "bg-[var(--brand-accent)] border-[var(--brand-accent)] text-[var(--brand-primary)]"
                     : "border-[var(--brand-border)] text-[var(--brand-text-muted)] hover:border-[var(--brand-primary)] hover:text-[var(--brand-primary)]"
                 )}
               >
-                今日新增
+                TODAY
               </button>
 
               <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
@@ -305,11 +312,11 @@ export function FilterToolbar({
                   onValueChange={handleSourceChange}
                   disabled={isLoading}
                 >
-                  <SelectTrigger className={cn(selectTriggerClass, currentFilters.source && "text-[var(--brand-accent)]")}>
-                    <SelectValue placeholder="所有來源" />
+                  <SelectTrigger className={cn(selectTriggerClass, currentFilters.source ? "text-[var(--brand-accent)]" : pixelLabelClass)}>
+                    <SelectValue placeholder="ALL SOURCES" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">所有來源</SelectItem>
+                    <SelectItem value="all">ALL SOURCES</SelectItem>
                     {sources.map((source) => (
                       <SelectItem key={source} value={source}>
                         {source}
@@ -325,11 +332,11 @@ export function FilterToolbar({
                   onValueChange={handlePublicationTypeChange}
                   disabled={isLoading || isSearching}
                 >
-                  <SelectTrigger className={cn(selectTriggerClass, currentFilters.publicationType && "text-[var(--brand-accent)]")}>
-                    <SelectValue placeholder="所有類型" />
+                  <SelectTrigger className={cn(selectTriggerClass, pixelLabelClass, currentFilters.publicationType && "text-[var(--brand-accent)]")}>
+                    <SelectValue placeholder="ALL TYPES" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">所有類型</SelectItem>
+                    <SelectItem value="all">ALL TYPES</SelectItem>
                     {EVIDENCE_TYPE_PRIORITY.map((type) => (
                       <SelectItem key={type} value={type}>
                         {getEvidenceLabel(type)}
@@ -338,6 +345,9 @@ export function FilterToolbar({
                   </SelectContent>
                 </Select>
               </div>
+              </div>
+              {/* 右側漸層提示：來源/類型可能因較長內容而需橫向捲動 */}
+              <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[var(--brand-bg)] to-transparent" />
             </div>
 
             <span className="w-px h-3.5 bg-[var(--brand-border)] shrink-0" />

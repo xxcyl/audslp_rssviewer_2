@@ -33,6 +33,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
 
   const hasEmbedding = article.embedding && article.embedding.length > 0
   const evidenceType = getPrimaryEvidenceType(article.publication_types)
+  const showCreatedAt = article.created_at && formatDate(article.created_at) !== formatDate(article.published)
 
   return (
     <div className={className}>
@@ -71,6 +72,11 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
           <span className="text-base text-[var(--brand-text-faint)]">
             {formatDate(article.published)}
           </span>
+          {showCreatedAt && (
+            <span className="text-sm text-[var(--brand-text-faint)]">
+              {'// '}{formatDate(article.created_at)} 收錄
+            </span>
+          )}
           {(evidenceType || article.pmc_id) && (
             <div className="flex flex-wrap items-center gap-1.5">
               {evidenceType && (

@@ -37,6 +37,8 @@ export function ArticleCard({
 
   const hasEmbedding = article.embedding && article.embedding.length > 0
   const evidenceType = getPrimaryEvidenceType(article.publication_types)
+  // 發表日期跟入庫日期常常差好幾天甚至幾週（期刊索引時間差），兩者同一天就不用重複顯示
+  const showCreatedAt = article.created_at && formatDate(article.created_at) !== formatDate(article.published)
 
   return (
     <div>
@@ -53,6 +55,11 @@ export function ArticleCard({
             <Calendar className="w-3.5 h-3.5" />
             {formatDate(article.published)}
           </span>
+          {showCreatedAt && (
+            <span className="text-sm text-[var(--brand-text-faint)]">
+              {'// '}{formatDate(article.created_at)} 收錄
+            </span>
+          )}
           {(evidenceType || article.pmc_id) && (
             <div className="flex flex-wrap items-center gap-1.5">
               {evidenceType && (

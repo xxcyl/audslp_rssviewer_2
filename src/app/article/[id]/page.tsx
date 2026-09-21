@@ -105,6 +105,11 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
             <Calendar className="w-3.5 h-3.5" />
             {formatDate(article.published)}
           </span>
+          {article.created_at && formatDate(article.created_at) !== formatDate(article.published) && (
+            <span className="text-sm text-[var(--brand-text-faint)]">
+              {'// '}{formatDate(article.created_at)} 收錄
+            </span>
+          )}
           {(evidenceType || article.pmc_id) && (
             <div className="flex flex-wrap items-center gap-1.5">
               {evidenceType && (

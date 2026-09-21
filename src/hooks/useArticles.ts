@@ -56,7 +56,8 @@ async function fetchArticles({
   source,
   publicationType,
   sortBy,
-  searchQuery
+  searchQuery,
+  todayOnly
 }: SupabaseQueryParams): Promise<ArticlesResponse> {
   try {
     let articles: Article[] = []
@@ -120,6 +121,12 @@ async function fetchArticles({
       }
       if (publicationType) {
         query = query.contains('publication_types', [publicationType])
+      }
+      if (todayOnly) {
+        // 以使用者瀏覽器所在時區的「今天 00:00」為界，符合「今日新增收錄」的直覺認知
+        const startOfToday = new Date()
+        startOfToday.setHours(0, 0, 0, 0)
+        query = query.gte('created_at', startOfToday.toISOString())
       }
 
       // 應用排序
@@ -216,6 +223,7 @@ export function useArticles({ page, pageSize, filters }: UseArticlesOptions) {
       publicationType: filters.publicationType,
       sortBy: filters.sortBy,
       searchQuery: filters.searchQuery,
+      todayOnly: filters.todayOnly,
     }),
     staleTime: filters.searchQuery ? 2 * 60 * 1000 : 5 * 60 * 1000, // 搜尋結果較短快取時間
     gcTime: 10 * 60 * 1000, // 10 分鐘後清除快取

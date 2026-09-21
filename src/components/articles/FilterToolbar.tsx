@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowUpDown, Search, X } from 'lucide-react'
+import { ArrowUpDown, CalendarClock, Search, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { SearchHighlight } from '@/components/articles/SearchBar'
@@ -108,6 +108,13 @@ export function FilterToolbar({
     })
   }
 
+  const handleTodayOnlyToggle = () => {
+    onFiltersChange({
+      ...currentFilters,
+      todayOnly: !currentFilters.todayOnly
+    })
+  }
+
   const isSearching = !!currentFilters.searchQuery
   const hasUnsubmittedSearch = searchValue !== (currentFilters.searchQuery || '')
   const sortOptions = isSearching ? [SEARCH_SORT_OPTION, ...SORT_OPTIONS] : SORT_OPTIONS
@@ -164,6 +171,24 @@ export function FilterToolbar({
                 </SelectContent>
               </Select>
             </div>
+
+            <span className="w-px h-3.5 bg-[var(--brand-border)]" />
+
+            {/* 只顯示今日新增收錄 */}
+            <button
+              type="button"
+              onClick={handleTodayOnlyToggle}
+              disabled={isLoading || isSearching}
+              className={cn(
+                "flex items-center gap-1.5 transition-colors disabled:opacity-50",
+                currentFilters.todayOnly
+                  ? "text-[var(--brand-accent-dark)] font-semibold"
+                  : "text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)]"
+              )}
+            >
+              <CalendarClock className="w-3.5 h-3.5" />
+              今日新增
+            </button>
 
             <span className="w-px h-3.5 bg-[var(--brand-border)]" />
 
@@ -300,6 +325,21 @@ export function FilterToolbar({
                   </SelectContent>
                 </Select>
               </div>
+
+              <button
+                type="button"
+                onClick={handleTodayOnlyToggle}
+                disabled={isLoading || isSearching}
+                className={cn(
+                  "flex items-center gap-1.5 whitespace-nowrap shrink-0 transition-colors disabled:opacity-50",
+                  currentFilters.todayOnly
+                    ? "text-[var(--brand-accent-dark)] font-semibold"
+                    : "text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)]"
+                )}
+              >
+                <CalendarClock className="w-3.5 h-3.5" />
+                今日新增
+              </button>
             </div>
 
             <span className="w-px h-3.5 bg-[var(--brand-border)] shrink-0" />

@@ -44,6 +44,7 @@ export interface FilterOptions {
   publicationType?: string
   sortBy: 'published.desc' | 'published.asc' | 'created_at.desc' | 'bookmark_count.desc' | 'relevance.desc'
   searchQuery?: string
+  todayOnly?: boolean // 只顯示今日新增收錄的文章（搜尋模式下忽略此篩選）
 }
 
 // API 回應類型
@@ -61,6 +62,7 @@ export interface SupabaseQueryParams {
   publicationType?: string
   sortBy: string
   searchQuery?: string
+  todayOnly?: boolean
 }
 
 // 統計資訊

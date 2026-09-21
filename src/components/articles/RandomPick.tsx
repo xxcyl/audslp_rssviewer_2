@@ -33,7 +33,6 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
 
   const hasEmbedding = article.embedding && article.embedding.length > 0
   const evidenceType = getPrimaryEvidenceType(article.publication_types)
-  const showCreatedAt = article.created_at && formatDate(article.created_at) !== formatDate(article.published)
 
   return (
     <div className={className}>
@@ -70,13 +69,8 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
             {article.source || 'Unknown Source'}
           </span>
           <span className="text-base text-[var(--brand-text-faint)]">
-            {formatDate(article.published)}
+            {formatDate(article.created_at)}
           </span>
-          {showCreatedAt && (
-            <span className="text-sm text-[var(--brand-text-faint)]">
-              {'// '}{formatDate(article.created_at)} 收錄
-            </span>
-          )}
           {(evidenceType || article.pmc_id) && (
             <div className="flex flex-wrap items-center gap-1.5">
               {evidenceType && (
@@ -161,6 +155,12 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
           </button>
 
           <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-base text-[var(--brand-primary)]">
+            {article.published && (
+              <span className="text-sm text-[var(--brand-text-faint)]">
+                發表於 {formatDate(article.published)}
+              </span>
+            )}
+
             {article.link && (
               <a
                 href={article.link}

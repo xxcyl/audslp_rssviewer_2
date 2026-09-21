@@ -137,6 +137,12 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
               ))}
             </div>
           )}
+
+          {article.published && (
+            <p className="text-sm text-[var(--brand-text-faint)] mt-0.5">
+              Published {formatDate(article.published)}
+            </p>
+          )}
         </div>
 
         {/* 收藏與外部連結 */}
@@ -154,13 +160,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
             {article.bookmark_count > 0 && article.bookmark_count}
           </button>
 
-          <div className="flex flex-row flex-wrap md:flex-nowrap md:flex-col justify-end items-end gap-x-3 gap-y-1 md:gap-1.5 text-base text-[var(--brand-primary)]">
-            {article.published && (
-              <span className="whitespace-nowrap text-sm text-[var(--brand-text-faint)]">
-                Published {formatDate(article.published)}
-              </span>
-            )}
-
+          <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-base text-[var(--brand-primary)]">
             {article.link && (
               <a
                 href={article.link}

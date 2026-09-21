@@ -165,7 +165,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
 
         {article.published && (
           <p className="text-sm text-[var(--brand-text-faint)] mb-1.5">
-            發表於 {formatDate(article.published)}
+            Published {formatDate(article.published)}
           </p>
         )}
 

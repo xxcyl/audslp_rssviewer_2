@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowUpDown, CalendarClock, Search, X } from 'lucide-react'
+import { ArrowUpDown, Search, Sparkles, X } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { SearchHighlight } from '@/components/articles/SearchBar'
@@ -128,6 +128,24 @@ export function FilterToolbar({
         <div className="hidden md:flex items-center justify-between gap-6">
 
           <div className="flex items-center gap-5 text-sm">
+            {/* 只顯示今日新增收錄 */}
+            <button
+              type="button"
+              onClick={handleTodayOnlyToggle}
+              disabled={isLoading || isSearching}
+              className={cn(
+                "flex items-center gap-1.5 transition-colors disabled:opacity-50",
+                currentFilters.todayOnly
+                  ? "text-[var(--brand-accent-dark)] font-semibold"
+                  : "text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)]"
+              )}
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              今日新增
+            </button>
+
+            <span className="w-px h-3.5 bg-[var(--brand-border)]" />
+
             {/* 來源篩選 */}
             <div className="flex items-center gap-1.5">
               <Select
@@ -171,24 +189,6 @@ export function FilterToolbar({
                 </SelectContent>
               </Select>
             </div>
-
-            <span className="w-px h-3.5 bg-[var(--brand-border)]" />
-
-            {/* 只顯示今日新增收錄 */}
-            <button
-              type="button"
-              onClick={handleTodayOnlyToggle}
-              disabled={isLoading || isSearching}
-              className={cn(
-                "flex items-center gap-1.5 transition-colors disabled:opacity-50",
-                currentFilters.todayOnly
-                  ? "text-[var(--brand-accent-dark)] font-semibold"
-                  : "text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)]"
-              )}
-            >
-              <CalendarClock className="w-3.5 h-3.5" />
-              今日新增
-            </button>
 
             <span className="w-px h-3.5 bg-[var(--brand-border)]" />
 
@@ -286,6 +286,21 @@ export function FilterToolbar({
               換成純圖示後跟寬的文字下拉擠在一起，比例看起來不協調 */}
           <div className="flex items-center justify-between gap-3 text-sm">
             <div className="flex items-center gap-4 overflow-x-auto min-w-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <button
+                type="button"
+                onClick={handleTodayOnlyToggle}
+                disabled={isLoading || isSearching}
+                className={cn(
+                  "flex items-center gap-1.5 whitespace-nowrap shrink-0 transition-colors disabled:opacity-50",
+                  currentFilters.todayOnly
+                    ? "text-[var(--brand-accent-dark)] font-semibold"
+                    : "text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)]"
+                )}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                今日新增
+              </button>
+
               <div className="flex items-center gap-1.5 whitespace-nowrap shrink-0">
                 <Select
                   value={currentFilters.source || 'all'}
@@ -325,21 +340,6 @@ export function FilterToolbar({
                   </SelectContent>
                 </Select>
               </div>
-
-              <button
-                type="button"
-                onClick={handleTodayOnlyToggle}
-                disabled={isLoading || isSearching}
-                className={cn(
-                  "flex items-center gap-1.5 whitespace-nowrap shrink-0 transition-colors disabled:opacity-50",
-                  currentFilters.todayOnly
-                    ? "text-[var(--brand-accent-dark)] font-semibold"
-                    : "text-[var(--brand-text-muted)] hover:text-[var(--brand-primary)]"
-                )}
-              >
-                <CalendarClock className="w-3.5 h-3.5" />
-                今日新增
-              </button>
             </div>
 
             <span className="w-px h-3.5 bg-[var(--brand-border)] shrink-0" />

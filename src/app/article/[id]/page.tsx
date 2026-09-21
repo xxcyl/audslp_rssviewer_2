@@ -103,13 +103,8 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
           </span>
           <span className="flex items-center gap-1 text-base text-[var(--brand-text-faint)]">
             <Calendar className="w-3.5 h-3.5" />
-            {formatDate(article.published)}
+            {formatDate(article.created_at)}
           </span>
-          {article.created_at && formatDate(article.created_at) !== formatDate(article.published) && (
-            <span className="text-sm text-[var(--brand-text-faint)]">
-              {'// '}{formatDate(article.created_at)} 收錄
-            </span>
-          )}
           {(evidenceType || article.pmc_id) && (
             <div className="flex flex-wrap items-center gap-1.5">
               {evidenceType && (
@@ -166,6 +161,12 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
               </span>
             ))}
           </div>
+        )}
+
+        {article.published && (
+          <p className="text-sm text-[var(--brand-text-faint)] mb-1.5">
+            發表於 {formatDate(article.published)}
+          </p>
         )}
 
         <div className="flex flex-wrap items-center gap-4 text-base text-[var(--brand-primary)] mb-8 pb-8 border-b border-[var(--brand-border)]">

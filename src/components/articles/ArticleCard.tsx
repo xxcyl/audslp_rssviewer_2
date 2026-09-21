@@ -164,10 +164,10 @@ export function ArticleCard({
             {article.bookmark_count > 0 && article.bookmark_count}
           </button>
 
-          <div className="flex flex-row md:flex-col items-end gap-3 md:gap-1.5 text-base text-[var(--brand-primary)]">
+          <div className="flex flex-row flex-wrap md:flex-nowrap md:flex-col justify-end items-end gap-x-3 gap-y-1 md:gap-1.5 text-base text-[var(--brand-primary)]">
             {article.published && (
-              <span className="text-sm text-[var(--brand-text-faint)]">
-                發表於 {formatDate(article.published)}
+              <span className="whitespace-nowrap text-sm text-[var(--brand-text-faint)]">
+                Published {formatDate(article.published)}
               </span>
             )}
 

@@ -30,22 +30,22 @@ export const metadata: Metadata = {
     "復健醫學", "聽覺處理", "言語病理學", "聽語專業", "期刊推播",
     "AI智慧推薦", "學術文獻", "PubMed", "研究追蹤"
   ],
-  authors: [{ name: "聽語期刊速報", url: "https://audslp.vercel.app" }],
+  authors: [{ name: "聽語期刊速報", url: "https://audslp.app" }],
   creator: "聽語期刊速報",
   publisher: "聽語期刊速報",
-  metadataBase: new URL("https://audslp.vercel.app"),
+  metadataBase: new URL("https://audslp.app"),
   alternates: {
-    canonical: "https://audslp.vercel.app",
+    canonical: "https://audslp.app",
     languages: {
-      "zh-TW": "https://audslp.vercel.app",
-      "zh-CN": "https://audslp.vercel.app",
-      "en": "https://audslp.vercel.app"
+      "zh-TW": "https://audslp.app",
+      "zh-CN": "https://audslp.app",
+      "en": "https://audslp.app"
     }
   },
   openGraph: {
     type: "website",
     locale: "zh_TW",
-    url: "https://audslp.vercel.app",
+    url: "https://audslp.app",
     siteName: "聽語期刊速報",
     title: "聽語期刊速報 | 聽力學與語言治療期刊推播網站",
     description: "專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智慧推薦、跨期刊文章搜尋和研究趨勢追蹤。",

@@ -47,7 +47,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 
   const title = article.title_translated || article.title || `文章 ${article.id}`
   const description = article.tldr || article.english_tldr || '學術文章摘要'
-  const url = `https://audslp.vercel.app/article/${article.id}`
+  const url = `https://audslp.app/article/${article.id}`
 
   return {
     title,

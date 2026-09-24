@@ -128,7 +128,7 @@ export async function GET() {
             color: 'rgba(250,250,249,0.5)',
           }}
         >
-          audslp.vercel.app
+          audslp.app
         </div>
       </div>
     ),

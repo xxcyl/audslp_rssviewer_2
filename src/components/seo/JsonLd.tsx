@@ -6,7 +6,7 @@ interface JsonLdProps {
 }
 
 export function JsonLd({ type, data }: JsonLdProps) {
-  const baseUrl = 'https://audslp.vercel.app'
+  const baseUrl = 'https://audslp.app'
   
   const generateStructuredData = () => {
     switch (type) {
@@ -57,9 +57,6 @@ export function JsonLd({ type, data }: JsonLdProps) {
               ]
             }
           },
-          sameAs: [
-            'https://www.audslp.cc'
-          ],
           keywords: [
             '聽力學', '語言治療', '期刊', '學術研究', 'RSS', '醫學研究',
             '聽力師', '語言治療師', '溝通障礙', '聽力損失', '語言發展',
@@ -103,7 +100,7 @@ export function JsonLd({ type, data }: JsonLdProps) {
           contactPoint: {
             '@type': 'ContactPoint',
             contactType: 'customer service',
-            email: 'contact@audslp.vercel.app',
+            email: 'contact@audslp.app',
             availableLanguage: ['zh-TW', 'en']
           },
           areaServed: {
@@ -117,9 +114,6 @@ export function JsonLd({ type, data }: JsonLdProps) {
             '醫學研究',
             '學術期刊',
             '溝通障礙'
-          ],
-          sameAs: [
-            'https://www.audslp.cc'
           ]
         }
 

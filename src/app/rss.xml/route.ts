@@ -18,7 +18,7 @@ export async function GET() {
       return new Response('Error generating RSS feed', { status: 500 })
     }
 
-    const baseUrl = 'https://audslp.vercel.app'
+    const baseUrl = 'https://audslp.app'
     const currentDate = new Date().toUTCString()
 
     let rss = `<?xml version="1.0" encoding="UTF-8"?>
@@ -34,8 +34,8 @@ export async function GET() {
     <category>語言治療</category>
     <category>學術期刊</category>
     <copyright>© 2025 聽語期刊速報. All rights reserved.</copyright>
-    <managingEditor>contact@audslp.vercel.app (聽語期刊速報)</managingEditor>
-    <webMaster>webmaster@audslp.vercel.app (聽語期刊速報技術團隊)</webMaster>
+    <managingEditor>contact@audslp.app (聽語期刊速報)</managingEditor>
+    <webMaster>webmaster@audslp.app (聽語期刊速報技術團隊)</webMaster>
     <lastBuildDate>${currentDate}</lastBuildDate>
     <generator>聽語期刊速報 RSS Generator</generator>
     <image>

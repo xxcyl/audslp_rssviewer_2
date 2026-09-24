@@ -3,11 +3,7 @@ export function GET() {
     `User-agent: *
 Allow: /
 
-# 主要 sitemap
-Sitemap: https://audslp.vercel.app/sitemap.xml
-
-# 備用域名 sitemap  
-Sitemap: https://www.audslp.cc/sitemap.xml
+Sitemap: https://audslp.app/sitemap.xml
 
 # 爬蟲延遲設定
 Crawl-delay: 1

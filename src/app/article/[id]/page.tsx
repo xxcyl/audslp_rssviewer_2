@@ -136,7 +136,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
         </h1>
 
         {article.title && article.title_translated && (
-          <p className="text-base leading-relaxed text-[var(--brand-text-muted)] mb-4">
+          <p className="font-pixel-body text-base leading-relaxed text-[var(--brand-text-muted)] mb-4">
             {'// '}{article.title}
           </p>
         )}
@@ -148,7 +148,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
         )}
 
         {article.english_tldr && (
-          <p className="text-base leading-relaxed text-[var(--brand-text-muted)] mb-4">
+          <p className="font-pixel-body text-base leading-relaxed text-[var(--brand-text-muted)] mb-4">
             {'// '}{article.english_tldr}
           </p>
         )}
@@ -175,7 +175,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
               href={article.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
+              className="font-pixel-body flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               PubMed
@@ -186,7 +186,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
               href={`https://doi.org/${article.doi}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
+              className="font-pixel-body flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
             >
               <FileText className="w-3.5 h-3.5" />
               DOI

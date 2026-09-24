@@ -16,6 +16,13 @@
   font-family: var(--font-pixel-display), monospace;
 }
 
+/* 像素內文字體（VT323，只有拉丁字形）：只用在確定是純英文的內容，
+   例如原文標題、英文摘要、PubMed/DOI 連結——絕對不要套在中文內容
+   上，中英文混排時中文會 fallback 成別的字體，看起來會很雜亂 */
+.font-pixel-body {
+  font-family: var(--font-pixel-body), monospace;
+}
+
 /* 跑馬燈：內容需重複兩份緊接排列，-50% 剛好等於捲完一份的距離，
    接到第二份時視覺上無縫銜接 */
 @keyframes marquee {

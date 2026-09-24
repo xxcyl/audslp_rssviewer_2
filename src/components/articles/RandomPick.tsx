@@ -106,7 +106,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
           </h3>
 
           {article.title && article.title_translated && (
-            <p className="text-base text-[var(--brand-text-muted)]">
+            <p className="font-pixel-body text-base text-[var(--brand-text-muted)]">
               {'// '}{article.title}
             </p>
           )}
@@ -118,7 +118,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
           )}
 
           {article.english_tldr && (
-            <p className="text-base leading-relaxed text-[var(--brand-text-muted)]">
+            <p className="font-pixel-body text-base leading-relaxed text-[var(--brand-text-muted)]">
               {'// '}{article.english_tldr}
             </p>
           )}
@@ -166,7 +166,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
                 href={article.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
+                className="font-pixel-body flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
               >
                 <ExternalLink className="w-3 h-3" />
                 PubMed
@@ -178,7 +178,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
                 href={`https://doi.org/${article.doi}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
+                className="font-pixel-body flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
               >
                 <FileText className="w-3 h-3" />
                 DOI

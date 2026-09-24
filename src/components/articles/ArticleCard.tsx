@@ -91,7 +91,7 @@ export function ArticleCard({
           </h3>
 
           {article.title && article.title_translated && (
-            <p className="text-base leading-relaxed text-[var(--brand-text-muted)]">
+            <p className="font-pixel-body text-base leading-relaxed text-[var(--brand-text-muted)]">
               {'// '}
               <SearchHighlight
                 text={article.title}
@@ -124,7 +124,7 @@ export function ArticleCard({
           )}
 
           {article.english_tldr && (
-            <p className="text-base leading-relaxed text-[var(--brand-text-muted)]">
+            <p className="font-pixel-body text-base leading-relaxed text-[var(--brand-text-muted)]">
               {'// '}
               <SearchHighlight
                 text={article.english_tldr}
@@ -176,7 +176,7 @@ export function ArticleCard({
                 href={article.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
+                className="font-pixel-body flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
               >
                 <ExternalLink className="w-3 h-3" />
                 PubMed
@@ -188,7 +188,7 @@ export function ArticleCard({
                 href={`https://doi.org/${article.doi}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
+                className="font-pixel-body flex items-center gap-1 hover:text-[var(--brand-accent-dark)] transition-colors"
               >
                 <FileText className="w-3 h-3" />
                 DOI

@@ -1,8 +1,15 @@
 import type { Metadata } from "next"
-import { Press_Start_2P } from "next/font/google"
+import { Press_Start_2P, VT323 } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Providers } from "./providers"
 import "./globals.css"
+
+const pixelBody = VT323({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-pixel-body",
+  fallback: ["monospace"],
+})
 
 const pixelDisplay = Press_Start_2P({
   subsets: ["latin"],
@@ -88,7 +95,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#111110" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       </head>
-      <body className={`${pixelDisplay.variable} antialiased`}>
+      <body className={`${pixelBody.variable} ${pixelDisplay.variable} antialiased`}>
         <Providers>{children}</Providers>
         <Analytics />
       </body>

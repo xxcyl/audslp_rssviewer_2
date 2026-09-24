@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
   // 重定向設定
   async redirects() {
     return [
+      // 舊網址（Vercel 預設子網域）全站轉址到正式網域 audslp.app，
+      // 避免新舊網址被視為重複內容，也讓舊網址累積的索引進度能轉移過去
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'audslp.vercel.app' }],
+        destination: 'https://audslp.app/:path*',
+        permanent: true,
+      },
       // 備用域名重定向到主要域名
       {
         source: '/sitemap',

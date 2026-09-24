@@ -213,7 +213,7 @@ export function SiteShareButtons({ className }: { className?: string }) {
   return (
     <ShareButtons
       title="聽語期刊速報 | 聽力學與語言治療期刊推播網站"
-      url="https://audslp.vercel.app"
+      url="https://audslp.app"
       description="專業的聽力學與語言治療期刊推播網站，提供最新的學術研究、AI 智能推薦、跨期刊文章搜尋和研究趨勢追蹤。"
       className={className}
       variant="inline"

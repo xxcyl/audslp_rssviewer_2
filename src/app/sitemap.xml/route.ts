@@ -18,7 +18,7 @@ export async function GET() {
       return generateBasicSitemap()
     }
 
-    const baseUrl = 'https://audslp.vercel.app'
+    const baseUrl = 'https://audslp.app'
     const currentDate = new Date().toISOString()
 
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -67,7 +67,7 @@ export async function GET() {
 }
 
 function generateBasicSitemap() {
-  const baseUrl = 'https://audslp.vercel.app'
+  const baseUrl = 'https://audslp.app'
   const currentDate = new Date().toISOString()
 
   const basicSitemap = `<?xml version="1.0" encoding="UTF-8"?>

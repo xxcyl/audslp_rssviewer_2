@@ -106,7 +106,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
           </h3>
 
           {article.title && article.title_translated && (
-            <p className="font-pixel-body text-base text-[var(--brand-text-muted)]">
+            <p className="font-pixel-body text-lg text-[var(--brand-text-muted)]">
               {'// '}{article.title}
             </p>
           )}
@@ -118,7 +118,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
           )}
 
           {article.english_tldr && (
-            <p className="font-pixel-body text-base leading-relaxed text-[var(--brand-text-muted)]">
+            <p className="font-pixel-body text-lg leading-relaxed text-[var(--brand-text-muted)]">
               {'// '}{article.english_tldr}
             </p>
           )}
@@ -189,7 +189,7 @@ export function RandomPick({ className, onMeshTermClick }: RandomPickProps) {
               <button
                 onClick={() => setIsRelatedOpen(v => !v)}
                 className={cn(
-                  "flex items-center gap-1 transition-colors",
+                  "font-pixel-body flex items-center gap-1 transition-colors",
                   isRelatedOpen
                     ? "bg-[var(--brand-primary)] text-[var(--brand-accent)] px-1.5 py-0.5"
                     : "hover:text-[var(--brand-accent-dark)]"

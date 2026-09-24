@@ -136,7 +136,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
         </h1>
 
         {article.title && article.title_translated && (
-          <p className="font-pixel-body text-base leading-relaxed text-[var(--brand-text-muted)] mb-4">
+          <p className="font-pixel-body text-lg leading-relaxed text-[var(--brand-text-muted)] mb-4">
             {'// '}{article.title}
           </p>
         )}
@@ -148,7 +148,7 @@ export default async function ArticleDetailPage({ params }: ArticlePageProps) {
         )}
 
         {article.english_tldr && (
-          <p className="font-pixel-body text-base leading-relaxed text-[var(--brand-text-muted)] mb-4">
+          <p className="font-pixel-body text-lg leading-relaxed text-[var(--brand-text-muted)] mb-4">
             {'// '}{article.english_tldr}
           </p>
         )}

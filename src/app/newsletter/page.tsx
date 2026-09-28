@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false }
 }
 
+// supabase-js 的 fetch 不一定會被 Next.js 判定為「未快取」進而自動選擇動態渲染，
+// 實測發現新一期資料發布後列表頁沒有即時反映，明確加上 force-dynamic 確保每次請求都重新查詢
+export const dynamic = 'force-dynamic'
+
 function formatDate(dateString: string) {
   return new Date(dateString).toLocaleDateString('zh-TW', {
     year: 'numeric',

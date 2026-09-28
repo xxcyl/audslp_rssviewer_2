@@ -11,6 +11,10 @@ interface NewsletterPageProps {
   params: Promise<{ id: string }>
 }
 
+// supabase-js 的 fetch 不一定會被 Next.js 判定為「未快取」進而自動選擇動態渲染，
+// 明確加上 force-dynamic 確保每次請求都重新查詢，新發布的週報才會即時出現
+export const dynamic = 'force-dynamic'
+
 // 同一次請求裡 generateMetadata 跟頁面本體都會呼叫，用 cache() 包起來避免重複查詢
 const getIssue = cache(async (id: string): Promise<NewsletterIssue | null> => {
   const numericId = Number(id)

@@ -80,7 +80,6 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
 
   const headings = extractHeadings(issue.summary_markdown)
   let headingIndex = 0
-  let citationIndex = 0
 
   return (
     <div className="min-h-screen bg-[var(--brand-bg)]">
@@ -178,27 +177,26 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
                     {children}
                   </p>
                 ),
-                // 正文裡的引用連結原本都是「連結」這個字，重複出現太多次很雜；
-                // 原文用全形括號把連結包起來當作附註，這裡改成只顯示流水號，
-                // 靠括號本身當視覺分隔，不用額外再包一層方括號。連結本身在
-                // 週報產生階段就已經是站內文章頁網址，這裡直接使用即可。開新分頁
-                // 是為了不打斷閱讀動線，讀者看完來源可以直接關掉分頁回到原本進度
-                a: ({ href }) => {
-                  const n = ++citationIndex
-                  const className = "font-pixel-body text-xs align-super text-[var(--brand-accent-dark)] hover:underline"
+                // 週報產生的 prompt 明確規定引用連結文字就是期刊名稱（[期刊名稱](url)），
+                // 保留原文字即可，不用再換成流水編號蓋掉——期刊名稱本身就是有意義的資訊，
+                // 換成編號反而讓讀者看不出引用來源。連結本身在週報產生階段就已經是站內
+                // 文章頁網址，這裡直接使用即可。開新分頁是為了不打斷閱讀動線，讀者看完
+                // 來源可以直接關掉分頁回到原本進度
+                a: ({ href, children }) => {
+                  const className = "font-pixel-body text-[var(--brand-accent-dark)] hover:underline"
                   const internalPath = href ? toInternalArticlePath(href) : null
 
                   if (internalPath) {
                     return (
                       <Link href={internalPath} target="_blank" className={className}>
-                        {n}
+                        {children}
                       </Link>
                     )
                   }
 
                   return (
                     <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
-                      {n}
+                      {children}
                     </a>
                   )
                 }

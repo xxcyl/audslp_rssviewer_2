@@ -98,116 +98,120 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
         </div>
       </header>
 
-      <div className="container mx-auto px-4 md:px-6 py-8 max-w-3xl">
-        <Link
-          href="/newsletter"
-          className="font-pixel-body inline-block text-sm text-[var(--brand-text-muted)] hover:text-[var(--brand-accent-dark)] transition-colors mb-6"
-        >
-          ← 所有週報
-        </Link>
-
-        <div className="flex flex-wrap items-center gap-3 mb-6">
-          <span className="flex items-center gap-1 text-base text-[var(--brand-text-faint)]">
-            <Calendar className="w-3.5 h-3.5" />
-            {formatDate(issue.period_start)} – {formatDate(issue.period_end)}
-          </span>
-          <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
-            {issue.article_count} ARTICLES
-          </span>
-        </div>
-
-        <h1 className="text-3xl md:text-4xl leading-snug font-semibold text-[var(--brand-primary)] mb-8">
-          {issue.title}
-        </h1>
-
-        {headings.length > 1 && (
-          <nav
-            className="mb-10 px-5 md:px-6 py-5 border-[3px] border-[var(--brand-primary)] outline outline-2 outline-[var(--brand-bg)] -outline-offset-[7px]"
-            style={{
-              background: 'var(--brand-featured-bg)',
-              backgroundImage: 'radial-gradient(rgba(17,17,16,0.05) 1.5px, transparent 1.5px)',
-              backgroundSize: '7px 7px',
-              boxShadow: '5px 5px 0 var(--brand-accent)'
-            }}
+      <div className="container mx-auto px-4 md:px-6 py-8">
+        {/* 外框比照主頁的寬容器，但長文正文本身維持易讀寬度，不隨大螢幕無限變寬 */}
+        <div className="max-w-3xl mx-auto">
+          <Link
+            href="/newsletter"
+            className="font-pixel-body inline-block text-sm text-[var(--brand-text-muted)] hover:text-[var(--brand-accent-dark)] transition-colors mb-6"
           >
-            <div className="flex items-center gap-1.5 mb-3">
-              <List className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
-              <span className="font-display text-[9px] tracking-normal uppercase text-[var(--brand-primary)]">
-                Contents
-              </span>
-            </div>
-            <ol className="flex flex-col gap-1.5">
-              {headings.map((heading, index) => (
-                <li key={index}>
-                  <a
-                    href={`#section-${index}`}
-                    className="text-base text-[var(--brand-text-muted)] hover:text-[var(--brand-accent-dark)] transition-colors"
-                  >
-                    <span className="font-pixel-body text-[var(--brand-text-faint)] mr-1.5">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    {heading}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        )}
+            ← 所有週報
+          </Link>
 
-        <div className="newsletter-markdown">
-          <ReactMarkdown
-            components={{
-              h2: ({ children }) => {
-                const index = headingIndex++
-                return (
-                  <h2
-                    id={`section-${index}`}
-                    className="flex items-baseline gap-2 text-2xl font-bold text-[var(--brand-primary)] mt-12 mb-4 pt-8 border-t border-[var(--brand-border)] first:mt-0 first:pt-0 first:border-t-0"
-                  >
-                    <span className="font-display text-[10px] text-[var(--brand-accent-dark)]">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    {children}
-                  </h2>
-                )
-              },
-              p: ({ children }) => (
-                <p className="text-lg leading-loose text-[var(--brand-text)] mb-4">
-                  {children}
-                </p>
-              ),
-              // 正文裡的引用連結原本都是「連結」這個字，重複出現太多次很雜；
-              // 原文用全形括號把連結包起來當作附註，這裡改成只顯示流水號，
-              // 靠括號本身當視覺分隔，不用額外再包一層方括號。連結本身在
-              // 週報產生階段就已經是站內文章頁網址，這裡直接使用即可
-              a: ({ href }) => {
-                const n = ++citationIndex
-                const className = "font-pixel-body text-xs align-super text-[var(--brand-accent-dark)] hover:underline"
-                const internalPath = href ? toInternalArticlePath(href) : null
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <span className="flex items-center gap-1 text-base text-[var(--brand-text-faint)]">
+              <Calendar className="w-3.5 h-3.5" />
+              {formatDate(issue.period_start)} – {formatDate(issue.period_end)}
+            </span>
+            <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
+              {issue.article_count} ARTICLES
+            </span>
+          </div>
 
-                if (internalPath) {
+          <h1 className="text-3xl md:text-4xl leading-snug font-semibold text-[var(--brand-primary)] mb-8">
+            {issue.title}
+          </h1>
+
+          {headings.length > 1 && (
+            <nav
+              className="mb-10 px-5 md:px-6 py-5 border-[3px] border-[var(--brand-primary)] outline outline-2 outline-[var(--brand-bg)] -outline-offset-[7px]"
+              style={{
+                background: 'var(--brand-featured-bg)',
+                backgroundImage: 'radial-gradient(rgba(17,17,16,0.05) 1.5px, transparent 1.5px)',
+                backgroundSize: '7px 7px',
+                boxShadow: '5px 5px 0 var(--brand-accent)'
+              }}
+            >
+              <div className="flex items-center gap-1.5 mb-3">
+                <List className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
+                <span className="font-display text-[9px] tracking-normal uppercase text-[var(--brand-primary)]">
+                  Contents
+                </span>
+              </div>
+              <ol className="flex flex-col gap-1.5">
+                {headings.map((heading, index) => (
+                  <li key={index}>
+                    <a
+                      href={`#section-${index}`}
+                      className="text-base text-[var(--brand-text-muted)] hover:text-[var(--brand-accent-dark)] transition-colors"
+                    >
+                      <span className="font-pixel-body text-[var(--brand-text-faint)] mr-1.5">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      {heading}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
+
+          <div className="newsletter-markdown">
+            <ReactMarkdown
+              components={{
+                h2: ({ children }) => {
+                  const index = headingIndex++
                   return (
-                    <Link href={internalPath} className={className}>
+                    <h2
+                      id={`section-${index}`}
+                      className="flex items-baseline gap-2 text-2xl font-bold text-[var(--brand-primary)] mt-12 mb-4 pt-8 border-t border-[var(--brand-border)] first:mt-0 first:pt-0 first:border-t-0"
+                    >
+                      <span className="font-display text-[10px] text-[var(--brand-accent-dark)]">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      {children}
+                    </h2>
+                  )
+                },
+                p: ({ children }) => (
+                  <p className="text-lg leading-loose text-[var(--brand-text)] mb-4">
+                    {children}
+                  </p>
+                ),
+                // 正文裡的引用連結原本都是「連結」這個字，重複出現太多次很雜；
+                // 原文用全形括號把連結包起來當作附註，這裡改成只顯示流水號，
+                // 靠括號本身當視覺分隔，不用額外再包一層方括號。連結本身在
+                // 週報產生階段就已經是站內文章頁網址，這裡直接使用即可。開新分頁
+                // 是為了不打斷閱讀動線，讀者看完來源可以直接關掉分頁回到原本進度
+                a: ({ href }) => {
+                  const n = ++citationIndex
+                  const className = "font-pixel-body text-xs align-super text-[var(--brand-accent-dark)] hover:underline"
+                  const internalPath = href ? toInternalArticlePath(href) : null
+
+                  if (internalPath) {
+                    return (
+                      <Link href={internalPath} target="_blank" className={className}>
+                        {n}
+                      </Link>
+                    )
+                  }
+
+                  return (
+                    <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
                       {n}
-                    </Link>
+                    </a>
                   )
                 }
+              }}
+            >
+              {issue.summary_markdown}
+            </ReactMarkdown>
+          </div>
 
-                return (
-                  <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
-                    {n}
-                  </a>
-                )
-              }
-            }}
-          >
-            {issue.summary_markdown}
-          </ReactMarkdown>
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-[var(--brand-border)] flex items-center gap-1 text-sm text-[var(--brand-text-faint)]">
-          <FileText className="w-3.5 h-3.5" />
-          發布於 {issue.published_at ? formatDate(issue.published_at) : formatDate(issue.created_at)}
+          <div className="mt-8 pt-6 border-t border-[var(--brand-border)] flex items-center gap-1 text-sm text-[var(--brand-text-faint)]">
+            <FileText className="w-3.5 h-3.5" />
+            發布於 {issue.published_at ? formatDate(issue.published_at) : formatDate(issue.created_at)}
+          </div>
         </div>
       </div>
     </div>

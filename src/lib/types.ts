@@ -19,6 +19,27 @@ export interface Article {
   bookmark_count: number // 被收藏的總次數（由 DB trigger 同步，不記錄是誰收藏），保證不為 null
 }
 
+// 聽語期刊週報，跟 rss_entries 完全獨立的一張表，不需要 join
+export interface NewsletterCitation {
+  pmid: string
+  url: string
+  order: number
+}
+
+export interface NewsletterIssue {
+  id: number
+  period_start: string // date，這期涵蓋範圍的起始日
+  period_end: string // date，這期涵蓋範圍的結束日
+  title: string
+  summary_markdown: string // markdown 格式正文，含 ## 分段標題與 [連結](url) 引用連結
+  article_count: number
+  citations: NewsletterCitation[] // 依正文中出現順序排列
+  status: 'draft' | 'published'
+  published_at: string | null
+  created_at: string
+  updated_at: string
+}
+
 // 個人收藏（需登入），取代原本的匿名按讚
 export interface Bookmark {
   user_id: string

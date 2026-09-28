@@ -68,6 +68,7 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
 
   const headings = extractHeadings(issue.summary_markdown)
   let headingIndex = 0
+  let citationIndex = 0
 
   return (
     <div className="min-h-screen bg-[var(--brand-bg)]">
@@ -155,16 +156,22 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
                   {children}
                 </p>
               ),
-              a: ({ href, children }) => (
-                <a
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[var(--brand-accent-dark)] hover:underline"
-                >
-                  {children}
-                </a>
-              )
+              // 正文裡的引用連結原本都是「連結」這個字，重複出現太多次很雜；
+              // 原文用全形括號把連結包起來當作附註，這裡改成只顯示流水號，
+              // 靠括號本身當視覺分隔，不用額外再包一層方括號
+              a: ({ href }) => {
+                const n = ++citationIndex
+                return (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-pixel-body text-xs align-super text-[var(--brand-accent-dark)] hover:underline"
+                  >
+                    {n}
+                  </a>
+                )
+              }
             }}
           >
             {issue.summary_markdown}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { Calendar } from 'lucide-react'
+import { Calendar, Sparkles } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import type { NewsletterIssue } from '@/lib/types'
 
@@ -60,26 +60,59 @@ export default async function NewsletterListPage() {
         {issues.length === 0 ? (
           <p className="text-base text-[var(--brand-text-faint)]">目前還沒有已發布的週報。</p>
         ) : (
-          <div className="flex flex-col divide-y divide-[var(--brand-border)]">
-            {issues.map((issue) => (
-              <Link
-                key={issue.id}
-                href={`/newsletter/${issue.id}`}
-                className="group py-6 flex flex-col gap-2"
-              >
-                <span className="flex items-center gap-1 text-sm text-[var(--brand-text-faint)]">
-                  <Calendar className="w-3.5 h-3.5" />
-                  {formatDate(issue.period_start)} – {formatDate(issue.period_end)}
+          <>
+            {/* 最新一期比照首頁 Random Pick 卡片的螢光強調樣式，其餘期數維持素樸列表 */}
+            <Link
+              href={`/newsletter/${issues[0].id}`}
+              className="group block mb-8 px-5 md:px-8 py-6 border-4 border-[var(--brand-primary)] outline outline-3 outline-[var(--brand-bg)] -outline-offset-[9px]"
+              style={{
+                background: 'var(--brand-featured-bg)',
+                backgroundImage: 'radial-gradient(rgba(17,17,16,0.05) 1.5px, transparent 1.5px)',
+                backgroundSize: '7px 7px',
+                boxShadow: '8px 8px 0 var(--brand-accent)'
+              }}
+            >
+              <div className="flex items-center gap-1.5 mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
+                <span className="font-display text-[9px] tracking-normal uppercase text-[var(--brand-primary)]">
+                  Latest Issue
                 </span>
-                <h2 className="text-2xl font-semibold text-[var(--brand-primary)] group-hover:text-[var(--brand-accent-dark)] transition-colors">
-                  {issue.title}
-                </h2>
-                <span className="font-display w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] border-[var(--brand-border)] text-[var(--brand-text-muted)] px-1.5 py-1">
-                  {issue.article_count} ARTICLES
-                </span>
-              </Link>
-            ))}
-          </div>
+              </div>
+              <span className="flex items-center gap-1 text-sm text-[var(--brand-text-faint)]">
+                <Calendar className="w-3.5 h-3.5" />
+                {formatDate(issues[0].period_start)} – {formatDate(issues[0].period_end)}
+              </span>
+              <h2 className="text-2xl md:text-3xl font-semibold text-[var(--brand-primary)] group-hover:text-[var(--brand-accent-dark)] transition-colors mt-2 mb-3">
+                {issues[0].title}
+              </h2>
+              <span className="font-display w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
+                {issues[0].article_count} ARTICLES
+              </span>
+            </Link>
+
+            {issues.length > 1 && (
+              <div className="flex flex-col divide-y divide-[var(--brand-border)]">
+                {issues.slice(1).map((issue) => (
+                  <Link
+                    key={issue.id}
+                    href={`/newsletter/${issue.id}`}
+                    className="group py-6 flex flex-col gap-2"
+                  >
+                    <span className="flex items-center gap-1 text-sm text-[var(--brand-text-faint)]">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {formatDate(issue.period_start)} – {formatDate(issue.period_end)}
+                    </span>
+                    <h2 className="text-2xl font-semibold text-[var(--brand-primary)] group-hover:text-[var(--brand-accent-dark)] transition-colors">
+                      {issue.title}
+                    </h2>
+                    <span className="font-display w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
+                      {issue.article_count} ARTICLES
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

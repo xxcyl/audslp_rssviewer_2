@@ -107,7 +107,7 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
             <Calendar className="w-3.5 h-3.5" />
             {formatDate(issue.period_start)} – {formatDate(issue.period_end)}
           </span>
-          <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase border-[1.5px] border-[var(--brand-border)] text-[var(--brand-text-muted)] px-1.5 py-1">
+          <span className="font-display inline-block w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
             {issue.article_count} ARTICLES
           </span>
         </div>
@@ -117,7 +117,15 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
         </h1>
 
         {headings.length > 1 && (
-          <nav className="mb-10 pb-8 border-b border-[var(--brand-border)]">
+          <nav
+            className="mb-10 px-5 md:px-6 py-5 border-[3px] border-[var(--brand-primary)] outline outline-2 outline-[var(--brand-bg)] -outline-offset-[7px]"
+            style={{
+              background: 'var(--brand-featured-bg)',
+              backgroundImage: 'radial-gradient(rgba(17,17,16,0.05) 1.5px, transparent 1.5px)',
+              backgroundSize: '7px 7px',
+              boxShadow: '5px 5px 0 var(--brand-accent)'
+            }}
+          >
             <div className="flex items-center gap-1.5 mb-3">
               <List className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
               <span className="font-display text-[9px] tracking-normal uppercase text-[var(--brand-primary)]">

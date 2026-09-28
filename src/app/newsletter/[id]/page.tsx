@@ -42,27 +42,12 @@ function extractHeadings(markdown: string): string[] {
   return matches.map((line) => line.replace(/^## /, ''))
 }
 
-function extractPmidFromPubmedUrl(url: string): string | null {
-  const match = url.match(/pubmed\.ncbi\.nlm\.nih\.gov\/(\d+)/)
+// 週報產生階段就會把引用連結直接寫成站內的 /article/{id}，這裡不用再
+// 查資料庫轉換；只在連結不是站內文章（例如少數例外情況）時才視為外部
+// 連結另開分頁，其餘一律當作站內連結處理
+function toInternalArticlePath(url: string): string | null {
+  const match = url.match(/^https?:\/\/(?:www\.)?audslp\.app(\/article\/\d+)$/)
   return match ? match[1] : null
-}
-
-// 引用連結優先導到站內的文章頁，讀者不用跳出去 PubMed；如果 rss_entries
-// 裡找不到對應 pmid（例如舊文章已被清掉），才 fallback 回原本的 PubMed 連結
-async function getPmidToArticleId(pmids: string[]): Promise<Map<string, number>> {
-  if (pmids.length === 0) return new Map()
-
-  const { data, error } = await supabase
-    .from('rss_entries')
-    .select('id, pmid')
-    .in('pmid', pmids)
-
-  if (error || !data) return new Map()
-  return new Map(
-    data
-      .filter((row): row is { id: number; pmid: string } => !!row.pmid)
-      .map((row) => [row.pmid, row.id])
-  )
 }
 
 export async function generateMetadata({ params }: NewsletterPageProps): Promise<Metadata> {
@@ -90,7 +75,6 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
   }
 
   const headings = extractHeadings(issue.summary_markdown)
-  const pmidToArticleId = await getPmidToArticleId(issue.citations.map((c) => c.pmid))
   let headingIndex = 0
   let citationIndex = 0
 
@@ -182,17 +166,16 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
               ),
               // 正文裡的引用連結原本都是「連結」這個字，重複出現太多次很雜；
               // 原文用全形括號把連結包起來當作附註，這裡改成只顯示流水號，
-              // 靠括號本身當視覺分隔，不用額外再包一層方括號。優先連到站內
-              // 文章頁，找不到對應 pmid 才 fallback 回 PubMed 原文連結
+              // 靠括號本身當視覺分隔，不用額外再包一層方括號。連結本身在
+              // 週報產生階段就已經是站內文章頁網址，這裡直接使用即可
               a: ({ href }) => {
                 const n = ++citationIndex
-                const pmid = href ? extractPmidFromPubmedUrl(href) : null
-                const articleId = pmid ? pmidToArticleId.get(pmid) : undefined
                 const className = "font-pixel-body text-xs align-super text-[var(--brand-accent-dark)] hover:underline"
+                const internalPath = href ? toInternalArticlePath(href) : null
 
-                if (articleId) {
+                if (internalPath) {
                   return (
-                    <Link href={`/article/${articleId}`} className={className}>
+                    <Link href={internalPath} className={className}>
                       {n}
                     </Link>
                   )

@@ -54,13 +54,6 @@ export default async function NewsletterListPage() {
       </header>
 
       <div className="container mx-auto px-4 md:px-6 py-8">
-        <h1 className="text-3xl md:text-4xl leading-snug font-semibold text-[var(--brand-primary)] mb-2">
-          聽語期刊週報
-        </h1>
-        <p className="text-lg text-[var(--brand-text-muted)] mb-8">
-          每週彙整新增期刊文章的摘要電子報
-        </p>
-
         {issues.length === 0 ? (
           <p className="text-base text-[var(--brand-text-faint)]">目前還沒有已發布的週報。</p>
         ) : (
@@ -100,18 +93,20 @@ export default async function NewsletterListPage() {
                   <Link
                     key={issue.id}
                     href={`/newsletter/${issue.id}`}
-                    className="group py-6 flex flex-col gap-2"
+                    className="group py-4 flex flex-col gap-1"
                   >
-                    <span className="flex items-center gap-1 text-sm text-[var(--brand-text-faint)]">
-                      <Calendar className="w-3.5 h-3.5" />
-                      {formatDate(issue.period_start)} – {formatDate(issue.period_end)}
-                    </span>
-                    <h2 className="text-2xl font-semibold text-[var(--brand-primary)] group-hover:text-[var(--brand-accent-dark)] transition-colors">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="flex items-center gap-1 text-sm text-[var(--brand-text-faint)]">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {formatDate(issue.period_start)} – {formatDate(issue.period_end)}
+                      </span>
+                      <span className="font-display w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
+                        {issue.article_count} ARTICLES
+                      </span>
+                    </div>
+                    <h2 className="text-lg font-medium text-[var(--brand-primary)] group-hover:text-[var(--brand-accent-dark)] transition-colors">
                       {issue.title}
                     </h2>
-                    <span className="font-display w-fit text-[8px] leading-relaxed tracking-wide uppercase bg-[var(--brand-accent)] text-[var(--brand-primary)] px-1.5 py-1">
-                      {issue.article_count} ARTICLES
-                    </span>
                   </Link>
                 ))}
               </div>

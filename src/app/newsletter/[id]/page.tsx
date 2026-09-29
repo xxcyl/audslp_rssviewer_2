@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
-import { Calendar, FileText, List } from 'lucide-react'
+import { ArrowLeft, Calendar, FileText, List } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import type { NewsletterIssue } from '@/lib/types'
 
@@ -102,9 +102,10 @@ export default async function NewsletterIssuePage({ params }: NewsletterPageProp
         <div className="max-w-3xl mx-auto">
           <Link
             href="/newsletter"
-            className="font-pixel-body inline-block text-sm text-[var(--brand-text-muted)] hover:text-[var(--brand-accent-dark)] transition-colors mb-6"
+            className="font-display inline-flex items-center gap-1.5 text-[9px] uppercase tracking-wide text-[var(--brand-primary)] bg-[var(--brand-accent)] px-2.5 py-1.5 mb-6 hover:brightness-95 transition-[filter]"
           >
-            ← 所有週報
+            <ArrowLeft className="w-3 h-3" />
+            All Issues
           </Link>
 
           <div className="flex flex-wrap items-center gap-3 mb-6">

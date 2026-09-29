@@ -54,13 +54,6 @@ export default async function NewsletterListPage() {
       </header>
 
       <div className="container mx-auto px-4 md:px-6 py-8">
-        <h1 className="text-3xl md:text-4xl leading-snug font-semibold text-[var(--brand-primary)] mb-2">
-          聽語期刊週報
-        </h1>
-        <p className="text-lg text-[var(--brand-text-muted)] mb-8">
-          每週彙整新增期刊文章的摘要電子報
-        </p>
-
         {issues.length === 0 ? (
           <p className="text-base text-[var(--brand-text-faint)]">目前還沒有已發布的週報。</p>
         ) : (

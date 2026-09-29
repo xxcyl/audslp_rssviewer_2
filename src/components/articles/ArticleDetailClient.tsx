@@ -31,16 +31,15 @@ export function ArticleDetailClient({ article }: ArticleDetailClientProps) {
           )}
         >
           <Bookmark className={cn('w-3.5 h-3.5', isBookmarked && 'fill-current')} />
-          {isBookmarked ? '已收藏' : '收藏文章'}
-          {article.bookmark_count > 0 && ` (${article.bookmark_count})`}
+          {article.bookmark_count > 0 && article.bookmark_count}
         </button>
 
         {hasEmbedding && (
           <button
             onClick={() => setIsRelatedOpen((v) => !v)}
-            className="font-display flex items-center gap-1.5 text-[10px] text-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)] transition-colors"
+            className="font-pixel-body flex items-center gap-1 text-base text-[var(--brand-primary)] hover:text-[var(--brand-accent-dark)] transition-colors"
           >
-            相關文章
+            Related
             {isRelatedOpen ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
           </button>
         )}
